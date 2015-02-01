@@ -27,6 +27,8 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-web",
 			"org.springframework.boot:spring-boot-starter-logging",
 			"org.springframework.boot:spring-boot-starter-actuator"
+			
+	compile "com.google.apis:google-api-services-oauth2:v1-rev88-1.19.1"
 
 	runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion",
 			"ch.qos.logback:logback-classic:1.1.2"
