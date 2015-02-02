@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 
+import net.inpercima.runandfun.service.RunAndFunService;
+import net.inpercima.runandfun.service.RunAndFunServiceImpl;
+
 import org.junit.Test;
 
 public class RunAndFunServiceTest {

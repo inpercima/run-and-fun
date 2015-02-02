@@ -3,19 +3,19 @@ buildscript {
 	dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE") }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'spring-boot'
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "spring-boot"
 
 sourceCompatibility="1.8"
 targetCompatibility="1.8"
 
 jar {
-	baseName = 'run-and-fun'
-	version =  '0.1-SNAPSHOT'
+	baseName = "run-and-fun"
+	version =  "0.1-SNAPSHOT"
 }
 
-springBoot { mainClass = 'net.inpercima.core.RunAndFun' }
+springBoot { mainClass = 'net.inpercima.runandfun.Application' }
 
 repositories { mavenCentral() }
 dependencies {
@@ -27,8 +27,10 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-web",
 			"org.springframework.boot:spring-boot-starter-logging",
 			"org.springframework.boot:spring-boot-starter-actuator"
-			
-	compile "com.google.apis:google-api-services-oauth2:v1-rev88-1.19.1"
+
+	compile "com.google.oauth-client:google-oauth-client:1.19.0",
+	        "com.google.oauth-client:google-oauth-client-servlet:1.19.0",
+	        "com.google.http-client:google-http-client-jackson:1.19.0"
 
 	runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion",
 			"ch.qos.logback:logback-classic:1.1.2"

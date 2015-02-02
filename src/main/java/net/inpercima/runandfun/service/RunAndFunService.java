@@ -1,4 +1,4 @@
-package net.inpercima.core;
+package net.inpercima.runandfun.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 public interface RunAndFunService {
 
 	String createToken(String code, String clientId, String clientSecret,
-			String redirectUri) throws UnsupportedEncodingException, MalformedURLException, IOException;
+			String redirectUri) throws UnsupportedEncodingException,
+			MalformedURLException, IOException;
 
 }

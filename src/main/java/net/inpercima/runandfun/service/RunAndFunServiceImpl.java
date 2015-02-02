@@ -1,4 +1,4 @@
-package net.inpercima.core;
+package net.inpercima.runandfun.service;
 
 import java.io.IOException;
 import java.io.InputStream;
