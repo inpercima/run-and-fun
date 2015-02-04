@@ -15,7 +15,7 @@ jar {
 	version =  "0.1-SNAPSHOT"
 }
 
-springBoot { mainClass = "net.inpercima.runandfun.Application" }
+springBoot { mainClass = 'net.inpercima.runandfun.Application' }
 
 repositories { mavenCentral() }
 dependencies {
@@ -26,8 +26,7 @@ dependencies {
 
 	compile "org.springframework.boot:spring-boot-starter-web",
 			"org.springframework.boot:spring-boot-starter-logging",
-			"org.springframework.boot:spring-boot-starter-actuator",
-			"org.springframework.boot:spring-boot-starter-tomcat"
+			"org.springframework.boot:spring-boot-starter-actuator"
 
 	compile "com.google.oauth-client:google-oauth-client:1.19.0",
 	        "com.google.oauth-client:google-oauth-client-servlet:1.19.0",

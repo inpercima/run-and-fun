@@ -11,45 +11,40 @@ import java.util.Scanner;
 
 public class RunAndFunServiceImpl implements RunAndFunService {
 
-	@Override
-	public String createToken(final String code, final String clientId,
-			final String clientSecret, final String redirectUri)
-			throws MalformedURLException, IOException {
+    @Override
+    public String createToken(final String code, final String clientId, final String clientSecret,
+            final String redirectUri) throws MalformedURLException, IOException {
 
-		final String grantType = "authorization_code";
-		final String tokenUrl = "https://runkeeper.com/apps/token";
-		final String charset = "UTF-8";
+        final String grantType = "authorization_code";
+        final String tokenUrl = "https://runkeeper.com/apps/token";
+        final String charset = "UTF-8";
 
-		String query = String
-				.format("grant_type=%s&code=%s&client_id=%s&client_secret=%s&redirect_uri=%s",
-						URLEncoder.encode(grantType, charset),
-						URLEncoder.encode(code, charset),
-						URLEncoder.encode(clientId, charset),
-						URLEncoder.encode(clientSecret, charset),
-						URLEncoder.encode(redirectUri, charset));
+        String query = String.format("grant_type=%s&code=%s&client_id=%s&client_secret=%s&redirect_uri=%s",
+                URLEncoder.encode(grantType, charset), URLEncoder.encode(code, charset),
+                URLEncoder.encode(clientId, charset), URLEncoder.encode(clientSecret, charset),
+                URLEncoder.encode(redirectUri, charset));
 
-		URL url = new URL(tokenUrl);
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		// trigger POST
-		connection.setDoOutput(true);
-		connection.setRequestProperty("Accept-Charset", charset);
-		connection.setRequestProperty("Content-Type",
-				"application/x-www-form-urlencoded;charset=" + charset);
+        URL url = new URL(tokenUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        // trigger POST
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Accept-Charset", charset);
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
 
-		try (OutputStream output = connection.getOutputStream()) {
-			output.write(query.getBytes(charset));
-		}
-		String response = null;
+        try (OutputStream output = connection.getOutputStream()) {
+            output.write(query.getBytes(charset));
+        }
+        String response = null;
 
-		InputStream stream = connection.getErrorStream();
-		if (stream == null) {
-			stream = connection.getInputStream();
-		}
-		try (Scanner scanner = new Scanner(stream)) {
-			scanner.useDelimiter("\\Z");
-			response = scanner.next();
-		}
+        InputStream stream = connection.getErrorStream();
+        if (stream == null) {
+            stream = connection.getInputStream();
+        }
+        try (Scanner scanner = new Scanner(stream)) {
+            scanner.useDelimiter("\\Z");
+            response = scanner.next();
+        }
 
-		return response;
-	}
+        return response;
+    }
 }
