@@ -26,12 +26,7 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-starter-logging",
-            "org.springframework.boot:spring-boot-starter-actuator",
-            "org.springframework.boot:spring-boot-starter-tomcat"
-
-    compile "com.google.oauth-client:google-oauth-client:1.19.0",
-            "com.google.oauth-client:google-oauth-client-servlet:1.19.0",
-            "com.google.http-client:google-http-client-jackson:1.19.0"
+            "org.springframework.boot:spring-boot-starter-actuator"
 
     runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion",
             "ch.qos.logback:logback-classic:1.1.2"

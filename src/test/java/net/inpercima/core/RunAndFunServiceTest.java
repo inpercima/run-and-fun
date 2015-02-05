@@ -16,7 +16,7 @@ public class RunAndFunServiceTest {
     @Test
     public void test() throws UnsupportedEncodingException, MalformedURLException, IOException {
         RunAndFunService runAndFun = new RunAndFunServiceImpl();
-        String token = runAndFun.createToken("", "", "", "");
+        String token = runAndFun.getAccessToken("", "", "", "");
         assertNotNull(token);
     }
 

@@ -1,50 +1,79 @@
 package net.inpercima.runandfun.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Scanner;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import net.inpercima.runandfun.constants.RunAndFunConstants;
 
 public class RunAndFunServiceImpl implements RunAndFunService {
 
-    @Override
-    public String createToken(final String code, final String clientId, final String clientSecret,
-            final String redirectUri) throws MalformedURLException, IOException {
+	@Override
+	public String getAccessToken(final String code, final String clientId,
+			final String clientSecret, final String redirectUri)
+			throws MalformedURLException, IOException {
 
-        final String grantType = "authorization_code";
-        final String tokenUrl = "https://runkeeper.com/apps/token";
-        final String charset = "UTF-8";
+		Map<String, String> params = new LinkedHashMap<>();
+		params.put(RunAndFunConstants.GRANT_TYPE,
+				RunAndFunConstants.GRANT_TYPE_AUTHORIZATION);
+		params.put(RunAndFunConstants.CODE, code);
+		params.put(RunAndFunConstants.CLIENT_ID, clientId);
+		params.put(RunAndFunConstants.CLIENT_SECRET, clientSecret);
+		params.put(RunAndFunConstants.REDIRECT_URI, redirectUri);
+		String query = generateQuery(params);
 
-        String query = String.format("grant_type=%s&code=%s&client_id=%s&client_secret=%s&redirect_uri=%s",
-                URLEncoder.encode(grantType, charset), URLEncoder.encode(code, charset),
-                URLEncoder.encode(clientId, charset), URLEncoder.encode(clientSecret, charset),
-                URLEncoder.encode(redirectUri, charset));
+		return handleResponse(openPostRequest(RunAndFunConstants.TOKEN_URL,
+				query));
+	}
 
-        URL url = new URL(tokenUrl);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        // trigger POST
-        connection.setDoOutput(true);
-        connection.setRequestProperty("Accept-Charset", charset);
-        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
+	private HttpURLConnection openPostRequest(final String url,
+			final String query) throws UnsupportedEncodingException,
+			IOException {
+		URL postUrl = new URL(url);
+		HttpURLConnection connection = (HttpURLConnection) postUrl
+				.openConnection();
+		connection.setRequestMethod(RunAndFunConstants.METHOD_POST);
+		connection.setDoOutput(true);
+		connection.setRequestProperty("Content-Type",
+				RunAndFunConstants.FORM_URLENCODED);
+		connection.getOutputStream().write(
+				query.getBytes(RunAndFunConstants.UTF_8));
+		return connection;
+	}
 
-        try (OutputStream output = connection.getOutputStream()) {
-            output.write(query.getBytes(charset));
-        }
-        String response = null;
+	private String generateQuery(final Map<String, String> params)
+			throws UnsupportedEncodingException {
+		StringBuilder query = new StringBuilder();
+		for (Map.Entry<String, String> param : params.entrySet()) {
+			if (query.length() != 0)
+				query.append("&");
+			query.append(URLEncoder.encode(param.getKey(),
+					RunAndFunConstants.UTF_8));
+			query.append("=");
+			query.append(URLEncoder.encode(String.valueOf(param.getValue()),
+					RunAndFunConstants.UTF_8));
+		}
+		System.out.println(query.toString());
+		return query.toString();
+	}
 
-        InputStream stream = connection.getErrorStream();
-        if (stream == null) {
-            stream = connection.getInputStream();
-        }
-        try (Scanner scanner = new Scanner(stream)) {
-            scanner.useDelimiter("\\Z");
-            response = scanner.next();
-        }
-
-        return response;
-    }
+	private String handleResponse(final HttpURLConnection connection)
+			throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				connection.getInputStream()));
+		String line;
+		String response = "";
+		while ((line = reader.readLine()) != null) {
+			response = response + line;
+		}
+		reader.close();
+		return response;
+	}
 }
