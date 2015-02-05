@@ -11,32 +11,33 @@ sourceCompatibility="1.8"
 targetCompatibility="1.8"
 
 jar {
-	baseName = "run-and-fun"
-	version =  "0.1-SNAPSHOT"
+    baseName = "run-and-fun"
+    version =  "0.1-SNAPSHOT"
 }
 
-springBoot { mainClass = 'net.inpercima.runandfun.Application' }
+springBoot { mainClass = "net.inpercima.runandfun.Application" }
 
 repositories { mavenCentral() }
 dependencies {
-	def slf4jVersion = "1.7.10"
+    def slf4jVersion = "1.7.10"
 
-	compile "org.slf4j:slf4j-api:$slf4jVersion",
-			"com.google.guava:guava:18.0"
+    compile "org.slf4j:slf4j-api:$slf4jVersion",
+            "com.google.guava:guava:18.0"
 
-	compile "org.springframework.boot:spring-boot-starter-web",
-			"org.springframework.boot:spring-boot-starter-logging",
-			"org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.boot:spring-boot-starter-web",
+            "org.springframework.boot:spring-boot-starter-logging",
+            "org.springframework.boot:spring-boot-starter-actuator",
+            "org.springframework.boot:spring-boot-starter-tomcat"
 
-	compile "com.google.oauth-client:google-oauth-client:1.19.0",
-	        "com.google.oauth-client:google-oauth-client-servlet:1.19.0",
-	        "com.google.http-client:google-http-client-jackson:1.19.0"
+    compile "com.google.oauth-client:google-oauth-client:1.19.0",
+            "com.google.oauth-client:google-oauth-client-servlet:1.19.0",
+            "com.google.http-client:google-http-client-jackson:1.19.0"
 
-	runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion",
-			"ch.qos.logback:logback-classic:1.1.2"
+    runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion",
+            "ch.qos.logback:logback-classic:1.1.2"
 
-	testCompile "org.springframework.boot:spring-boot-starter-test",
-			"junit:junit:4.12"
+    testCompile "org.springframework.boot:spring-boot-starter-test",
+            "junit:junit:4.12"
 }
 
 task wrapper(type: Wrapper) { gradleVersion = "2.2.1" }
