@@ -9,4 +9,6 @@ public interface RunAndFunService {
     String getAccessToken(String code, String clientId, String clientSecret, String redirectUri)
             throws UnsupportedEncodingException, MalformedURLException, IOException;
 
+    String getUserData(String accessToken) throws MalformedURLException, IOException;
+
 }

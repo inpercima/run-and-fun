@@ -22,6 +22,8 @@ public class RunAndFunConstants {
 
     public final static String FORM_URLENCODED = "application/x-www-form-urlencoded";
     
+    public final static String APP_PROFILE = "application/vnd.com.runkeeper.Profile+json";
+    
     public final static String CONTENT_TYPE = "Content-Type";
 
     private RunAndFunConstants() {
