@@ -1,14 +1,17 @@
 package net.inpercima.runandfun.service;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-
+/**
+ * @author Marcel Jänicke
+ * @since 26.01.2015
+ */
 public interface RunAndFunService {
 
-    String getAccessToken(String code, String clientId, String clientSecret, String redirectUri)
-            throws UnsupportedEncodingException, MalformedURLException, IOException;
+    String getAccessToken(String code);
 
-    String getUserData(String accessToken) throws MalformedURLException, IOException;
+    String getUserData(String accessToken);
+
+    String getProfileData(String accessToken);
+
+    void loadProperties();
 
 }

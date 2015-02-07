@@ -1,82 +1,159 @@
 package net.inpercima.runandfun.service;
 
-import static net.inpercima.runandfun.constants.RunAndFunConstants.CLIENT_ID;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.CLIENT_SECRET;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.CODE;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.CONTENT_TYPE;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.FORM_URLENCODED;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.GRANT_TYPE;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.GRANT_TYPE_AUTHORIZATION;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.METHOD_POST;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.REDIRECT_URI;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.TOKEN_URL;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.UTF_8;
-import static net.inpercima.runandfun.constants.RunAndFunConstants.APP_PROFILE;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACCEPT;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.AUTHORIZATION;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.AUTHORIZATION_CODE;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.CONTENT_TYPE;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.GET_METHOD;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.GRANT_AUTHORIZATION_QUERY;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.POST_METHOD;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.TOKEN_URL;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.URLENCODED_APP;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_APP;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_APP;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_URL;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_URL;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.UTF_8;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.BEARER;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * @author Marcel Jänicke
+ * @since 26.01.2015
+ */
 public class RunAndFunServiceImpl implements RunAndFunService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RunAndFunServiceImpl.class);
+
+    private String clientId;
+
+    private String clientSecret;
+
+    private String redirectUri;
+
     @Override
-    public String getAccessToken(final String code, final String clientId, final String clientSecret,
-            final String redirectUri) throws MalformedURLException, IOException {
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put(GRANT_TYPE, GRANT_TYPE_AUTHORIZATION);
-        params.put(CODE, code);
-        params.put(CLIENT_ID, clientId);
-        params.put(CLIENT_SECRET, clientSecret);
-        params.put(REDIRECT_URI, redirectUri);
-        String query = generateQuery(params);
-        return handleResponse(openPostRequest(TOKEN_URL, query, FORM_URLENCODED));
+    public String getAccessToken(final String code) {
+        String response = null;
+        try {
+            String query = String.format(GRANT_AUTHORIZATION_QUERY, URLEncoder.encode(AUTHORIZATION_CODE, UTF_8),
+                    URLEncoder.encode(code, UTF_8), URLEncoder.encode(clientId, UTF_8),
+                    URLEncoder.encode(clientSecret, UTF_8), URLEncoder.encode(redirectUri, UTF_8));
+            JsonNode jsonNode = convertJson(handleResponse(openPostRequest(TOKEN_URL, query, URLENCODED_APP)));
+            response = jsonNode.get("access_token").toString()
+                    .substring(1, jsonNode.get("access_token").toString().length() - 1);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return response;
     }
 
     @Override
-    public String getUserData(final String accessToken) throws MalformedURLException, IOException {
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put("access_token", accessToken);
-        String query = generateQuery(params);
-
-        return handleResponse(openPostRequest(TOKEN_URL, query, APP_PROFILE));
+    public String getUserData(final String accessToken) {
+        String response = null;
+        response = handleResponse(openGetRequest(USER_URL, USER_APP, accessToken));
+        return response;
+    }
+    
+    @Override
+    public String getProfileData(final String accessToken) {
+        String response = null;
+        response = handleResponse(openGetRequest(PROFILE_URL, PROFILE_APP, accessToken));
+        return response;
     }
 
-    private HttpURLConnection openPostRequest(final String url, final String query, final String contentType)
-            throws UnsupportedEncodingException, IOException {
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setRequestMethod(METHOD_POST);
-        connection.setDoOutput(true);
-        connection.setRequestProperty(CONTENT_TYPE, contentType);
-        connection.getOutputStream().write(query.getBytes(UTF_8));
+    private JsonNode convertJson(String json) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = mapper.readTree(json);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return jsonNode;
+    }
+
+    private HttpURLConnection openGetRequest(final String url, final String appTypeValue, final String accessToken) {
+        return openRequest(url, null, appTypeValue, false, accessToken);
+    }
+
+    private HttpURLConnection openPostRequest(final String url, final String query, final String contentTypeValue) {
+        return openRequest(url, query, contentTypeValue, true, null);
+    }
+
+    private HttpURLConnection openRequest(final String url, final String query, final String typeValue,
+            final boolean isPost, final String accessToken) {
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod(isPost ? POST_METHOD : GET_METHOD);
+            connection.setDoOutput(isPost);
+            connection.setRequestProperty(isPost ? CONTENT_TYPE : ACCEPT, typeValue);
+            if (isPost) {
+                connection.getOutputStream().write(query.getBytes(UTF_8));
+            }
+            if (accessToken != null) {
+                connection.setRequestProperty(AUTHORIZATION, BEARER.concat(accessToken));
+            }
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
         return connection;
     }
 
-    private String generateQuery(final Map<String, String> params) throws UnsupportedEncodingException {
-        StringBuilder query = new StringBuilder();
-        for (Map.Entry<String, String> param : params.entrySet()) {
-            query.append(query.length() != 0 ? query.append("&") : "");
-            query.append(URLEncoder.encode(param.getKey(), UTF_8)).append("=");
-            query.append(URLEncoder.encode(String.valueOf(param.getValue()), UTF_8));
+    private String handleResponse(final HttpURLConnection connection) {
+        BufferedReader reader;
+        String response = "";
+        try {
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response = response + line;
+            }
+            reader.close();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
         }
-        return query.toString();
+        return response;
     }
 
-    private String handleResponse(final HttpURLConnection connection) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String line;
-        String response = "";
-        while ((line = reader.readLine()) != null) {
-            response = response + line;
+    @Override
+    public void loadProperties() {
+        Properties properties = new Properties();
+        InputStream in = getClass().getResourceAsStream("/run-and-fun.properties");
+        try {
+            properties.load(in);
+            in.close();
+            setRedirectUri(properties.getProperty("redirectUri"));
+            setClientId(properties.getProperty("clientId"));
+            setClientSecret(properties.getProperty("clientSecret"));
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
         }
-        reader.close();
-        System.out.println(response);
-        return response;
+    }
+
+    public void setRedirectUri(String redirectUri) {
+        this.redirectUri = redirectUri;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }
