@@ -1,7 +1,5 @@
 package net.inpercima.runandfun.service;
 
-import java.net.HttpURLConnection;
-
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
@@ -12,10 +10,6 @@ public interface HelperService {
 
     JsonNode convertJson(String json);
 
-    HttpURLConnection openGetRequest(String url, String appTypeValue, String accessToken);
-
-    HttpURLConnection openPostRequest(String url, String query, String contentTypeValue);
-
-    String handleResponse(HttpURLConnection connection);
+    String handleResponse(boolean isPost, String url, String parameterValue, String content);
 
 }

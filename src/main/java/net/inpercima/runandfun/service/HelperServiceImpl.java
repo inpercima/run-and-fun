@@ -30,35 +30,9 @@ public class HelperServiceImpl implements HelperService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HelperServiceImpl.class);
 
-    public HttpURLConnection openGetRequest(final String url, final String appTypeValue, final String accessToken) {
-        return openRequest(url, null, appTypeValue, false, accessToken);
-    }
-
-    public HttpURLConnection openPostRequest(final String url, final String query, final String contentTypeValue) {
-        return openRequest(url, query, contentTypeValue, true, null);
-    }
-
-    private HttpURLConnection openRequest(final String url, final String query, final String typeValue,
-            final boolean isPost, final String accessToken) {
-        HttpURLConnection connection = null;
-        try {
-            connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod(isPost ? POST_METHOD : GET_METHOD);
-            connection.setDoOutput(isPost);
-            connection.setRequestProperty(isPost ? CONTENT_TYPE : ACCEPT, typeValue);
-            if (isPost) {
-                connection.getOutputStream().write(query.getBytes(UTF_8));
-            }
-            if (accessToken != null) {
-                connection.setRequestProperty(AUTHORIZATION, BEARER.concat(accessToken));
-            }
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return connection;
-    }
-
-    public String handleResponse(final HttpURLConnection connection) {
+    public String handleResponse(final boolean isPost, final String url, final String parameterValue,
+            final String content) {
+        HttpURLConnection connection = openRequest(isPost, url, parameterValue, content);
         BufferedReader reader;
         String response = "";
         try {
@@ -72,6 +46,25 @@ public class HelperServiceImpl implements HelperService {
             LOGGER.error(e.getMessage(), e);
         }
         return response;
+    }
+
+    private HttpURLConnection openRequest(final boolean isPost, final String url, final String parameterValue,
+            final String content) {
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod(isPost ? POST_METHOD : GET_METHOD);
+            connection.setDoOutput(isPost);
+            connection.setRequestProperty(isPost ? CONTENT_TYPE : ACCEPT, parameterValue);
+            if (isPost) {
+                connection.getOutputStream().write(content.getBytes(UTF_8));
+            } else {
+                connection.setRequestProperty(AUTHORIZATION, BEARER.concat(content));
+            }
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return connection;
     }
 
     public JsonNode convertJson(String json) {

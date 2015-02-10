@@ -61,8 +61,8 @@ public class RunAndFunServiceImpl implements RunAndFunService {
             String query = String.format(GRANT_AUTHORIZATION_QUERY, URLEncoder.encode(AUTHORIZATION_CODE, UTF_8),
                     URLEncoder.encode(code, UTF_8), URLEncoder.encode(clientId, UTF_8),
                     URLEncoder.encode(clientSecret, UTF_8), URLEncoder.encode(redirectUri, UTF_8));
-            JsonNode jsonNode = helperService.convertJson(helperService.handleResponse(helperService.openPostRequest(
-                    TOKEN_URL, query, URLENCODED_APP)));
+            JsonNode jsonNode = helperService.convertJson(helperService.handleResponse(true, TOKEN_URL, URLENCODED_APP,
+                    query));
             response = jsonNode.get("access_token").toString()
                     .substring(1, jsonNode.get("access_token").toString().length() - 1);
         } catch (IOException e) {
@@ -74,15 +74,14 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Override
     public String getUserData(final String accessToken) {
         String response = null;
-        response = helperService.handleResponse(helperService.openGetRequest(USER_URL, USER_APP, accessToken));
+        response = helperService.handleResponse(false, USER_URL, USER_APP, accessToken);
         return response;
     }
 
     @Override
     public String getProfileData(final String accessToken) {
         String response = null;
-        response = helperService.handleResponse(helperService.openGetRequest(PROFILE_URL, PROFILE_APP, accessToken));
+        response = helperService.handleResponse(false, PROFILE_URL, PROFILE_APP, accessToken);
         return response;
     }
-
 }
