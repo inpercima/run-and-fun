@@ -1,8 +1,0 @@
-# runkeeper app details
-
-# client_id, default: empty
-clientId=
-# client_secret, default: empty
-clientSecret=
-# redirect_uri, default: http://localhost:8080/login
-redirectUri=http://localhost:8080/login

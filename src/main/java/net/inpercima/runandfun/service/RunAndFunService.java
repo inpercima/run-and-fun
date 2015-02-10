@@ -12,6 +12,4 @@ public interface RunAndFunService {
 
     String getProfileData(String accessToken);
 
-    void loadProperties();
-
 }

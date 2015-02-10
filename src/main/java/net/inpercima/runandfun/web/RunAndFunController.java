@@ -1,10 +1,8 @@
 package net.inpercima.runandfun.web;
 
 import net.inpercima.runandfun.service.RunAndFunService;
-import net.inpercima.runandfun.service.RunAndFunServiceImpl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,16 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RunAndFunController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RunAndFunController.class);
-
-    RunAndFunService runAndFun = new RunAndFunServiceImpl();
+    @Autowired
+    private RunAndFunService runAndFunService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
     public String login(@RequestParam(value = "code", required = true) String code) {
-        runAndFun.loadProperties();
-        String accessToken = runAndFun.getAccessToken(code);
-        LOGGER.debug(accessToken);
-        return runAndFun.getUserData(accessToken).concat(runAndFun.getProfileData(accessToken));
+        String accessToken = runAndFunService.getAccessToken(code);
+        return runAndFunService.getUserData(accessToken).concat(runAndFunService.getProfileData(accessToken));
     }
 }
