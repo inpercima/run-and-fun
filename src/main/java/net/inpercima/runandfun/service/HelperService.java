@@ -1,6 +1,7 @@
 package net.inpercima.runandfun.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.http.HttpEntity;
+import org.springframework.util.MultiValueMap;
 
 /**
  * @author Marcel Jänicke
@@ -8,8 +9,9 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public interface HelperService {
 
-    JsonNode convertJson(String json);
+    MultiValueMap<String, String> createTokenParams(String code);
 
-    String handleResponse(boolean isPost, String url, String parameterValue, String content);
+    MultiValueMap<String, String> createAccessParams(String accessToken);
 
+    HttpEntity<?> createHttpEntity(String accessToken, String applicationType);
 }

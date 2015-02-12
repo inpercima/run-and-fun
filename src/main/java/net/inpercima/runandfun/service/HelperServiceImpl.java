@@ -1,25 +1,25 @@
 package net.inpercima.runandfun.service;
 
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACCEPT;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACCEPT_CHARSET;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACCESS_TOKEN;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.AUTHORIZATION;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.AUTHORIZATION_CODE;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.BEARER;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.CONTENT_TYPE;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.GET_METHOD;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.POST_METHOD;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.UTF_8;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.CLIENT_ID;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.CLIENT_SECRET;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.CODE;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.GRANT_TYPE;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.REDIRECT_URI;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 /**
  * @author Marcel Jänicke
@@ -28,54 +28,54 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class HelperServiceImpl implements HelperService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelperServiceImpl.class);
+    @Value("${app.clientId}")
+    private String clientId;
 
-    public String handleResponse(final boolean isPost, final String url, final String parameterValue,
-            final String content) {
-        HttpURLConnection connection = openRequest(isPost, url, parameterValue, content);
-        BufferedReader reader;
-        String response = "";
-        try {
-            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response = response + line;
-            }
-            reader.close();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return response;
+    @Value("${app.clientSecret}")
+    private String clientSecret;
+
+    @Value("${app.redirectUri}")
+    private String redirectUri;
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
-    private HttpURLConnection openRequest(final boolean isPost, final String url, final String parameterValue,
-            final String content) {
-        HttpURLConnection connection = null;
-        try {
-            connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod(isPost ? POST_METHOD : GET_METHOD);
-            connection.setDoOutput(isPost);
-            connection.setRequestProperty(isPost ? CONTENT_TYPE : ACCEPT, parameterValue);
-            if (isPost) {
-                connection.getOutputStream().write(content.getBytes(UTF_8));
-            } else {
-                connection.setRequestProperty(AUTHORIZATION, BEARER.concat(content));
-            }
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return connection;
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
     }
 
-    public JsonNode convertJson(String json) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = null;
-        try {
-            jsonNode = mapper.readTree(json);
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return jsonNode;
+    public void setRedirectUri(String redirectUri) {
+        this.redirectUri = redirectUri;
+    }
+
+    @Override
+    public MultiValueMap<String, String> createTokenParams(final String code) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add(CLIENT_ID, clientId);
+        params.add(CLIENT_SECRET, clientSecret);
+        params.add(GRANT_TYPE, AUTHORIZATION_CODE);
+        params.add(REDIRECT_URI, redirectUri);
+        params.add(CODE, code);
+        return params;
+    }
+
+    @Override
+    public MultiValueMap<String, String> createAccessParams(final String accessToken) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add(ACCESS_TOKEN, accessToken);
+        return params;
+    }
+
+    @Override
+    public HttpEntity<?> createHttpEntity(String accessToken, final String applicationType) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(ACCEPT, applicationType);
+        headers.set(AUTHORIZATION, BEARER.concat(accessToken));
+        headers.set(ACCEPT_CHARSET, StandardCharsets.UTF_8.displayName());
+        headers.set(AUTHORIZATION, BEARER.concat(accessToken));
+        HttpEntity<?> entity = new HttpEntity<Object>(headers);
+        return entity;
     }
 
 }
