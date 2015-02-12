@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import net.inpercima.runandfun.service.RunAndFunService;
 import net.inpercima.runandfun.service.RunAndFunServiceImpl;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -18,6 +19,7 @@ import org.junit.Test;
 public class RunAndFunServiceTest {
 
     @Test
+    @Ignore
     public void test() throws UnsupportedEncodingException, MalformedURLException, IOException {
         RunAndFunService runAndFun = new RunAndFunServiceImpl();
         String token = runAndFun.getAccessToken("");

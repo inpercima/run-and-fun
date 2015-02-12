@@ -1,4 +1,4 @@
-package net.inpercima.model;
+package net.inpercima.runandfun.model;
 
 /**
  * @author Marcel Jänicke

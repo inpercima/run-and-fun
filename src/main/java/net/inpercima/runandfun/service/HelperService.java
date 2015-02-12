@@ -1,7 +1,6 @@
 package net.inpercima.runandfun.service;
 
 import org.springframework.http.HttpEntity;
-import org.springframework.util.MultiValueMap;
 
 /**
  * @author Marcel Jänicke
@@ -9,9 +8,8 @@ import org.springframework.util.MultiValueMap;
  */
 public interface HelperService {
 
-    MultiValueMap<String, String> createTokenParams(String code);
+    <T> T postForObject(String url, String code, Class<T> clazz);
 
-    MultiValueMap<String, String> createAccessParams(String accessToken);
+    <T> HttpEntity<T> getForObject(String url, String applicationType, String accessToken, Class<T> clazz);
 
-    HttpEntity<?> createHttpEntity(String accessToken, String applicationType);
 }

@@ -17,9 +17,13 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Marcel Jänicke
@@ -37,6 +41,8 @@ public class HelperServiceImpl implements HelperService {
     @Value("${app.redirectUri}")
     private String redirectUri;
 
+    private RestTemplate restTemplate;
+
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
@@ -49,8 +55,25 @@ public class HelperServiceImpl implements HelperService {
         this.redirectUri = redirectUri;
     }
 
+    public HelperServiceImpl() {
+        restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
+    }
+
     @Override
-    public MultiValueMap<String, String> createTokenParams(final String code) {
+    public <T> T postForObject(final String url, final String code, final Class<T> clazz) {
+        return restTemplate.postForObject(url, createTokenParams(code), clazz);
+    }
+
+    @Override
+    public <T> HttpEntity<T> getForObject(final String url, final String applicationType, final String accessToken,
+            final Class<T> clazz) {
+        return restTemplate.exchange(url, HttpMethod.GET, createHttpEntity(accessToken, applicationType), clazz,
+                createAccessParams(accessToken));
+    }
+
+    private MultiValueMap<String, String> createTokenParams(final String code) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(CLIENT_ID, clientId);
         params.add(CLIENT_SECRET, clientSecret);
@@ -60,21 +83,18 @@ public class HelperServiceImpl implements HelperService {
         return params;
     }
 
-    @Override
-    public MultiValueMap<String, String> createAccessParams(final String accessToken) {
+    private MultiValueMap<String, String> createAccessParams(final String accessToken) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(ACCESS_TOKEN, accessToken);
         return params;
     }
 
-    @Override
-    public HttpEntity<?> createHttpEntity(String accessToken, final String applicationType) {
+    private <T> HttpEntity<T> createHttpEntity(String accessToken, final String applicationType) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(ACCEPT, applicationType);
         headers.set(AUTHORIZATION, BEARER.concat(accessToken));
         headers.set(ACCEPT_CHARSET, StandardCharsets.UTF_8.displayName());
-        headers.set(AUTHORIZATION, BEARER.concat(accessToken));
-        HttpEntity<?> entity = new HttpEntity<Object>(headers);
+        HttpEntity<T> entity = new HttpEntity<T>(headers);
         return entity;
     }
 

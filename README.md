@@ -11,7 +11,7 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     ./gradlew build
     java -jar build/libs/run-and-fun-*.jar
 
-    # copy run-and-fun.properties.default to run-and-fun.properties
+    # copy application.properties.default to application.properties
     # add clientId and clientSecret
 
     # run project within gradle

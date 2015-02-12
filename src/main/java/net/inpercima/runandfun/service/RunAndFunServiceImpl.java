@@ -5,20 +5,13 @@ import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_UR
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.TOKEN_URL;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_URL;
-
-import java.nio.charset.StandardCharsets;
-
-import net.inpercima.model.RunkeeperProfile;
-import net.inpercima.model.RunkeeperToken;
-import net.inpercima.model.RunkeeperUser;
+import net.inpercima.runandfun.model.RunkeeperProfile;
+import net.inpercima.runandfun.model.RunkeeperToken;
+import net.inpercima.runandfun.model.RunkeeperUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Marcel Jänicke
@@ -30,35 +23,24 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Autowired
     private HelperService helperService;
 
-    private RestTemplate restTemplate;
-
-    public RunAndFunServiceImpl() {
-        restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        restTemplate.getMessageConverters().add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
-    }
-
     @Override
     public String getAccessToken(final String code) {
-        RunkeeperToken result = restTemplate.postForObject(TOKEN_URL, helperService.createTokenParams(code),
-                RunkeeperToken.class);
-        return result.getAccess_token();
+        RunkeeperToken token = helperService.postForObject(TOKEN_URL, code, RunkeeperToken.class);
+        return token.getAccess_token();
     }
 
     @Override
     public String getUserData(final String accessToken) {
-        HttpEntity<RunkeeperUser> user = restTemplate.exchange(USER_URL, HttpMethod.GET,
-                helperService.createHttpEntity(accessToken, USER_APP), RunkeeperUser.class,
-                helperService.createAccessParams(accessToken));
+        HttpEntity<RunkeeperUser> user = helperService.getForObject(USER_URL, USER_APP, accessToken,
+                RunkeeperUser.class);
         return user.getBody().getUserID();
     }
 
     @Override
     public String getProfileData(final String accessToken) {
-        HttpEntity<RunkeeperProfile> profile = restTemplate.exchange(PROFILE_URL, HttpMethod.GET,
-                helperService.createHttpEntity(accessToken, PROFILE_APP), RunkeeperProfile.class,
-                helperService.createAccessParams(accessToken));
-        return profile.getBody().getName();
+        HttpEntity<RunkeeperProfile> user = helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken,
+                RunkeeperProfile.class);
+        return user.getBody().getName();
     }
 
 }
