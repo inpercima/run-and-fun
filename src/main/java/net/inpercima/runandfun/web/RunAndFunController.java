@@ -1,5 +1,10 @@
 package net.inpercima.runandfun.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.inpercima.runandfun.model.AppState;
+import net.inpercima.runandfun.model.RunkeeperProfile;
 import net.inpercima.runandfun.service.RunAndFunService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +26,19 @@ public class RunAndFunController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
-    public String login(@RequestParam(value = "code", required = true) String code) {
+    public List<RunkeeperProfile> login(@RequestParam(value = "code", required = true) String code) {
+        List<RunkeeperProfile> list = new ArrayList<>();
         String accessToken = runAndFunService.getAccessToken(code);
-        return runAndFunService.getUserData(accessToken).concat(runAndFunService.getProfileData(accessToken));
+        list.add(runAndFunService.getProfileData(accessToken));
+        return list;
     }
+
+    @RequestMapping(value = "/state", method = RequestMethod.GET)
+    @ResponseBody
+    public AppState state() {
+        AppState state = new AppState();
+        state.setLoggedIn(true);
+        return state;
+    }
+
 }

@@ -4,7 +4,7 @@ package net.inpercima.runandfun.constants;
  * @author Marcel Jänicke
  * @since 05.02.2015
  */
-public class RunkeeperApiConstants {
+public interface RunkeeperApiConstants {
 
     // urls
     public final static String TOKEN_URL = "https://runkeeper.com/apps/token";
@@ -45,9 +45,5 @@ public class RunkeeperApiConstants {
     public final static String USER_APP = "application/vnd.com.runkeeper.User+json";
 
     public final static String PROFILE_APP = "application/vnd.com.runkeeper.Profile+json";
-
-    private RunkeeperApiConstants() {
-        // util class
-    }
 
 }

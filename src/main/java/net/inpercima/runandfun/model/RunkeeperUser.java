@@ -1,19 +1,22 @@
 package net.inpercima.runandfun.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author Marcel Jänicke
  * @since 11.02.2015
  */
 public class RunkeeperUser {
 
-    private String userID;
+    @JsonProperty(value = "userID")
+    private String userId;
 
-    public String getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

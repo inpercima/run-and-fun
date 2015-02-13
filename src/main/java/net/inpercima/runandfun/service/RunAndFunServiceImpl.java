@@ -26,21 +26,21 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Override
     public String getAccessToken(final String code) {
         RunkeeperToken token = helperService.postForObject(TOKEN_URL, code, RunkeeperToken.class);
-        return token.getAccess_token();
+        return token.getAccessToken();
     }
 
     @Override
-    public String getUserData(final String accessToken) {
+    public RunkeeperUser getUserData(final String accessToken) {
         HttpEntity<RunkeeperUser> user = helperService.getForObject(USER_URL, USER_APP, accessToken,
                 RunkeeperUser.class);
-        return user.getBody().getUserID();
+        return user.getBody();
     }
 
     @Override
-    public String getProfileData(final String accessToken) {
+    public RunkeeperProfile getProfileData(final String accessToken) {
         HttpEntity<RunkeeperProfile> user = helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken,
                 RunkeeperProfile.class);
-        return user.getBody().getName();
+        return user.getBody();
     }
 
 }
