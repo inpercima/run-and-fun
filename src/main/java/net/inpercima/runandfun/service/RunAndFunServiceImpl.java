@@ -23,6 +23,10 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Autowired
     private HelperService helperService;
 
+    public HelperService getHelperService() {
+        return helperService;
+    }
+
     @Override
     public String getAccessToken(final String code) {
         RunkeeperToken token = helperService.postForObject(TOKEN_URL, code, RunkeeperToken.class);

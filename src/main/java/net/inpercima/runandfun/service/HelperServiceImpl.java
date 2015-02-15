@@ -43,12 +43,20 @@ public class HelperServiceImpl implements HelperService {
 
     private RestTemplate restTemplate;
 
+    public String getClientId() {
+        return clientId;
+    }
+
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    public String getRedirectUri() {
+        return redirectUri;
     }
 
     public void setRedirectUri(String redirectUri) {

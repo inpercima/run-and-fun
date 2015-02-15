@@ -8,6 +8,10 @@ import org.springframework.http.HttpEntity;
  */
 public interface HelperService {
 
+    String getClientId();
+
+    String getRedirectUri();
+
     <T> T postForObject(String url, String code, Class<T> clazz);
 
     <T> HttpEntity<T> getForObject(String url, String applicationType, String accessToken, Class<T> clazz);
