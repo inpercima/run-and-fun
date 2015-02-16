@@ -1,10 +1,15 @@
 package net.inpercima.runandfun.service;
 
+import static net.inpercima.runandfun.constants.AppConstants.LOGGED_IN;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_URL;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.TOKEN_URL;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_URL;
+
+import javax.servlet.http.HttpSession;
+
+import net.inpercima.runandfun.model.AppState;
 import net.inpercima.runandfun.model.RunkeeperProfile;
 import net.inpercima.runandfun.model.RunkeeperToken;
 import net.inpercima.runandfun.model.RunkeeperUser;
@@ -45,6 +50,15 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         HttpEntity<RunkeeperProfile> user = helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken,
                 RunkeeperProfile.class);
         return user.getBody();
+    }
+
+    @Override
+    public AppState getAppState(HttpSession session) {
+        AppState state = new AppState();
+        state.setLoggedIn(session.getAttribute(LOGGED_IN) != null && (Boolean) session.getAttribute(LOGGED_IN) == true);
+        state.setClientId(helperService.getClientId());
+        state.setRedirectUri(helperService.getRedirectUri());
+        return state;
     }
 
 }
