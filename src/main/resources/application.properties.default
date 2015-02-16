@@ -3,5 +3,4 @@
 #
 app.clientId=
 app.clientSecret=
-# default http://localhost:8080/login
 app.redirectUri=

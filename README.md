@@ -11,7 +11,7 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     cp src/main/resources/application.properties.default src/main/resources/application.properties
 
     # use existing runkeeper app or register new app at http://runkeeper.com/partner/applications
-    # add clientId and clientSecret to application.properties
+    # add clientId, clientSecret and redirectUri to application.properties
 
     # run project within gradle
     ./gradlew bootRun
@@ -19,4 +19,3 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     # build and run project as jar
     ./gradlew build
     java -jar build/libs/run-and-fun-*.jar
-
