@@ -5,6 +5,7 @@ import static net.inpercima.runandfun.constants.AppConstants.LOGGED_IN;
 import javax.servlet.http.HttpSession;
 
 import net.inpercima.runandfun.model.AppState;
+import net.inpercima.runandfun.model.RunkeeperActivities;
 import net.inpercima.runandfun.service.HelperService;
 import net.inpercima.runandfun.service.RunAndFunService;
 
@@ -30,14 +31,13 @@ public class RunAndFunController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
-    public String login(HttpSession session, @RequestParam(value = "code", required = true) String code) {
+    public RunkeeperActivities login(HttpSession session, @RequestParam(value = "code", required = true) String code) {
         String accessToken = runAndFunService.getAccessToken(code);
         session.setAttribute(LOGGED_IN, accessToken != null);
-        return "redirect:/";
+        return runAndFunService.getActivities(accessToken);
     }
 
     @RequestMapping(value = "/state", method = RequestMethod.GET)
-    @ResponseBody
     public AppState state(HttpSession session) {
         return runAndFunService.getAppState(session);
     }

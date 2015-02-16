@@ -1,6 +1,9 @@
 package net.inpercima.runandfun.service;
 
 import static net.inpercima.runandfun.constants.AppConstants.LOGGED_IN;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_APP;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PAGE_SIZE;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_URL;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.TOKEN_URL;
@@ -10,6 +13,7 @@ import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_URL;
 import javax.servlet.http.HttpSession;
 
 import net.inpercima.runandfun.model.AppState;
+import net.inpercima.runandfun.model.RunkeeperActivities;
 import net.inpercima.runandfun.model.RunkeeperProfile;
 import net.inpercima.runandfun.model.RunkeeperToken;
 import net.inpercima.runandfun.model.RunkeeperUser;
@@ -39,17 +43,29 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
-    public RunkeeperUser getUserData(final String accessToken) {
+    public RunkeeperUser getUser(final String accessToken) {
         HttpEntity<RunkeeperUser> user = helperService.getForObject(USER_URL, USER_APP, accessToken,
                 RunkeeperUser.class);
         return user.getBody();
     }
 
     @Override
-    public RunkeeperProfile getProfileData(final String accessToken) {
-        HttpEntity<RunkeeperProfile> user = helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken,
+    public RunkeeperProfile getProfile(final String accessToken) {
+        HttpEntity<RunkeeperProfile> profile = helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken,
                 RunkeeperProfile.class);
-        return user.getBody();
+        return profile.getBody();
+    }
+
+    @Override
+    public RunkeeperActivities getActivities(final String accessToken) {
+        // first get one item only to get full size
+        HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(ACTIVITIES_URL + PAGE_SIZE + 1,
+                ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
+        int size = activitiesForSize.getBody().getSize();
+        // after that get all activities
+        HttpEntity<RunkeeperActivities> activities = helperService.getForObject(ACTIVITIES_URL + PAGE_SIZE + size,
+                ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
+        return activities.getBody();
     }
 
     @Override

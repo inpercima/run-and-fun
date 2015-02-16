@@ -3,6 +3,7 @@ package net.inpercima.runandfun.service;
 import javax.servlet.http.HttpSession;
 
 import net.inpercima.runandfun.model.AppState;
+import net.inpercima.runandfun.model.RunkeeperActivities;
 import net.inpercima.runandfun.model.RunkeeperProfile;
 import net.inpercima.runandfun.model.RunkeeperUser;
 
@@ -14,9 +15,11 @@ public interface RunAndFunService {
 
     String getAccessToken(String code);
 
-    RunkeeperUser getUserData(String accessToken);
+    RunkeeperUser getUser(String accessToken);
 
-    RunkeeperProfile getProfileData(String accessToken);
+    RunkeeperProfile getProfile(String accessToken);
+    
+    RunkeeperActivities getActivities(String accessToken);
 
     AppState getAppState(HttpSession session);
 

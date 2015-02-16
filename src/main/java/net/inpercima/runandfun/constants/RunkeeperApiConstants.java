@@ -17,6 +17,8 @@ public interface RunkeeperApiConstants {
 
     public final static String PROFILE_URL = "http://api.runkeeper.com/profile";
 
+    public final static String ACTIVITIES_URL = "http://api.runkeeper.com/fitnessActivities";
+
     // parameter keys
     public final static String ACCEPT = "Accept";
 
@@ -36,6 +38,8 @@ public interface RunkeeperApiConstants {
 
     public final static String CODE = "code";
 
+    public final static String PAGE_SIZE = "?pageSize=";
+
     // parameter values
     public final static String AUTHORIZATION_CODE = "authorization_code";
 
@@ -45,5 +49,7 @@ public interface RunkeeperApiConstants {
     public final static String USER_APP = "application/vnd.com.runkeeper.User+json";
 
     public final static String PROFILE_APP = "application/vnd.com.runkeeper.Profile+json";
+
+    public final static String ACTIVITIES_APP = "application/vnd.com.runkeeper.FitnessActivityFeed+json";
 
 }
