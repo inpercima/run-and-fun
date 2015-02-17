@@ -2,19 +2,13 @@ package net.inpercima.runandfun.model;
 
 public class AppState {
 
-    private boolean loggedIn;
-
     private String clientId;
 
     private String redirectUri;
 
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
+    private String accessToken;
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
+    private String username;
 
     public String getClientId() {
         return clientId;
@@ -30,5 +24,21 @@ public class AppState {
 
     public void setRedirectUri(String redirectUri) {
         this.redirectUri = redirectUri;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

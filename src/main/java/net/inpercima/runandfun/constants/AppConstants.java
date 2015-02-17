@@ -6,6 +6,6 @@ package net.inpercima.runandfun.constants;
  */
 public interface AppConstants {
 
-    public final static String LOGGED_IN = "loggedIn";
+    public final static String SESSION_ACCESS_TOKEN = "accessToken";
 
 }

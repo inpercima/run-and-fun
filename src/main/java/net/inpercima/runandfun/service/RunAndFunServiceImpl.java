@@ -1,8 +1,9 @@
 package net.inpercima.runandfun.service;
 
-import static net.inpercima.runandfun.constants.AppConstants.LOGGED_IN;
+import static net.inpercima.runandfun.constants.AppConstants.SESSION_ACCESS_TOKEN;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.DE_AUTHORIZATION_URL;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PAGE_SIZE;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_URL;
@@ -61,20 +62,34 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         // first get one item only to get full size
         HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(ACTIVITIES_URL + PAGE_SIZE + 1,
                 ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
-        int size = activitiesForSize.getBody().getSize();
         // after that get all activities
-        HttpEntity<RunkeeperActivities> activities = helperService.getForObject(ACTIVITIES_URL + PAGE_SIZE + size,
-                ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
+        HttpEntity<RunkeeperActivities> activities = helperService.getForObject(ACTIVITIES_URL + PAGE_SIZE
+                + activitiesForSize.getBody().getSize(), ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
         return activities.getBody();
     }
 
     @Override
     public AppState getAppState(HttpSession session) {
         AppState state = new AppState();
-        state.setLoggedIn(session.getAttribute(LOGGED_IN) != null && (Boolean) session.getAttribute(LOGGED_IN) == true);
+        state.setAccessToken((String) session.getAttribute(SESSION_ACCESS_TOKEN));
         state.setClientId(helperService.getClientId());
         state.setRedirectUri(helperService.getRedirectUri());
+        if (state.getAccessToken() != null) {
+            RunkeeperProfile profile = getProfile(state.getAccessToken());
+            state.setUsername(profile.getName());
+        }
         return state;
+    }
+
+    @Override
+    public void setAccessTokenToSession(HttpSession session, final String accessToken) {
+        session.setAttribute(SESSION_ACCESS_TOKEN, accessToken != null ? accessToken : null);
+    }
+
+    @Override
+    public void logout(HttpSession session) {
+        helperService.postForObject(DE_AUTHORIZATION_URL, (String) session.getAttribute(SESSION_ACCESS_TOKEN));
+        session.removeAttribute(SESSION_ACCESS_TOKEN);
     }
 
 }

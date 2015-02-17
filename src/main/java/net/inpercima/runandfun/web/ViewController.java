@@ -1,10 +1,7 @@
 package net.inpercima.runandfun.web;
 
-import static net.inpercima.runandfun.constants.AppConstants.LOGGED_IN;
-
 import javax.servlet.http.HttpSession;
 
-import net.inpercima.runandfun.service.HelperService;
 import net.inpercima.runandfun.service.RunAndFunService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +20,15 @@ public class ViewController {
     @Autowired
     private RunAndFunService runAndFunService;
 
-    @Autowired
-    private HelperService helperService;
-
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
-    public String login(HttpSession session, @RequestParam(value = "code", required = true) String code) {
-        String accessToken = runAndFunService.getAccessToken(code);
-        session.setAttribute(LOGGED_IN, accessToken != null);
-        session.setAttribute("accessToken", accessToken);
+    public String verify(HttpSession session, @RequestParam(value = "code", required = true) String code) {
+        runAndFunService.setAccessTokenToSession(session, runAndFunService.getAccessToken(code));
+        return "redirect:/";
+    }
+    
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpSession session) {
+        runAndFunService.logout(session);
         return "redirect:/";
     }
 

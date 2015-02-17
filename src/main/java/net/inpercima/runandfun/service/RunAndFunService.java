@@ -18,9 +18,13 @@ public interface RunAndFunService {
     RunkeeperUser getUser(String accessToken);
 
     RunkeeperProfile getProfile(String accessToken);
-    
+
     RunkeeperActivities getActivities(String accessToken);
 
     AppState getAppState(HttpSession session);
+
+    void setAccessTokenToSession(HttpSession session, String accessToken);
+    
+    void logout(HttpSession session);
 
 }

@@ -75,6 +75,13 @@ public class HelperServiceImpl implements HelperService {
     }
 
     @Override
+    public void postForObject(String url, String accessToken) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add(ACCESS_TOKEN, accessToken);
+        restTemplate.postForLocation(url, params);
+    }
+
+    @Override
     public <T> HttpEntity<T> getForObject(final String url, final String applicationType, final String accessToken,
             final Class<T> clazz) {
         return restTemplate.exchange(url, HttpMethod.GET, createHttpEntity(accessToken, applicationType), clazz,
