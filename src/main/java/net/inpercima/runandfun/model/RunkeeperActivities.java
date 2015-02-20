@@ -1,20 +1,36 @@
 package net.inpercima.runandfun.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class RunkeeperActivities {
 
-    private int size;
+    static final String TYPE_RUNNING = "Running";
 
-    private RunkeeperItem[] items;
+    private int size = 0;
+
+    private RunkeeperItem[] items = new RunkeeperItem[0];
 
     private String previous;
 
     private String next;
 
+    public List<RunkeeperItem> getItemsAsList() {
+        return items != null ? Arrays.asList(items) : new ArrayList<>();
+    }
+
+    public List<RunkeeperItem> getRuns() {
+        return getItemsAsList().stream().filter(item -> item.getType().equals(TYPE_RUNNING))
+                .collect(Collectors.toList());
+    }
+
     public int getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(final int size) {
         this.size = size;
     }
 
@@ -22,7 +38,7 @@ public class RunkeeperActivities {
         return items;
     }
 
-    public void setItems(RunkeeperItem[] items) {
+    public void setItems(final RunkeeperItem[] items) {
         this.items = items;
     }
 
@@ -30,7 +46,7 @@ public class RunkeeperActivities {
         return previous;
     }
 
-    public void setPrevious(String previous) {
+    public void setPrevious(final String previous) {
         this.previous = previous;
     }
 
@@ -38,7 +54,7 @@ public class RunkeeperActivities {
         return next;
     }
 
-    public void setNext(String next) {
+    public void setNext(final String next) {
         this.next = next;
     }
 
