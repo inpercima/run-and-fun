@@ -4,7 +4,7 @@ public class RunkeeperActivities {
 
     private int size;
 
-    private RunkeeperItems[] items;
+    private RunkeeperItem[] items;
 
     private String previous;
 
@@ -18,11 +18,11 @@ public class RunkeeperActivities {
         this.size = size;
     }
 
-    public RunkeeperItems[] getItems() {
+    public RunkeeperItem[] getItems() {
         return items;
     }
 
-    public void setItems(RunkeeperItems[] items) {
+    public void setItems(RunkeeperItem[] items) {
         this.items = items;
     }
 

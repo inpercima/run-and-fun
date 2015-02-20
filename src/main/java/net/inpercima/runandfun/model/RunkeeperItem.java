@@ -2,7 +2,7 @@ package net.inpercima.runandfun.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RunkeeperItems {
+public class RunkeeperItem {
 
     private String type;
 
