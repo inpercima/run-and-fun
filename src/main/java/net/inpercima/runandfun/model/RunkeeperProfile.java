@@ -1,7 +1,5 @@
 package net.inpercima.runandfun.model;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -17,7 +15,7 @@ public class RunkeeperProfile {
 
     private String location;
 
-    private Date birthday;
+    private String birthday;
 
     private boolean elite;
 
@@ -27,7 +25,7 @@ public class RunkeeperProfile {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -35,7 +33,7 @@ public class RunkeeperProfile {
         return athleteType;
     }
 
-    public void setAthleteType(String athleteType) {
+    public void setAthleteType(final String athleteType) {
         this.athleteType = athleteType;
     }
 
@@ -43,15 +41,15 @@ public class RunkeeperProfile {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(final String location) {
         this.location = location;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(final String birthday) {
         this.birthday = birthday;
     }
 
@@ -59,7 +57,7 @@ public class RunkeeperProfile {
         return elite;
     }
 
-    public void setElite(boolean elite) {
+    public void setElite(final boolean elite) {
         this.elite = elite;
     }
 
@@ -67,7 +65,7 @@ public class RunkeeperProfile {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(final String gender) {
         this.gender = gender;
     }
 
