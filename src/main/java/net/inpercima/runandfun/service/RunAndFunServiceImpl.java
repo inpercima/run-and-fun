@@ -19,6 +19,8 @@ import net.inpercima.runandfun.model.RunkeeperProfile;
 import net.inpercima.runandfun.model.RunkeeperToken;
 import net.inpercima.runandfun.model.RunkeeperUser;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
@@ -30,64 +32,61 @@ import org.springframework.stereotype.Service;
 @Service
 public class RunAndFunServiceImpl implements RunAndFunService {
 
-    @Autowired
-    private HelperService helperService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RunAndFunServiceImpl.class);
 
-    public HelperService getHelperService() {
-        return helperService;
+    private final HelperService helperService;
+
+    @Autowired
+    public RunAndFunServiceImpl(final HelperService helperService) {
+        this.helperService = helperService;
     }
 
     @Override
     public String getAccessToken(final String code) {
-        RunkeeperToken token = helperService.postForObject(TOKEN_URL, code, RunkeeperToken.class);
-        return token.getAccessToken();
+        return helperService.postForObject(TOKEN_URL, code, RunkeeperToken.class).getAccessToken();
     }
 
     @Override
     public RunkeeperUser getUser(final String accessToken) {
-        HttpEntity<RunkeeperUser> user = helperService.getForObject(USER_URL, USER_APP, accessToken,
-                RunkeeperUser.class);
-        return user.getBody();
+        return helperService.getForObject(USER_URL, USER_APP, accessToken, RunkeeperUser.class).getBody();
     }
 
     @Override
     public RunkeeperProfile getProfile(final String accessToken) {
-        HttpEntity<RunkeeperProfile> profile = helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken,
-                RunkeeperProfile.class);
-        return profile.getBody();
+        LOGGER.debug("get profile for token {}", accessToken);
+        return helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken, RunkeeperProfile.class).getBody();
     }
 
     @Override
     public RunkeeperActivities getActivities(final String accessToken) {
         // first get one item only to get full size
-        HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(
+        final HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(
                 ACTIVITIES_URL_WITH_PAGE_SIZE_ONE, ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
         // after that get all activities
-        HttpEntity<RunkeeperActivities> activities = helperService.getForObject(ACTIVITIES_URL_WITH_PAGE_SIZE
-                + activitiesForSize.getBody().getSize(), ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
-        return activities.getBody();
+        return helperService.getForObject(ACTIVITIES_URL_WITH_PAGE_SIZE + activitiesForSize.getBody().getSize(),
+                ACTIVITIES_APP, accessToken, RunkeeperActivities.class).getBody();
     }
 
     @Override
-    public AppState getAppState(HttpSession session) {
-        AppState state = new AppState();
+    public AppState getAppState(final HttpSession session) {
+        final AppState state = new AppState();
         state.setAccessToken((String) session.getAttribute(SESSION_ACCESS_TOKEN));
         state.setClientId(helperService.getClientId());
         state.setRedirectUri(helperService.getRedirectUri());
         if (state.getAccessToken() != null) {
-            RunkeeperProfile profile = getProfile(state.getAccessToken());
+            final RunkeeperProfile profile = getProfile(state.getAccessToken());
             state.setUsername(profile.getName());
         }
         return state;
     }
 
     @Override
-    public void setAccessTokenToSession(HttpSession session, final String accessToken) {
-        session.setAttribute(SESSION_ACCESS_TOKEN, accessToken != null ? accessToken : null);
+    public void setAccessTokenToSession(final HttpSession session, final String accessToken) {
+        session.setAttribute(SESSION_ACCESS_TOKEN, accessToken);
     }
 
     @Override
-    public void logout(HttpSession session) {
+    public void logout(final HttpSession session) {
         helperService.postForObject(DE_AUTHORIZATION_URL, (String) session.getAttribute(SESSION_ACCESS_TOKEN));
         session.removeAttribute(SESSION_ACCESS_TOKEN);
     }
