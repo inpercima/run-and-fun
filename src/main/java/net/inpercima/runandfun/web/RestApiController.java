@@ -49,4 +49,10 @@ public class RestApiController {
     public List<RunkeeperItem> runs(final HttpSession session) {
         return activities(session).getRuns();
     }
+
+    @RequestMapping(value = "/rides", method = RequestMethod.GET)
+    public List<RunkeeperItem> rides(final HttpSession session) {
+        return activities(session).getRides();
+    }
+
 }

@@ -9,6 +9,10 @@ public class RunkeeperActivities {
 
     static final String TYPE_RUNNING = "Running";
 
+    static final String TYPE_CYCLING = "Cycling";
+
+    static final String TYPE_HIKING = "Hiking";
+
     private int size = 0;
 
     private RunkeeperItem[] items = new RunkeeperItem[0];
@@ -23,6 +27,11 @@ public class RunkeeperActivities {
 
     public List<RunkeeperItem> getRuns() {
         return getItemsAsList().stream().filter(item -> item.getType().equals(TYPE_RUNNING))
+                .collect(Collectors.toList());
+    }
+
+    public List<RunkeeperItem> getRides() {
+        return getItemsAsList().stream().filter(item -> item.getType().equals(TYPE_CYCLING))
                 .collect(Collectors.toList());
     }
 

@@ -2,9 +2,9 @@ package net.inpercima.runandfun.service;
 
 import static net.inpercima.runandfun.constants.AppConstants.SESSION_ACCESS_TOKEN;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_APP;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL_WITH_PAGE_SIZE;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL_WITH_PAGE_SIZE_ONE;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.DE_AUTHORIZATION_URL;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PAGE_SIZE;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_URL;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.TOKEN_URL;
@@ -60,10 +60,10 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Override
     public RunkeeperActivities getActivities(final String accessToken) {
         // first get one item only to get full size
-        HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(ACTIVITIES_URL + PAGE_SIZE + 1,
-                ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
+        HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(
+                ACTIVITIES_URL_WITH_PAGE_SIZE_ONE, ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
         // after that get all activities
-        HttpEntity<RunkeeperActivities> activities = helperService.getForObject(ACTIVITIES_URL + PAGE_SIZE
+        HttpEntity<RunkeeperActivities> activities = helperService.getForObject(ACTIVITIES_URL_WITH_PAGE_SIZE
                 + activitiesForSize.getBody().getSize(), ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
         return activities.getBody();
     }

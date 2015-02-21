@@ -6,19 +6,6 @@ package net.inpercima.runandfun.constants;
  */
 public interface RunkeeperApiConstants {
 
-    // urls
-    public final static String TOKEN_URL = "https://runkeeper.com/apps/token";
-
-    public final static String AUTHORIZATION_URL = "https://runkeeper.com/apps/authorize";
-
-    public final static String DE_AUTHORIZATION_URL = "https://runkeeper.com/apps/de-authorize";
-
-    public final static String USER_URL = "http://api.runkeeper.com/user";
-
-    public final static String PROFILE_URL = "http://api.runkeeper.com/profile";
-
-    public final static String ACTIVITIES_URL = "http://api.runkeeper.com/fitnessActivities";
-
     // parameter keys
     public final static String ACCEPT = "Accept";
 
@@ -40,6 +27,8 @@ public interface RunkeeperApiConstants {
 
     public final static String PAGE_SIZE = "?pageSize=";
 
+    public final static String PAGE_SIZE_ONE = "?pageSize=1";
+
     // parameter values
     public final static String AUTHORIZATION_CODE = "authorization_code";
 
@@ -51,5 +40,22 @@ public interface RunkeeperApiConstants {
     public final static String PROFILE_APP = "application/vnd.com.runkeeper.Profile+json";
 
     public final static String ACTIVITIES_APP = "application/vnd.com.runkeeper.FitnessActivityFeed+json";
+
+    // urls
+    public final static String TOKEN_URL = "https://runkeeper.com/apps/token";
+
+    public final static String AUTHORIZATION_URL = "https://runkeeper.com/apps/authorize";
+
+    public final static String DE_AUTHORIZATION_URL = "https://runkeeper.com/apps/de-authorize";
+
+    public final static String USER_URL = "http://api.runkeeper.com/user";
+
+    public final static String PROFILE_URL = "http://api.runkeeper.com/profile";
+
+    public final static String ACTIVITIES_URL = "http://api.runkeeper.com/fitnessActivities";
+
+    public final static String ACTIVITIES_URL_WITH_PAGE_SIZE = ACTIVITIES_URL + PAGE_SIZE;
+
+    public final static String ACTIVITIES_URL_WITH_PAGE_SIZE_ONE = ACTIVITIES_URL + PAGE_SIZE_ONE;
 
 }

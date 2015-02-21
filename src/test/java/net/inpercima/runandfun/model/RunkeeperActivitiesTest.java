@@ -24,11 +24,30 @@ public class RunkeeperActivitiesTest {
         items[1] = new RunkeeperItem();
         items[1].setType(RunkeeperActivities.TYPE_RUNNING);
         items[2] = new RunkeeperItem();
-        items[2].setType("foo");
+        items[2].setType(RunkeeperActivities.TYPE_HIKING);
         activities.setItems(items);
 
         assertArrayEquals(items, activities.getItems());
         assertEquals(2, activities.getRuns().size());
+    }
+
+    @Test
+    public final void getRides() {
+        final List<RunkeeperItem> rides = activities.getRides();
+        assertNotNull(rides);
+        assertEquals(0, rides.size());
+
+        final RunkeeperItem[] items = new RunkeeperItem[3];
+        items[0] = new RunkeeperItem();
+        items[0].setType(RunkeeperActivities.TYPE_CYCLING);
+        items[1] = new RunkeeperItem();
+        items[1].setType(RunkeeperActivities.TYPE_RUNNING);
+        items[2] = new RunkeeperItem();
+        items[2].setType(RunkeeperActivities.TYPE_HIKING);
+        activities.setItems(items);
+
+        assertArrayEquals(items, activities.getItems());
+        assertEquals(1, activities.getRides().size());
     }
 
 }

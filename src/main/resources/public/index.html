@@ -8,23 +8,25 @@
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-    <div class="jumbotron">
-        <div ng-controller="LoginController as vm">
-            <div ng-hide="vm.appState.accessToken != null">
-		        <h1>Hallo Run and funnler!</h1>
-		        <p>Logge dich hier ein um noch mehr Bewegung in deinen Aktivitäten zu bekommen.</p>
-                <a href="https://runkeeper.com/apps/authorize?client_id={{vm.appState.clientId}}&amp;redirect_uri={{vm.appState.redirectUri}}&amp;response_type=code">
-                    <img src="//static1.runkeeper.com/images/assets/login-blue-white-200x38.png" />
-                </a>
-            </div>
-            <div ng-show="vm.appState.accessToken != null">
-                <h1>Hallo {{vm.appState.username}}!</h1>
-                <p>Zu deinen <a href="/activities">Aktivitäten</a></p>
-                <p>Zu deinen <a href="/runs">Läufen</a></p>
-                <p><a href="/logout">Ausloggen</a></p>
-            </div>
-        </div>
-    </div>    
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
-    <script src="js/index.js"></script>
+	    <div class="jumbotron">
+	        <div ng-controller="LoginController as vm">
+	            <div ng-hide="vm.appState.accessToken != null">
+			        <h1>Hallo Run and funnler!</h1>
+			        <p>Logge dich hier ein um noch mehr Bewegung in deinen Aktivitäten zu bekommen.</p>
+	                <a href="https://runkeeper.com/apps/authorize?client_id={{vm.appState.clientId}}&amp;redirect_uri={{vm.appState.redirectUri}}&amp;response_type=code">
+	                    <img src="//static1.runkeeper.com/images/assets/login-blue-white-200x38.png" />
+	                </a>
+	            </div>
+	            <div ng-show="vm.appState.accessToken != null">
+	                <h1>Hallo {{vm.appState.username}}!</h1>
+	                <p>Zu deinen <a href="/activities">Aktivitäten</a></p>
+	                <p>Zu deinen <a href="/runs">Läufen</a></p>
+	                <p>Zu deinen <a href="/rides">Fahrten</a></p>
+	                <p><a href="/logout">Ausloggen</a></p>
+	            </div>
+	        </div>
+	    </div>    
+	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+	    <script src="js/index.js"></script>
+	</body>    
 </html>

@@ -25,7 +25,7 @@ public class ViewController {
         runAndFunService.setAccessTokenToSession(session, runAndFunService.getAccessToken(code));
         return "redirect:/";
     }
-    
+
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session) {
         runAndFunService.logout(session);
