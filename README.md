@@ -17,6 +17,9 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     # run project within gradle
     ./gradlew bootRun
 
-    # build and run project as jar
+    # alternatively build and run project as jar
     ./gradlew build
     java -jar build/libs/run-and-fun-*.jar
+    
+    # open site with browser
+    http://localhost:8080/
