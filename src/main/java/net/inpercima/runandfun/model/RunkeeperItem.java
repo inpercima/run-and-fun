@@ -2,8 +2,10 @@ package net.inpercima.runandfun.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -48,11 +50,11 @@ public class RunkeeperItem {
     public String toJson() {
         final StringBuilder sb = new StringBuilder("{ ");
         sb.append("\"date\" : \"");
-        sb.append(getDate());
+        sb.append(getLocalDate());
         sb.append("\", \"distance\" : \"");
-        sb.append(getTotalDistance() != null ? getTotalDistance().doubleValue() / 1000 : 0);
+        sb.append(getDistance());
         sb.append("\", \"duration\" : \"");
-        sb.append(convertSecondToHHMMSS(getDuration() != null ? getDuration().intValue() : 0));
+        sb.append(getFormattedDuration());
         sb.append("\" }");
         return sb.toString();
     }
@@ -61,12 +63,24 @@ public class RunkeeperItem {
         return getUri() != null ? getUri().substring(ID_PREFIX.length()) : null;
     }
 
-    public LocalDate getDate() {
+    public LocalDate getLocalDate() {
         return getStartTime() != null ? parseRfc1123DateTime(getStartTime() + GMT_POSTFIX) : null;
+    }
+
+    public Date getDate() {
+        return Date.from(getLocalDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static LocalDate parseRfc1123DateTime(final String date) {
         return LocalDate.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
+    }
+
+    public double getDistance() {
+        return getTotalDistance() != null ? getTotalDistance().doubleValue() / 1000 : 0;
+    }
+
+    public String getFormattedDuration() {
+        return convertSecondToHHMMSS(getDuration() != null ? getDuration().intValue() : 0);
     }
 
     public static String convertSecondToHHMMSS(final int nSecondTime) {

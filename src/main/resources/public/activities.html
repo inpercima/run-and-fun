@@ -1,0 +1,90 @@
+<!doctype html>
+<!--
+ - @author    Sebastian Peters
+ - @since     07.03.2015
+ -->
+<html ng-app="runAndFun">
+  <head>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+  </head>
+  <body>
+    <div class="container" ng-controller="ActivityController as vm">
+      <div class="page-header">
+        <h1>Activities</h1>
+        <span>Available indexed activites: {{vm.activities.totalElements}}</span>
+      </div>
+      <form role="form">
+        <div class="form-group form-inline">
+          <label class="sr-only" for="size">Resultset size</label>
+          <input class="form-control" type="text" data-ng-model="vm.size" placeholder="Resultset size" id="size" />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <label class="sr-only" for="filterFulltext">Fulltext filter</label>
+          <input class="form-control" type="text" data-ng-model="vm.query" placeholder="Fulltext" id="filterFulltext" />
+        </div>
+        <!--
+        <div class="form-group form-inline">
+          <label class="sr-only" for="filterDate">Date filter</label>
+          <input class="form-control" type="date" data-ng-model="filterDate" id="filterDate" min="2012-01-01" max="2015-12-31" />
+          /
+          <select class="form-control" data-ng-model="filterYear" id="filterYear">
+            <option value="">Alle Jahre</option>
+            <option>2012</option>
+            <option>2013</option>
+            <option>2014</option>
+            <option>2015</option>
+          </select>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <label class="sr-only" for="filterMinDistance">Minimal distance filter</label>
+          <input class="form-control" type="text" data-ng-model="filterMinDistance" placeholder="Minimal distance" id="filterMinDistance" />
+          -
+          <label class="sr-only" for="filterMaxDistance">Maximal distance filter</label>
+          <input class="form-control" type="text" data-ng-model="filterMaxDistance" placeholder="Maximal distance" id="filterMaxDistance" />
+        </div>
+        -->
+        <button data-ng-click="vm.list()">Filter</button>
+      </form>
+      <div>
+        <table class="table table-striped">
+          <caption data-ng-bind="title"></caption>
+          <thead>
+          <tr>
+            <th><a href="" data-ng-click="predicate = 'date'; reverse=!reverse">Date</a></th>
+            <th><a href="" data-ng-click="predicate = 'distance'; reverse=!reverse">Distance</a></th>
+            <th><a href="" data-ng-click="predicate = 'duration'; reverse=!reverse">Duration</a></th>
+            <th><a href="" data-ng-click="predicate = 'timePerKm'; reverse=!reverse">Time/km</a></th>
+            <th><a href="" data-ng-click="predicate = 'timePer5Km'; reverse=!reverse">Time/5km</a></th>
+            <th><a href="" data-ng-click="predicate = 'timePer10Km'; reverse=!reverse">Time/10km</a></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="success" data-ng-hide="vm.activities.totalElements < 1">
+            <td>Total: <span data-ng-bind="vm.totalActivities"></span></td>
+            <td><span data-ng-bind="vm.totalDistance | number:2"></span></td>
+            <td><span data-ng-bind="vm.totalDuration"></span></td>
+            <td><span data-ng-bind="vm.totalTimePerKm"></span></td>
+            <td><span data-ng-bind="vm.totalTimePer5Km"></span></td>
+            <td><span data-ng-bind="vm.totalTimePer10Km"></span></td>
+            <td></td>
+          </tr>
+          <tr class="warning" data-ng-show="vm.activities.totalElements < 1">
+            <td>No activities found!</td>
+            <td/><td/><td/><td/><td/><td/>
+          </tr>
+          <tr data-ng-repeat="activity in vm.activities.content | orderBy:predicate:reverse">
+            <td><span data-ng-bind="activity.date | date:'yyyy-MM-dd'"></span></td>
+            <td><span data-ng-bind="activity.distance | number:2"></span></td>
+            <td><span data-ng-bind="activity.duration"></span></td>
+            <td><span data-ng-bind="activity.timePerKm"></span></td>
+            <td><span data-ng-bind="activity.timePer5Km"></span></td>
+            <td><span data-ng-bind="activity.timePer10Km"></span></td>
+            <td><a class="glyphicon glyphicon-remove" data-ng-click="vm.remove(activity)"></a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script src="js/index.js"></script>
+  </body>
+</html>

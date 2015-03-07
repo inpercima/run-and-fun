@@ -4,3 +4,12 @@
 app.clientId=
 app.clientSecret=
 app.redirectUri=
+
+# ELASTICSEARCH (ElasticsearchProperties})
+spring.data.elasticsearch.cluster-name=run-and-fun
+spring.data.elasticsearch.local=true
+spring.data.elasticsearch.repositories.enabled=true
+
+# DAO (PersistenceExceptionTranslationAutoConfiguration)
+# needed as a workaround for spring-boot 1.2+
+spring.dao.exceptiontranslation.enabled=false

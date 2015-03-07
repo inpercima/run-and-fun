@@ -1,24 +1,27 @@
 package net.inpercima.runandfun.web;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
-import net.inpercima.runandfun.constants.AppConstants;
+import net.inpercima.runandfun.model.Activity;
 import net.inpercima.runandfun.model.AppState;
-import net.inpercima.runandfun.model.RunkeeperActivities;
-import net.inpercima.runandfun.model.RunkeeperItem;
 import net.inpercima.runandfun.service.RunAndFunService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Marcel Jänicke
+ * @author Sebastian Peters
  * @since 02.02.2015
  */
 @RestController
@@ -34,25 +37,12 @@ public class RestApiController {
         return runAndFunService.getAppState(session);
     }
 
-    @RequestMapping(value = "/activities", method = RequestMethod.GET)
-    public RunkeeperActivities activities(final HttpSession session) {
-        final String accessToken = (String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN);
-        if (accessToken == null) {
-            return new RunkeeperActivities();
-        }
-        final RunkeeperActivities activities = runAndFunService.getActivities(accessToken);
-        LOGGER.debug("found {} activities", activities.getSize());
-        return activities;
-    }
-
-    @RequestMapping(value = "/runs", method = RequestMethod.GET)
-    public List<RunkeeperItem> runs(final HttpSession session) {
-        return activities(session).getRuns();
-    }
-
-    @RequestMapping(value = "/rides", method = RequestMethod.GET)
-    public List<RunkeeperItem> rides(final HttpSession session) {
-        return activities(session).getRides();
+    @RequestMapping(value = "/listActivities", method = RequestMethod.GET)
+    @ResponseBody
+    public Page<Activity> listActivities(@RequestParam final String query,
+            @PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable) {
+        LOGGER.info("listActivities for query: '{}', pageable: {}", query, pageable);
+        return runAndFunService.listActivities(query, pageable);
     }
 
 }

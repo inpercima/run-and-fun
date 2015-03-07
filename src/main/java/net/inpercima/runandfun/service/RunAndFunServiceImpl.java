@@ -11,22 +11,38 @@ import static net.inpercima.runandfun.constants.RunkeeperApiConstants.TOKEN_URL;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_URL;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.servlet.http.HttpSession;
 
+import net.inpercima.runandfun.model.Activity;
 import net.inpercima.runandfun.model.AppState;
 import net.inpercima.runandfun.model.RunkeeperActivities;
+import net.inpercima.runandfun.model.RunkeeperItem;
 import net.inpercima.runandfun.model.RunkeeperProfile;
 import net.inpercima.runandfun.model.RunkeeperToken;
 import net.inpercima.runandfun.model.RunkeeperUser;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
+import com.google.common.primitives.Doubles;
+
 /**
  * @author Marcel Jänicke
+ * @author Sebastian Peters
  * @since 26.01.2015
  */
 @Service
@@ -34,9 +50,28 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RunAndFunServiceImpl.class);
 
-    private final HelperService helperService;
+    private static final double DISTANCE_RANGE_DELTA = 0.01;
 
     @Autowired
+    private HelperService helperService;
+
+    @Autowired
+    private ActivityRepository repository;
+
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
+
+    /**
+     * Default constructor
+     */
+    public RunAndFunServiceImpl() {
+    }
+
+    /**
+     * Constructor for unit testing
+     *
+     * @param helperService
+     */
     public RunAndFunServiceImpl(final HelperService helperService) {
         this.helperService = helperService;
     }
@@ -65,6 +100,47 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         // after that get all activities
         return helperService.getForObject(ACTIVITIES_URL_WITH_PAGE_SIZE + activitiesForSize.getBody().getSize(),
                 ACTIVITIES_APP, accessToken, RunkeeperActivities.class).getBody();
+    }
+
+    @Override
+    public void indexActivities(final Iterable<RunkeeperItem> runkeeperItems) {
+        final Collection<Activity> activities = new ArrayList<>();
+        for (final RunkeeperItem runkeeperItem : runkeeperItems) {
+            final Activity activity = new Activity(runkeeperItem.getId(), runkeeperItem.getDate(),
+                    runkeeperItem.getDistance(), runkeeperItem.getFormattedDuration());
+            LOGGER.debug("prepare {}", activity);
+            activities.add(activity);
+        }
+        if (!activities.isEmpty()) {
+            repository.save(activities);
+        }
+    }
+
+    @Override
+    public Page<Activity> listActivities(final String query, final Pageable pageable) {
+        Page<Activity> result;
+        if (!query.isEmpty()) {
+            final Iterable<String> values = Splitter.on(CharMatcher.WHITESPACE).splitToList(query.toLowerCase());
+            result = elasticsearchTemplate.queryForPage(new NativeSearchQueryBuilder().withPageable(pageable)
+                    .withQuery(createFulltextSearchQueryBuilder(values)).build(), Activity.class);
+        } else {
+            result = repository.findAll(pageable);
+        }
+        return result;
+    }
+
+    private BoolQueryBuilder createFulltextSearchQueryBuilder(final Iterable<String> values) {
+        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+        for (final String value : values) {
+            final Double distance = Doubles.tryParse(value);
+            if (distance != null) {
+                queryBuilder = queryBuilder.should(QueryBuilders.rangeQuery("distance")
+                        .gte(distance - DISTANCE_RANGE_DELTA).lte(distance + DISTANCE_RANGE_DELTA));
+            }
+            queryBuilder.should(QueryBuilders.termQuery("duration", value));
+        }
+        LOGGER.info("{}", queryBuilder);
+        return queryBuilder;
     }
 
     @Override
