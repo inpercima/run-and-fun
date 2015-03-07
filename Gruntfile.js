@@ -5,12 +5,14 @@ module.exports = function(grunt) {
 
     src_main_js : [ 'src/main/resources/public/js/**/*.js' ],
 
+    build_dir_js : [ 'build/classes/public/js' ],
+
     jshint : {
       options : {
         boss : true,
         browser : true,
         curly : true,
-        esnext: true,
+        esnext : true,
         globals : {
           angular : true,
         },
@@ -37,7 +39,7 @@ module.exports = function(grunt) {
       },
       dist : {
         src : [ '<%= src_main_js %>' ],
-        dest : 'target/<%= pkg.name %>.js'
+        dest : '<%= build_dir_js %>/app.js'
       }
     },
     uglify : {
@@ -47,7 +49,7 @@ module.exports = function(grunt) {
       },
       dist : {
         files : {
-          'target/<%= pkg.name %>.min.js' : [ '<%= concat.dist.dest %>' ]
+          '<%= build_dir_js %>/app.min.js' : [ '<%= concat.dist.dest %>' ]
         }
       }
     },

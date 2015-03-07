@@ -1,5 +1,9 @@
 (function() {
+  'use strict';
   angular.module('runAndFun', []);
+
+  angular.module('runAndFun').controller('LoginController', LoginController);
+  LoginController.$inject = [ '$http' ];
 
   function LoginController($http) {
     var vm = this;
@@ -8,7 +12,8 @@
     });
   }
 
-  angular.module('runAndFun').controller('LoginController', LoginController);
+  ActivityController.$inject = [ 'ActivityService' ];
+  angular.module('runAndFun').controller('ActivityController', ActivityController);
 
   function ActivityController(ActivityService) {
     var vm = this;
@@ -46,6 +51,9 @@
       ActivityService.recalculateTotals(vm);
     }
   }
+
+  ActivityService.$inject = [ '$http', 'DateTimeUtils' ];
+  angular.module('runAndFun').service('ActivityService', ActivityService);
 
   function ActivityService($http, DateTimeUtils) {
     // public methods
@@ -105,6 +113,8 @@
     }
   }
 
+  angular.module('runAndFun').service('DateTimeUtils', DateTimeUtils);
+
   function DateTimeUtils() {
     var vm = this;
 
@@ -139,7 +149,4 @@
       return hr + ':' + min + ':' + sec;
     }
   }
-
-  angular.module('runAndFun').controller('ActivityController', ActivityController).service('ActivityService',
-      ActivityService).service('DateTimeUtils', DateTimeUtils);
 })();
