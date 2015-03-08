@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg : grunt.file.readJSON('package.json'),
 
-    src_main_js : [ 'src/main/resources/public/js/**/*.js' ],
+    src_dir_js : [ 'src/main/resources/public/js' ],
 
     build_dir_js : [ 'build/resources/main/public/js' ],
 
@@ -29,17 +29,22 @@ module.exports = function(grunt) {
         src : 'Gruntfile.js'
       },
       main_js : {
-        src : [ '<%= src_main_js %>' ]
+        src : [ '<%= src_dir_js %>/**/*.js' ]
       }
     },
     concat : {
       options : {
-        // define a string to put between each file in the concatenated output
-        separator : ';'
+        separator : grunt.util.linefeed
       },
-      dist : {
-        src : [ '<%= src_main_js %>' ],
+      // first build without app.js
+      core : {
+        src : [ '<%= src_dir_js %>/**/*.js', '!<%= src_dir_js %>/app.js' ],
         dest : '<%= build_dir_js %>/app.js'
+      },
+      // second build with prepended app.js
+      dist : {
+        src : [ '<%= src_dir_js %>/app.js', '<%= concat.core.dest %>' ],
+        dest : '<%= concat.core.dest %>'
       }
     },
     uglify : {
@@ -59,7 +64,7 @@ module.exports = function(grunt) {
         tasks : [ 'jshint:gruntfile' ]
       },
       lib_test : {
-        files : '<%= src_main_js %>',
+        files : '<%= src_dir_js %>/**/*.js',
         tasks : [ 'jshint:main_js' ]
       }
     }
