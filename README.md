@@ -14,12 +14,15 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     # add clientId, clientSecret and redirectUri to application.properties
     # redirectUri should end with /verify
 
+    # minify js
+    grunt build
+
     # run project within gradle
     ./gradlew bootRun
 
     # alternatively build and run project as jar
     ./gradlew build
     java -jar build/libs/run-and-fun-*.jar
-    
+
     # open site with browser
     http://localhost:8080/

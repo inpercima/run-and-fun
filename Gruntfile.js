@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 
     src_main_js : [ 'src/main/resources/public/js/**/*.js' ],
 
-    build_dir_js : [ 'build/classes/public/js' ],
+    build_dir_js : [ 'build/resources/main/public/js' ],
 
     jshint : {
       options : {
