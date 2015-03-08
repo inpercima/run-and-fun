@@ -1,6 +1,6 @@
 buildscript {
-	repositories { mavenCentral() }
-	dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE") }
+    repositories { mavenCentral() }
+    dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE") }
 }
 
 apply plugin: "java"
@@ -22,8 +22,7 @@ dependencies {
     def slf4jVersion = "1.7.10"
 
     compile "org.slf4j:slf4j-api:$slf4jVersion",
-            "com.google.guava:guava:18.0",
-            'org.elasticsearch:elasticsearch:1.4.4'
+            "com.google.guava:guava:18.0"
 
     compile "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-starter-logging",
@@ -40,13 +39,14 @@ dependencies {
 // see http://www.rehpoehler.de/gradle/Gradle-Eclipse-WTP-Beispiel.html
 eclipse{
     project {
-        natures = ['org.springframework.ide.eclipse.core.springnature',   // if you use springsourcr sts
-                   'org.springsource.ide.eclipse.gradle.core.nature',     // gradle plugin
-                   'org.eclipse.jdt.core.javanature',                     // default java
-                   'org.eclipse.wst.common.modulecore.ModuleCoreNature',  // default
-                   'org.eclipse.wst.common.project.facet.core.nature']    // if you want a facetted projekt
-
-        buildCommand 'org.springframework.ide.eclipse.core.springbuilder' // Spring STS
+        natures = [
+            'org.springframework.ide.eclipse.core.springnature',
+            'org.springsource.ide.eclipse.gradle.core.nature',
+            'org.eclipse.jdt.core.javanature',
+            'org.eclipse.wst.common.modulecore.ModuleCoreNature',
+            'org.eclipse.wst.common.project.facet.core.nature'
+        ]
+        buildCommand 'org.springframework.ide.eclipse.core.springbuilder'
     }
 
     classpath {
@@ -58,7 +58,7 @@ eclipse{
 
     wtp {
         facet {
-            facet name: 'jst.web', version: '3.0' // Servlet 3.0
+            facet name: 'jst.web', version: '3.0'
         }
     }
 }
