@@ -12,7 +12,9 @@
     vm.remove = remove;
 
     // public fields
-    vm.activities = [];
+    vm.activities = {
+      totalElements : 0
+    };
     vm.query = '';
     vm.size = 10;
     vm.totalActivities = 0;
