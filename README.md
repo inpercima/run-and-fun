@@ -14,7 +14,10 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     # add clientId, clientSecret and redirectUri to application.properties
     # redirectUri should end with /verify
 
-    # minify js
+    # install frontend dependencies
+    bower install
+
+    # check, concat and minify javascript
     grunt build
 
     # run project within gradle

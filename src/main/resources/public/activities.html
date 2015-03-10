@@ -5,14 +5,13 @@
  -->
 <html data-ng-app="runAndFun" data-ng-strict-di>
   <head>
-    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
   </head>
   <body>
     <div class="container" data-ng-controller="ActivityController as vm">
       <div class="page-header">
         <h1>Activities</h1>
-        <span>Available indexed activites: {{vm.activities.totalElements}}</span>
+        <span data-ng-cloak>Available indexed activities: {{vm.activities.totalElements}}</span>
       </div>
       <form role="form">
         <div class="form-group form-inline">
@@ -28,7 +27,7 @@
           <input class="form-control" type="date" data-ng-model="filterDate" id="filterDate" min="2012-01-01" max="2015-12-31" />
           /
           <select class="form-control" data-ng-model="filterYear" id="filterYear">
-            <option value="">Alle Jahre</option>
+            <option value="">All years</option>
             <option>2012</option>
             <option>2013</option>
             <option>2014</option>
@@ -49,13 +48,13 @@
           <caption data-ng-bind="title"></caption>
           <thead>
           <tr>
-            <th><a href="" data-ng-click="predicate = 'date'; reverse=!reverse">Date</a></th>
-            <th><a href="" data-ng-click="predicate = 'distance'; reverse=!reverse">Distance</a></th>
-            <th><a href="" data-ng-click="predicate = 'duration'; reverse=!reverse">Duration</a></th>
-            <th><a href="" data-ng-click="predicate = 'timePerKm'; reverse=!reverse">Time/km</a></th>
-            <th><a href="" data-ng-click="predicate = 'timePer5Km'; reverse=!reverse">Time/5km</a></th>
-            <th><a href="" data-ng-click="predicate = 'timePer10Km'; reverse=!reverse">Time/10km</a></th>
-            <th></th>
+            <th><a href="" data-ng-click="predicate = 'date'; reverse=!reverse" title="Order by date">Date</a></th>
+            <th><a href="" data-ng-click="predicate = 'distance'; reverse=!reverse" title="Order by distance">Distance</a></th>
+            <th><a href="" data-ng-click="predicate = 'duration'; reverse=!reverse" title="Order by duration">Duration</a></th>
+            <th><a href="" data-ng-click="predicate = 'timePerKm'; reverse=!reverse" title="Order by time for one kilometer">Time/km</a></th>
+            <th><a href="" data-ng-click="predicate = 'timePer5Km'; reverse=!reverse" title="Order by time for five kilometers">Time/5km</a></th>
+            <th><a href="" data-ng-click="predicate = 'timePer10Km'; reverse=!reverse" title="Order by time for ten kilometers">Time/10km</a></th>
+            <th class="sr-only">Functions</th>
           </tr>
           </thead>
           <tbody>
@@ -73,18 +72,28 @@
             <td/><td/><td/><td/><td/><td/>
           </tr>
           <tr data-ng-repeat="activity in vm.activities.content | orderBy:predicate:reverse">
-            <td><span data-ng-bind="activity.date | date:'yyyy-MM-dd'"></span></td>
-            <td><span data-ng-bind="activity.distance | number:2"></span></td>
-            <td><span data-ng-bind="activity.duration"></span></td>
-            <td><span data-ng-bind="activity.timePerKm"></span></td>
-            <td><span data-ng-bind="activity.timePer5Km"></span></td>
-            <td><span data-ng-bind="activity.timePer10Km"></span></td>
-            <td><a class="glyphicon glyphicon-remove" data-ng-click="vm.remove(activity)"></a></td>
+            <td><span data-ng-bind="::activity.date | date:'yyyy-MM-dd'"></span></td>
+            <td><span data-ng-bind="::activity.distance | number:2"></span></td>
+            <td><span data-ng-bind="::activity.duration"></span></td>
+            <td><span data-ng-bind="::activity.timePerKm"></span></td>
+            <td><span data-ng-bind="::activity.timePer5Km"></span></td>
+            <td><span data-ng-bind="::activity.timePer10Km"></span></td>
+            <td>
+              <span data-ng-show="activity.id">
+                <a class="glyphicon glyphicon-globe" data-ng-href="http://runkeeper.com/user/sepe/activity/{{::activity.id}}"
+                  target="_blank" title="Open activity {{::activity.id}} on runkeeper.com">
+                </a>
+                <a class="glyphicon glyphicon-remove" data-ng-click="vm.remove(activity)"
+                  title="Remove activity {{::activity.id}} from view">
+                </a>
+              </span>
+            </td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
+    <script src="bower_components/angularjs/angular.min.js"></script>
     <script src="js/app.min.js"></script>
   </body>
 </html>
