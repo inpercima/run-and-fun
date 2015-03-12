@@ -14,6 +14,9 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     # add clientId, clientSecret and redirectUri to application.properties
     # redirectUri should end with /verify
 
+    # install frontend tools
+    npm install
+
     # install frontend dependencies
     bower install
 
@@ -29,3 +32,4 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
 
     # open site with browser
     http://localhost:8080/
+
