@@ -15,8 +15,11 @@
     vm.activities = {
       totalElements : 0
     };
-    vm.query = '';
     vm.size = 10;
+    vm.query = null;
+    vm.filterMinDistance = null;
+    vm.filterMaxDistance = null;
+
     vm.totalActivities = 0;
     vm.totalDistance = 0;
     vm.totalDuration = 0;
@@ -29,7 +32,7 @@
 
     function list() {
       console.debug('ActivityController.list');
-      ActivityService.list(vm.size, vm.query).then(function(data) {
+      ActivityService.list(vm.size, vm.query, vm.filterMinDistance, vm.filterMaxDistance).then(function(data) {
         vm.activities = data;
         ActivityService.recalculateTotals(vm);
       });

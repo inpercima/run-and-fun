@@ -9,9 +9,19 @@
     this.list = list;
     this.recalculateTotals = recalculateTotals;
 
-    function list(size, query) {
-      console.debug('ActivityService.list with query: ' + query + ', size: ' + size);
-      return $http.get('/listActivities?query=' + query + '&size=' + size).then(function(result) {
+    function list(size, query, minDistance, maxDistance) {
+      var url = '/listActivities?size=' + size;
+      if (query) {
+        url += '&query=' + query;
+      }
+      if (minDistance) {
+        url += '&minDistance=' + minDistance;
+      }
+      if (maxDistance) {
+        url += '&maxDistance=' + maxDistance;
+      }
+      console.debug('ActivityService ' + url);
+      return $http.get(url).then(function(result) {
         var activities = result.data;
         enrichWithTimePerKm(activities.content);
         return activities;

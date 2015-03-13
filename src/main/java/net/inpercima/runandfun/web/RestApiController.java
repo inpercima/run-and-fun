@@ -39,10 +39,14 @@ public class RestApiController {
 
     @RequestMapping(value = "/listActivities", method = RequestMethod.GET)
     @ResponseBody
-    public Page<Activity> listActivities(@RequestParam final String query,
-            @PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable) {
-        LOGGER.info("listActivities for query: '{}', pageable: {}", query, pageable);
-        return runAndFunService.listActivities(query, pageable);
+    public Page<Activity> listActivities(
+            @PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable,
+            @RequestParam(required = false) final String query,
+            @RequestParam(required = false) final Float minDistance,
+            @RequestParam(required = false) final Float maxDistance) {
+        LOGGER.info("listActivities for query: '{}', distance between {} and {}, pageable: {}", query, minDistance,
+                maxDistance, pageable);
+        return runAndFunService.listActivities(pageable, query, minDistance, maxDistance);
     }
 
 }

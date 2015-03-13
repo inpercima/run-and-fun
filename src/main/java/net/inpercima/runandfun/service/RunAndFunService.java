@@ -28,7 +28,7 @@ public interface RunAndFunService {
 
     void indexActivities(Iterable<RunkeeperItem> runkeeperItems);
 
-    Page<Activity> listActivities(String query, Pageable pageable);
+    Page<Activity> listActivities(Pageable pageable, String query, Float minDistance, Float maxDistance);
 
     AppState getAppState(HttpSession session);
 

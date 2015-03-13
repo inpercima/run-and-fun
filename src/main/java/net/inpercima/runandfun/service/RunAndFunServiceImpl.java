@@ -38,7 +38,6 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
-import com.google.common.primitives.Doubles;
 
 /**
  * @author Marcel Jänicke
@@ -50,7 +49,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RunAndFunServiceImpl.class);
 
-    private static final double DISTANCE_RANGE_DELTA = 0.01;
+    private static final String QUERY_DISTANCE = "distance";
 
     @Autowired
     private HelperService helperService;
@@ -117,28 +116,33 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
-    public Page<Activity> listActivities(final String query, final Pageable pageable) {
-        Page<Activity> result;
-        if (!query.isEmpty()) {
+    public Page<Activity> listActivities(final Pageable pageable, final String query, final Float minDistance,
+            final Float maxDistance) {
+        BoolQueryBuilder queryBuilder = null;
+        if (query != null && !query.isEmpty()) {
             final Iterable<String> values = Splitter.on(CharMatcher.WHITESPACE).splitToList(query.toLowerCase());
-            result = elasticsearchTemplate.queryForPage(new NativeSearchQueryBuilder().withPageable(pageable)
-                    .withQuery(createFulltextSearchQueryBuilder(values)).build(), Activity.class);
-        } else {
-            result = repository.findAll(pageable);
+            queryBuilder = createFulltextSearchQueryBuilder(values);
+        } else if (minDistance != null || maxDistance != null) {
+            queryBuilder = createDistanceQueryBuilder(minDistance, maxDistance);
         }
-        return result;
+        return queryBuilder != null ? elasticsearchTemplate.queryForPage(
+                new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(), Activity.class)
+                : repository.findAll(pageable);
     }
 
     private BoolQueryBuilder createFulltextSearchQueryBuilder(final Iterable<String> values) {
-        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+        final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         for (final String value : values) {
-            final Double distance = Doubles.tryParse(value);
-            if (distance != null) {
-                queryBuilder = queryBuilder.should(QueryBuilders.rangeQuery("distance")
-                        .gte(distance - DISTANCE_RANGE_DELTA).lte(distance + DISTANCE_RANGE_DELTA));
-            }
             queryBuilder.should(QueryBuilders.termQuery("duration", value));
         }
+        LOGGER.info("{}", queryBuilder);
+        return queryBuilder;
+    }
+
+    private BoolQueryBuilder createDistanceQueryBuilder(final Float minDistance, final Float maxDistance) {
+        final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().should(
+                QueryBuilders.rangeQuery(QUERY_DISTANCE).gte(minDistance != null ? minDistance : 0)
+                        .lte(maxDistance != null ? maxDistance : Float.MAX_VALUE));
         LOGGER.info("{}", queryBuilder);
         return queryBuilder;
     }
