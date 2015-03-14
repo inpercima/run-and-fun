@@ -167,8 +167,12 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
     @Override
     public void logout(final HttpSession session) {
-        helperService.postForObject(DE_AUTHORIZATION_URL, (String) session.getAttribute(SESSION_ACCESS_TOKEN));
         session.removeAttribute(SESSION_ACCESS_TOKEN);
+    }
+
+    @Override
+    public void deAuthorize(final HttpSession session) {
+        helperService.postForObject(DE_AUTHORIZATION_URL, (String) session.getAttribute(SESSION_ACCESS_TOKEN));
     }
 
 }

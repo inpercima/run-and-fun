@@ -36,4 +36,6 @@ public interface RunAndFunService {
 
     void logout(HttpSession session);
 
+    void deAuthorize(HttpSession session);
+
 }
