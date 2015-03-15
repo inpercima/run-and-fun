@@ -1,10 +1,12 @@
 package net.inpercima.runandfun.model;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.Before;
@@ -14,7 +16,9 @@ public class RunkeeperActivitiesTest {
 
     public static final int ACTIVITY_SIZE = 4;
 
-    private static final String START_TIME = "Thu, 1 Jan 2015 14:20:59";
+    private static final String START_TIME = "14:20:59";
+
+    private static final String START_DATETIME = "Thu, 1 Jan 2015 " + START_TIME;
 
     private RunkeeperActivities activities;
 
@@ -32,19 +36,19 @@ public class RunkeeperActivitiesTest {
         items[i] = new RunkeeperItem();
         items[i].setType(RunkeeperItem.TYPE_RUNNING);
         items[i].setUri(RunkeeperItem.ID_PREFIX + i);
-        items[i].setStartTime(START_TIME);
+        items[i].setStartTime(START_DATETIME);
         items[++i] = new RunkeeperItem();
         items[i].setType(RunkeeperItem.TYPE_RUNNING);
         items[i].setUri(RunkeeperItem.ID_PREFIX + i);
-        items[i].setStartTime(START_TIME);
+        items[i].setStartTime(START_DATETIME);
         items[++i] = new RunkeeperItem();
         items[i].setType(RunkeeperItem.TYPE_HIKING);
         items[i].setUri(RunkeeperItem.ID_PREFIX + i);
-        items[i].setStartTime(START_TIME);
+        items[i].setStartTime(START_DATETIME);
         items[++i] = new RunkeeperItem();
         items[i].setType(RunkeeperItem.TYPE_CYCLING);
         items[i].setUri(RunkeeperItem.ID_PREFIX + i);
-        items[i].setStartTime(START_TIME);
+        items[i].setStartTime(START_DATETIME);
         assertEquals(ACTIVITY_SIZE, i + 1);
         result.setItems(items);
         assertArrayEquals(items, result.getItems());
@@ -60,17 +64,15 @@ public class RunkeeperActivitiesTest {
     }
 
     @Test
-    public final void getRides() {
-        final List<RunkeeperItem> rides = activities.getRides();
-        assertNotNull(rides);
-        assertEquals(1, rides.size());
+    public void parseRfc1123DateTime() {
+        final LocalDateTime date = RunkeeperItem.parseRfc1123DateTime(START_DATETIME + RunkeeperItem.GMT_POSTFIX);
+        assertNotNull(date);
+        assertEquals("2015-01-01T" + START_TIME, date.toString());
     }
 
     @Test
-    public void parseRfc1123DateTime() {
-        final LocalDate date = RunkeeperItem.parseRfc1123DateTime(START_TIME + RunkeeperItem.GMT_POSTFIX);
-        assertNotNull(date);
-        assertEquals("2015-01-01", date.toString());
+    public void getDate() {
+        assertThat(activities.getItems()[0].getDate().toString(), containsString(START_TIME));
     }
 
     @Test

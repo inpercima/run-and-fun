@@ -1,6 +1,6 @@
 package net.inpercima.runandfun.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -15,11 +15,11 @@ public class RunkeeperItem {
 
     protected static final String GMT_POSTFIX = " GMT";
 
-    protected static final String TYPE_RUNNING = "Running";
+    public static final String TYPE_RUNNING = "Running";
 
-    protected static final String TYPE_CYCLING = "Cycling";
+    public static final String TYPE_CYCLING = "Cycling";
 
-    protected static final String TYPE_HIKING = "Hiking";
+    public static final String TYPE_HIKING = "Hiking";
 
     private static final DateTimeFormatter DATE_FORMAT = new DateTimeFormatterBuilder().appendPattern("HH:mm:ss")
             .toFormatter();
@@ -32,7 +32,7 @@ public class RunkeeperItem {
     private String startTime;
 
     @JsonProperty(value = "utc_offset")
-    private int utcOffset;
+    private Integer utcOffset;
 
     @JsonProperty(value = "total_distance")
     private Double totalDistance;
@@ -50,7 +50,7 @@ public class RunkeeperItem {
     public String toJson() {
         final StringBuilder sb = new StringBuilder("{ ");
         sb.append("\"date\" : \"");
-        sb.append(getLocalDate());
+        sb.append(getLocalDateTime());
         sb.append("\", \"distance\" : \"");
         sb.append(getDistance());
         sb.append("\", \"duration\" : \"");
@@ -63,16 +63,16 @@ public class RunkeeperItem {
         return getUri() != null ? getUri().substring(ID_PREFIX.length()) : null;
     }
 
-    public LocalDate getLocalDate() {
+    public LocalDateTime getLocalDateTime() {
         return getStartTime() != null ? parseRfc1123DateTime(getStartTime() + GMT_POSTFIX) : null;
     }
 
     public Date getDate() {
-        return Date.from(getLocalDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        return Date.from(getLocalDateTime().atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    public static LocalDate parseRfc1123DateTime(final String date) {
-        return LocalDate.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
+    public static LocalDateTime parseRfc1123DateTime(final String date) {
+        return LocalDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
     }
 
     public double getDistance() {
@@ -111,11 +111,11 @@ public class RunkeeperItem {
         this.startTime = startTime;
     }
 
-    public int getUtcOffset() {
+    public Integer getUtcOffset() {
         return utcOffset;
     }
 
-    public void setUtcOffset(final int utcOffset) {
+    public void setUtcOffset(final Integer utcOffset) {
         this.utcOffset = utcOffset;
     }
 

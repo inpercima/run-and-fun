@@ -2,9 +2,9 @@
   'use strict';
   angular.module('runAndFun').controller('ActivityController', ActivityController);
 
-  ActivityController.$inject = [ 'ActivityService' ];
+  ActivityController.$inject = [ 'ActivityService', '$filter' ];
 
-  function ActivityController(ActivityService) {
+  function ActivityController(ActivityService, $filter) {
     var vm = this;
 
     // public methods
@@ -16,9 +16,7 @@
       totalElements : 0
     };
     vm.size = 10;
-    vm.query = null;
-    vm.filterMinDistance = null;
-    vm.filterMaxDistance = null;
+    vm.filterType = 'running';
 
     vm.totalActivities = 0;
     vm.totalDistance = 0;
@@ -32,10 +30,17 @@
 
     function list() {
       console.debug('ActivityController.list');
-      ActivityService.list(vm.size, vm.query, vm.filterMinDistance, vm.filterMaxDistance).then(function(data) {
-        vm.activities = data;
-        ActivityService.recalculateTotals(vm);
-      });
+      var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
+      var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
+      if (vm.filterYear) {
+        minDate = vm.filterYear + '-01-01';
+        maxDate = vm.filterYear + '-12-31';
+      }
+      ActivityService.list(vm.size, vm.filterType, minDate, maxDate, vm.filterMinDistance, vm.filterMaxDistance, vm.filterFulltext).then(
+          function(data) {
+            vm.activities = data;
+            ActivityService.recalculateTotals(vm);
+          });
     }
 
     function remove(activity) {

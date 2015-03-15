@@ -24,11 +24,6 @@ public class RunkeeperActivities {
                 .collect(Collectors.toList());
     }
 
-    public List<RunkeeperItem> getRides() {
-        return getItemsAsList().stream().filter(item -> item.getType().equals(RunkeeperItem.TYPE_CYCLING))
-                .collect(Collectors.toList());
-    }
-
     public int getSize() {
         return size;
     }

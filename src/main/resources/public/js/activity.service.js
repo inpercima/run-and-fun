@@ -9,16 +9,25 @@
     this.list = list;
     this.recalculateTotals = recalculateTotals;
 
-    function list(size, query, minDistance, maxDistance) {
+    function list(size, type, minDate, maxDate, minDistance, maxDistance, query) {
       var url = '/listActivities?size=' + size;
-      if (query) {
-        url += '&query=' + query;
+      if (type) {
+        url += '&type=' + type;
+      }
+      if (minDate) {
+        url += '&minDate=' + minDate;
+      }
+      if (maxDate) {
+        url += '&maxDate=' + maxDate;
       }
       if (minDistance) {
         url += '&minDistance=' + minDistance;
       }
       if (maxDistance) {
         url += '&maxDistance=' + maxDistance;
+      }
+      if (query) {
+        url += '&query=' + query;
       }
       console.debug('ActivityService ' + url);
       return $http.get(url).then(function(result) {

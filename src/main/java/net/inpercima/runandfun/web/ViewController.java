@@ -39,9 +39,8 @@ public class ViewController {
     @RequestMapping(value = "/indexActivities")
     public String indexActivities(final HttpSession session) {
         final String accessToken = (String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN);
-        // TODO SEPE: need filters for activity type, for now index just runs
         final List<RunkeeperItem> activities = accessToken == null ? new ArrayList<>() : runAndFunService
-                .getActivities(accessToken).getRuns();
+                .getActivities(accessToken).getItemsAsList();
         LOGGER.info("found {} activities", activities.size());
         runAndFunService.indexActivities(activities);
         return REDIRECT_TO_BASE;

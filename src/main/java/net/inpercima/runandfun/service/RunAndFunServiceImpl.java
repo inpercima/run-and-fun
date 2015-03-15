@@ -11,6 +11,7 @@ import static net.inpercima.runandfun.constants.RunkeeperApiConstants.TOKEN_URL;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_URL;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -26,6 +27,7 @@ import net.inpercima.runandfun.model.RunkeeperUser;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +38,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 
 /**
  * @author Marcel Jänicke
@@ -48,8 +49,6 @@ import com.google.common.base.Splitter;
 public class RunAndFunServiceImpl implements RunAndFunService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RunAndFunServiceImpl.class);
-
-    private static final String QUERY_DISTANCE = "distance";
 
     @Autowired
     private HelperService helperService;
@@ -104,9 +103,9 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Override
     public void indexActivities(final Iterable<RunkeeperItem> runkeeperItems) {
         final Collection<Activity> activities = new ArrayList<>();
-        for (final RunkeeperItem runkeeperItem : runkeeperItems) {
-            final Activity activity = new Activity(runkeeperItem.getId(), runkeeperItem.getDate(),
-                    runkeeperItem.getDistance(), runkeeperItem.getFormattedDuration());
+        for (final RunkeeperItem item : runkeeperItems) {
+            final Activity activity = new Activity(item.getId(), item.getType(), item.getDate(), item.getDistance(),
+                    item.getFormattedDuration());
             LOGGER.debug("prepare {}", activity);
             activities.add(activity);
         }
@@ -116,35 +115,53 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
-    public Page<Activity> listActivities(final Pageable pageable, final String query, final Float minDistance,
-            final Float maxDistance) {
-        BoolQueryBuilder queryBuilder = null;
-        if (query != null && !query.isEmpty()) {
-            final Iterable<String> values = Splitter.on(CharMatcher.WHITESPACE).splitToList(query.toLowerCase());
-            queryBuilder = createFulltextSearchQueryBuilder(values);
-        } else if (minDistance != null || maxDistance != null) {
-            queryBuilder = createDistanceQueryBuilder(minDistance, maxDistance);
-        }
-        return queryBuilder != null ? elasticsearchTemplate.queryForPage(
-                new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(), Activity.class)
-                : repository.findAll(pageable);
-    }
-
-    private BoolQueryBuilder createFulltextSearchQueryBuilder(final Iterable<String> values) {
+    public Page<Activity> listActivities(final Pageable pageable, final String type, final LocalDate minDate,
+            final LocalDate maxDate, final Float minDistance, final Float maxDistance, final String query) {
         final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-        for (final String value : values) {
-            queryBuilder.should(QueryBuilders.termQuery("duration", value));
+        if (!Strings.isNullOrEmpty(type)) {
+            queryBuilder.must(QueryBuilders.termQuery(Activity.FIELD_TYPE, type));
+        }
+        if (minDate != null || maxDate != null) {
+            addDateQuery(queryBuilder, minDate, maxDate);
+        }
+        if (minDistance != null || maxDistance != null) {
+            addDistanceQuery(queryBuilder, minDistance, maxDistance);
+        }
+        if (!Strings.isNullOrEmpty(query)) {
+            addFulltextQuery(queryBuilder, query);
+        }
+        if (!queryBuilder.hasClauses()) {
+            queryBuilder.must(QueryBuilders.matchAllQuery());
         }
         LOGGER.info("{}", queryBuilder);
-        return queryBuilder;
+        return elasticsearchTemplate.queryForPage(
+                new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(), Activity.class);
     }
 
-    private BoolQueryBuilder createDistanceQueryBuilder(final Float minDistance, final Float maxDistance) {
-        final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().should(
-                QueryBuilders.rangeQuery(QUERY_DISTANCE).gte(minDistance != null ? minDistance : 0)
-                        .lte(maxDistance != null ? maxDistance : Float.MAX_VALUE));
-        LOGGER.info("{}", queryBuilder);
-        return queryBuilder;
+    private void addFulltextQuery(final BoolQueryBuilder queryBuilder, final String query) {
+        queryBuilder.must(QueryBuilders.termQuery("_all", query.trim()));
+    }
+
+    private void addDateQuery(final BoolQueryBuilder queryBuilder, final LocalDate minDate, final LocalDate maxDate) {
+        final RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery(Activity.FIELD_DATE);
+        if (minDate != null) {
+            rangeQuery.gte(minDate);
+        }
+        if (maxDate != null) {
+            rangeQuery.lte(maxDate);
+        }
+        queryBuilder.must(rangeQuery);
+    }
+
+    private void addDistanceQuery(final BoolQueryBuilder queryBuilder, final Float minDistance, final Float maxDistance) {
+        final RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery(Activity.FIELD_DISTANCE);
+        if (minDistance != null) {
+            rangeQuery.gte(minDistance);
+        }
+        if (maxDistance != null) {
+            rangeQuery.lte(maxDistance);
+        }
+        queryBuilder.must(rangeQuery);
     }
 
     @Override

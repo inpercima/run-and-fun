@@ -7,6 +7,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Mapping;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author Sebastian Peters
  */
@@ -14,20 +17,34 @@ import org.springframework.data.elasticsearch.annotations.Mapping;
 @Mapping(mappingPath = "mapping.json")
 public class Activity {
 
+    public static final String FIELD_ID = "id";
+
+    public static final String FIELD_TYPE = "type";
+
+    public static final String FIELD_DATE = "date";
+
+    public static final String FIELD_DISTANCE = "distance";
+
+    public static final String FIELD_DURATION = "duration";
+
     @Id
-    private String id;
+    private final String id;
 
-    private Date date;
+    private final String type;
 
-    private double distance;
+    private final Date date;
 
-    private String duration;
+    private final double distance;
 
-    public Activity() {
-    }
+    private final String duration;
 
-    public Activity(final String id, final Date date, final double distance, final String duration) {
+    @JsonCreator
+    public Activity(@JsonProperty(value = FIELD_ID) final String id,
+            @JsonProperty(value = FIELD_TYPE) final String type, @JsonProperty(value = FIELD_DATE) final Date date,
+            @JsonProperty(value = FIELD_DISTANCE) final double distance,
+            @JsonProperty(value = FIELD_DURATION) final String duration) {
         this.id = id;
+        this.type = type;
         this.date = date;
         this.distance = distance;
         this.duration = duration;
@@ -42,32 +59,20 @@ public class Activity {
         return id;
     }
 
-    public void setId(final String id) {
-        this.id = id;
+    public String getType() {
+        return type;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setDate(final Date date) {
-        this.date = date;
-    }
-
     public double getDistance() {
         return distance;
     }
 
-    public void setDistance(final double distance) {
-        this.distance = distance;
-    }
-
     public String getDuration() {
         return duration;
-    }
-
-    public void setDuration(final String duration) {
-        this.duration = duration;
     }
 
 }

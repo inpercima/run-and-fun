@@ -1,5 +1,7 @@
 package net.inpercima.runandfun.web;
 
+import java.time.LocalDate;
+
 import javax.servlet.http.HttpSession;
 
 import net.inpercima.runandfun.model.Activity;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,12 +45,14 @@ public class RestApiController {
     @ResponseBody
     public Page<Activity> listActivities(
             @PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable,
-            @RequestParam(required = false) final String query,
+            @RequestParam(required = false) final String type,
+            @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate minDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate maxDate,
             @RequestParam(required = false) final Float minDistance,
-            @RequestParam(required = false) final Float maxDistance) {
-        LOGGER.info("listActivities for query: '{}', distance between {} and {}, pageable: {}", query, minDistance,
-                maxDistance, pageable);
-        return runAndFunService.listActivities(pageable, query, minDistance, maxDistance);
+            @RequestParam(required = false) final Float maxDistance, @RequestParam(required = false) final String query) {
+        LOGGER.info("listActivities of type '{}' for date between {} - {}, distance between {} - {}, {}", type,
+                minDate, maxDate, minDistance, maxDistance, pageable);
+        return runAndFunService.listActivities(pageable, type, minDate, maxDate, minDistance, maxDistance, query);
     }
 
 }

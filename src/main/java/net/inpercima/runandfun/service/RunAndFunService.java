@@ -1,5 +1,7 @@
 package net.inpercima.runandfun.service;
 
+import java.time.LocalDate;
+
 import javax.servlet.http.HttpSession;
 
 import net.inpercima.runandfun.model.Activity;
@@ -28,7 +30,8 @@ public interface RunAndFunService {
 
     void indexActivities(Iterable<RunkeeperItem> runkeeperItems);
 
-    Page<Activity> listActivities(Pageable pageable, String query, Float minDistance, Float maxDistance);
+    Page<Activity> listActivities(Pageable pageable, String type, LocalDate minDate, LocalDate maxDate,
+            Float minDistance, Float maxDistance, String query);
 
     AppState getAppState(HttpSession session);
 

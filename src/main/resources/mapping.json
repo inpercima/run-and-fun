@@ -1,8 +1,9 @@
 { 
   "activity": {
     "properties": {
-      "date": { "type": "date", "index": "analyzed" },
-      "distance": { "type": "float", "index": "analyzed" },
+      "type": { "type": "string", "index": "analyzed" },
+      "date": { "type": "date" },
+      "distance": { "type": "float" },
       "duration": { "type": "string", "index": "not_analyzed" }
     }
   }
