@@ -1,6 +1,5 @@
 package net.inpercima.runandfun.service;
 
-import static net.inpercima.runandfun.constants.AppConstants.SESSION_ACCESS_TOKEN;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL_WITH_PAGE_SIZE;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL_WITH_PAGE_SIZE_ONE;
@@ -14,8 +13,6 @@ import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.servlet.http.HttpSession;
 
 import net.inpercima.runandfun.model.Activity;
 import net.inpercima.runandfun.model.AppState;
@@ -91,8 +88,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         return helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken, RunkeeperProfile.class).getBody();
     }
 
-    @Override
-    public RunkeeperActivities getActivities(final String accessToken) {
+    private RunkeeperActivities getActivities(final String accessToken) {
         // first get one item only to get full size
         final HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(
                 ACTIVITIES_URL_WITH_PAGE_SIZE_ONE, ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
@@ -102,9 +98,9 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
-    public void indexActivities(final Iterable<RunkeeperItem> runkeeperItems) {
+    public void indexActivities(final String accessToken) {
         final Collection<Activity> activities = new ArrayList<>();
-        for (final RunkeeperItem item : runkeeperItems) {
+        for (final RunkeeperItem item : getActivities(accessToken).getItemsAsList()) {
             final Activity activity = new Activity(item.getId(), item.getType(), item.getDate(), item.getDistance(),
                     item.getFormattedDuration());
             LOGGER.debug("prepare {}", activity);
@@ -170,9 +166,9 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
-    public AppState getAppState(final HttpSession session) {
+    public AppState getAppState(final String accessToken) {
         final AppState state = new AppState();
-        state.setAccessToken((String) session.getAttribute(SESSION_ACCESS_TOKEN));
+        state.setAccessToken(accessToken);
         state.setClientId(helperService.getClientId());
         state.setRedirectUri(helperService.getRedirectUri());
         if (state.getAccessToken() != null) {
@@ -183,18 +179,8 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
-    public void setAccessTokenToSession(final HttpSession session, final String accessToken) {
-        session.setAttribute(SESSION_ACCESS_TOKEN, accessToken);
-    }
-
-    @Override
-    public void logout(final HttpSession session) {
-        session.removeAttribute(SESSION_ACCESS_TOKEN);
-    }
-
-    @Override
-    public void deAuthorize(final HttpSession session) {
-        helperService.postForObject(DE_AUTHORIZATION_URL, (String) session.getAttribute(SESSION_ACCESS_TOKEN));
+    public void deAuthorize(final String accessToken) {
+        helperService.postForObject(DE_AUTHORIZATION_URL, accessToken);
     }
 
 }

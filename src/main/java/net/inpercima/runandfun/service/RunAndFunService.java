@@ -2,12 +2,8 @@ package net.inpercima.runandfun.service;
 
 import java.time.LocalDate;
 
-import javax.servlet.http.HttpSession;
-
 import net.inpercima.runandfun.model.Activity;
 import net.inpercima.runandfun.model.AppState;
-import net.inpercima.runandfun.model.RunkeeperActivities;
-import net.inpercima.runandfun.model.RunkeeperItem;
 import net.inpercima.runandfun.model.RunkeeperProfile;
 import net.inpercima.runandfun.model.RunkeeperUser;
 
@@ -26,19 +22,12 @@ public interface RunAndFunService {
 
     RunkeeperProfile getProfile(String accessToken);
 
-    RunkeeperActivities getActivities(String accessToken);
-
-    void indexActivities(Iterable<RunkeeperItem> runkeeperItems);
+    void indexActivities(String accessToken);
 
     Page<Activity> listActivities(Pageable pageable, String type, LocalDate minDate, LocalDate maxDate,
             Float minDistance, Float maxDistance, String query);
 
-    AppState getAppState(HttpSession session);
+    AppState getAppState(String accessToken);
 
-    void setAccessTokenToSession(HttpSession session, String accessToken);
-
-    void logout(HttpSession session);
-
-    void deAuthorize(HttpSession session);
-
+    void deAuthorize(String accessToken);
 }

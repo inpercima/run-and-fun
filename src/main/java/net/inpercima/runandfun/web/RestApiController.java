@@ -1,5 +1,7 @@
 package net.inpercima.runandfun.web;
 
+import static net.inpercima.runandfun.constants.AppConstants.SESSION_ACCESS_TOKEN;
+
 import java.time.LocalDate;
 
 import javax.servlet.http.HttpSession;
@@ -38,7 +40,7 @@ public class RestApiController {
 
     @RequestMapping(value = "/state", method = RequestMethod.GET)
     public AppState state(final HttpSession session) {
-        return runAndFunService.getAppState(session);
+        return runAndFunService.getAppState((String) session.getAttribute(SESSION_ACCESS_TOKEN));
     }
 
     @RequestMapping(value = "/listActivities", method = RequestMethod.GET)
