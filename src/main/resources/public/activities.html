@@ -19,12 +19,12 @@
           <input class="form-control" type="number" data-ng-change="vm.list()" data-ng-model="vm.size" placeholder="Resultset size" id="size" min="0" />
         </div>
         <div class="form-group form-inline">
-          <select class="form-control" data-ng-change="vm.list()" data-ng-model="vm.filterType" id="filterType">
+          <select class="form-control" data-ng-change="vm.list()" data-ng-model="vm.filterType" id="filterType" multiple>
             <option value="">All activity types</option>
-            <option value="cycling">Cycling</option>
-            <option value="hiking">Hiking</option>
-            <option value="running">Running</option>
-            <option value="walking">Walking</option>
+            <option>Cycling</option>
+            <option>Hiking</option>
+            <option>Running</option>
+            <option>Walking</option>
           </select>
         </div>
         <!--

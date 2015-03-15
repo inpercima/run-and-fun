@@ -38,6 +38,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 
 /**
@@ -115,11 +116,15 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
-    public Page<Activity> listActivities(final Pageable pageable, final String type, final LocalDate minDate,
+    public Page<Activity> listActivities(final Pageable pageable, final String types, final LocalDate minDate,
             final LocalDate maxDate, final Float minDistance, final Float maxDistance, final String query) {
         final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-        if (!Strings.isNullOrEmpty(type)) {
-            queryBuilder.must(QueryBuilders.termQuery(Activity.FIELD_TYPE, type));
+        if (!Strings.isNullOrEmpty(types)) {
+            final BoolQueryBuilder typesQuery = QueryBuilders.boolQuery();
+            for (final String type : Splitter.on(',').split(types.toLowerCase())) {
+                typesQuery.should(QueryBuilders.termQuery(Activity.FIELD_TYPE, type));
+            }
+            queryBuilder.must(typesQuery);
         }
         if (minDate != null || maxDate != null) {
             addDateQuery(queryBuilder, minDate, maxDate);

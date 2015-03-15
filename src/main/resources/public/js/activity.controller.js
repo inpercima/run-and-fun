@@ -16,7 +16,7 @@
       totalElements : 0
     };
     vm.size = 10;
-    vm.filterType = 'running';
+    vm.filterType = 'Running';
 
     vm.totalActivities = 0;
     vm.totalDistance = 0;
