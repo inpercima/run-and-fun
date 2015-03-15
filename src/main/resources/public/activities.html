@@ -16,8 +16,10 @@
       <form role="form">
         <div class="form-group form-inline">
           <label class="sr-only" for="size">Resultset size</label>
-          <input class="form-control" type="text" data-ng-model="vm.size" placeholder="Resultset size" id="size" />
-          <select class="form-control" data-ng-model="vm.filterType" id="filterType">
+          <input class="form-control" type="number" data-ng-change="vm.list()" data-ng-model="vm.size" placeholder="Resultset size" id="size" min="0" />
+        </div>
+        <div class="form-group form-inline">
+          <select class="form-control" data-ng-change="vm.list()" data-ng-model="vm.filterType" id="filterType">
             <option value="">All activity types</option>
             <option value="cycling">Cycling</option>
             <option value="hiking">Hiking</option>
@@ -28,32 +30,38 @@
         <!--
         <div class="form-group form-inline">
           <label class="sr-only" for="filterFulltext">Fulltext filter</label>
-          <input class="form-control" type="text" data-ng-model="vm.filterFulltext" placeholder="Fulltext" id="filterFulltext" />
+          <input class="form-control" type="text" data-ng-change="vm.list()" data-ng-model="vm.filterFulltext" placeholder="Fulltext" id="filterFulltext" />
         </div>
         -->
         <div class="form-group form-inline">
           <label class="sr-only" for="filterMinDate">Minimal date filter</label>
-          <input class="form-control" type="date" data-ng-model="vm.filterMinDate" id="filterMinDate" min="2012-01-01" max="2015-12-31" placeholder="yyyy-MM-dd" />
+          <input class="form-control" type="date" data-ng-change="vm.list()" data-ng-model="vm.filterMinDate" id="filterMinDate" min="2010-01-01" max="2020-12-31" placeholder="yyyy-MM-dd" />
           <span>&nbsp;-&nbsp;</span>
           <label class="sr-only" for="filterMaxDate">Maximal date filter</label>
-          <input class="form-control" type="date" data-ng-model="vm.filterMaxDate" id="filterMaxDate" min="2012-01-01" max="2015-12-31" placeholder="yyyy-MM-dd" />
+          <input class="form-control" type="date" data-ng-change="vm.list()" data-ng-model="vm.filterMaxDate" id="filterMaxDate" min="2010-01-01" max="2020-12-31" placeholder="yyyy-MM-dd" />
           <span>&nbsp;/&nbsp;</span>
-          <select class="form-control" data-ng-model="vm.filterYear" id="filterYear">
+          <select class="form-control" data-ng-change="vm.list()" data-ng-model="vm.filterYear" id="filterYear">
             <option value="">All years</option>
+            <option>2010</option>
+            <option>2011</option>
             <option>2012</option>
             <option>2013</option>
             <option>2014</option>
             <option>2015</option>
+            <option>2016</option>
+            <option>2017</option>
+            <option>2018</option>
+            <option>2019</option>
+            <option>2020</option>
           </select>
         </div>
         <div class="form-group form-inline">
           <label class="sr-only" for="filterMinDistance">Minimal distance filter</label>
-          <input class="form-control" type="text" data-ng-model="vm.filterMinDistance" placeholder="Minimal distance" id="filterMinDistance" />
+          <input class="form-control" type="number" data-ng-change="vm.list()" data-ng-model="vm.filterMinDistance" placeholder="Minimal distance" id="filterMinDistance" min="0" />
           <span>&nbsp;-&nbsp;</span>
           <label class="sr-only" for="filterMaxDistance">Maximal distance filter</label>
-          <input class="form-control" type="text" data-ng-model="vm.filterMaxDistance" placeholder="Maximal distance" id="filterMaxDistance" />
+          <input class="form-control" type="number" data-ng-change="vm.list()" data-ng-model="vm.filterMaxDistance" placeholder="Maximal distance" id="filterMaxDistance" min="0" />
         </div>
-        <button data-ng-click="vm.list()">Filter</button>
       </form>
       <div>
         <table class="table table-striped">
@@ -84,7 +92,7 @@
             <td/><td/><td/><td/><td/><td/>
           </tr>
           <tr data-ng-repeat="activity in vm.activities.content | orderBy:predicate:reverse">
-            <td><span data-ng-bind="::activity.date | date:'yyyy-MM-dd'"></span></td>
+            <td><span data-ng-bind="::activity.date | date:'dd.MM.yyyy'"></span></td>
             <td><span data-ng-bind="::activity.distance | number:2"></span></td>
             <td><span data-ng-bind="::activity.duration"></span></td>
             <td><span data-ng-bind="::activity.timePerKm"></span></td>
