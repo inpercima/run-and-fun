@@ -25,10 +25,6 @@ public interface RunkeeperApiConstants {
 
     public final static String CODE = "code";
 
-    public final static String PAGE_SIZE = "?pageSize=";
-
-    public final static String PAGE_SIZE_ONE = "?pageSize=1";
-
     // parameter values
     public final static String AUTHORIZATION_CODE = "authorization_code";
 
@@ -54,8 +50,10 @@ public interface RunkeeperApiConstants {
 
     public final static String ACTIVITIES_URL = "http://api.runkeeper.com/fitnessActivities";
 
-    public final static String ACTIVITIES_URL_WITH_PAGE_SIZE = ACTIVITIES_URL + PAGE_SIZE;
+    public final static int DEFAULT_PAGE_SIZE = 25;
 
-    public final static String ACTIVITIES_URL_WITH_PAGE_SIZE_ONE = ACTIVITIES_URL + PAGE_SIZE_ONE;
+    public final static String ACTIVITIES_URL_NO_EARLIER_THAN = ACTIVITIES_URL + "?noEarlierThan=%s&pageSize=%s";
+
+    public final static String ACTIVITIES_URL_WITH_PAGE_SIZE_ONE = ACTIVITIES_URL + "?pageSize=1";
 
 }

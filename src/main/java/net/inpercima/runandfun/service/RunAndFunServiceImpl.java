@@ -1,7 +1,7 @@
 package net.inpercima.runandfun.service;
 
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_APP;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL_WITH_PAGE_SIZE;
+import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL_NO_EARLIER_THAN;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL_WITH_PAGE_SIZE_ONE;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.DE_AUTHORIZATION_URL;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_APP;
@@ -11,9 +11,14 @@ import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_APP;
 import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_URL;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
+import net.inpercima.runandfun.constants.RunkeeperApiConstants;
 import net.inpercima.runandfun.model.Activity;
 import net.inpercima.runandfun.model.AppState;
 import net.inpercima.runandfun.model.RunkeeperActivities;
@@ -29,7 +34,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.http.HttpEntity;
@@ -47,6 +54,9 @@ import com.google.common.base.Strings;
 public class RunAndFunServiceImpl implements RunAndFunService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RunAndFunServiceImpl.class);
+
+    // initial release in 2008 according to http://en.wikipedia.org/wiki/RunKeeper
+    private static final LocalDate INITIAL_RELEASE_OF_RUNKEEPER = LocalDate.of(2008, 01, 01);
 
     @Autowired
     private HelperService helperService;
@@ -88,27 +98,43 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         return helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken, RunkeeperProfile.class).getBody();
     }
 
-    private RunkeeperActivities getActivities(final String accessToken) {
-        // first get one item only to get full size
-        final HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(
-                ACTIVITIES_URL_WITH_PAGE_SIZE_ONE, ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
-        // after that get all activities
-        return helperService.getForObject(ACTIVITIES_URL_WITH_PAGE_SIZE + activitiesForSize.getBody().getSize(),
+    private RunkeeperActivities getActivities(final String accessToken, final LocalDate from) {
+        LOGGER.debug("getActivities until {}", from);
+
+        int pageSize = RunkeeperApiConstants.DEFAULT_PAGE_SIZE;
+        if (from.until(LocalDate.now(), ChronoUnit.DAYS) > pageSize) {
+            // get one item only to get full size
+            final HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(
+                    ACTIVITIES_URL_WITH_PAGE_SIZE_ONE, ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
+            pageSize = activitiesForSize.getBody().getSize();
+        }
+
+        // get new activities
+        return helperService.getForObject(
+                String.format(ACTIVITIES_URL_NO_EARLIER_THAN, from.format(DateTimeFormatter.ISO_LOCAL_DATE), pageSize),
                 ACTIVITIES_APP, accessToken, RunkeeperActivities.class).getBody();
     }
 
     @Override
     public void indexActivities(final String accessToken) {
         final Collection<Activity> activities = new ArrayList<>();
-        for (final RunkeeperItem item : getActivities(accessToken).getItemsAsList()) {
+        for (final RunkeeperItem item : getActivities(accessToken, calculateFetchDate()).getItemsAsList()) {
             final Activity activity = new Activity(item.getId(), item.getType(), item.getDate(), item.getDistance(),
                     item.getFormattedDuration());
             LOGGER.debug("prepare {}", activity);
             activities.add(activity);
         }
+        LOGGER.info("new activities: {}", activities.size());
         if (!activities.isEmpty()) {
             repository.save(activities);
         }
+    }
+
+    private LocalDate calculateFetchDate() {
+        final Pageable pageable = new PageRequest(0, 1, Direction.DESC, Activity.FIELD_DATE);
+        final Iterator<Activity> lastFetchedActivity = repository.findAll(pageable).getContent().iterator();
+        return lastFetchedActivity.hasNext() ? lastFetchedActivity.next().getDate().toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDate() : INITIAL_RELEASE_OF_RUNKEEPER;
     }
 
     @Override

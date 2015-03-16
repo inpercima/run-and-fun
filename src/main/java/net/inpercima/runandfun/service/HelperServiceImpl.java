@@ -14,6 +14,8 @@ import static net.inpercima.runandfun.constants.RunkeeperApiConstants.REDIRECT_U
 
 import java.nio.charset.StandardCharsets;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,12 +27,16 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.common.base.Strings;
+
 /**
  * @author Marcel Jänicke
  * @since 10.02.2015
  */
 @Service
 public class HelperServiceImpl implements HelperService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelperServiceImpl.class);
 
     @Value("${app.clientId}")
     private String clientId;
@@ -41,25 +47,27 @@ public class HelperServiceImpl implements HelperService {
     @Value("${app.redirectUri}")
     private String redirectUri;
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
+    @Override
     public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(String clientId) {
+    public void setClientId(final String clientId) {
         this.clientId = clientId;
     }
 
-    public void setClientSecret(String clientSecret) {
+    public void setClientSecret(final String clientSecret) {
         this.clientSecret = clientSecret;
     }
 
+    @Override
     public String getRedirectUri() {
         return redirectUri;
     }
 
-    public void setRedirectUri(String redirectUri) {
+    public void setRedirectUri(final String redirectUri) {
         this.redirectUri = redirectUri;
     }
 
@@ -75,8 +83,8 @@ public class HelperServiceImpl implements HelperService {
     }
 
     @Override
-    public void postForObject(String url, String accessToken) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+    public void postForObject(final String url, final String accessToken) {
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(ACCESS_TOKEN, accessToken);
         restTemplate.postForLocation(url, params);
     }
@@ -84,12 +92,13 @@ public class HelperServiceImpl implements HelperService {
     @Override
     public <T> HttpEntity<T> getForObject(final String url, final String applicationType, final String accessToken,
             final Class<T> clazz) {
+        LOGGER.debug("get {} with {} for token {}", url, applicationType, accessToken);
         return restTemplate.exchange(url, HttpMethod.GET, createHttpEntity(accessToken, applicationType), clazz,
                 createAccessParams(accessToken));
     }
 
     private MultiValueMap<String, String> createTokenParams(final String code) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(CLIENT_ID, clientId);
         params.add(CLIENT_SECRET, clientSecret);
         params.add(GRANT_TYPE, AUTHORIZATION_CODE);
@@ -99,17 +108,17 @@ public class HelperServiceImpl implements HelperService {
     }
 
     private MultiValueMap<String, String> createAccessParams(final String accessToken) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(ACCESS_TOKEN, accessToken);
         return params;
     }
 
-    private <T> HttpEntity<T> createHttpEntity(String accessToken, final String applicationType) {
-        HttpHeaders headers = new HttpHeaders();
+    private <T> HttpEntity<T> createHttpEntity(final String accessToken, final String applicationType) {
+        final HttpHeaders headers = new HttpHeaders();
         headers.set(ACCEPT, applicationType);
-        headers.set(AUTHORIZATION, BEARER.concat(accessToken));
+        headers.set(AUTHORIZATION, BEARER.concat(Strings.nullToEmpty(accessToken)));
         headers.set(ACCEPT_CHARSET, StandardCharsets.UTF_8.displayName());
-        HttpEntity<T> entity = new HttpEntity<T>(headers);
+        final HttpEntity<T> entity = new HttpEntity<T>(headers);
         return entity;
     }
 
