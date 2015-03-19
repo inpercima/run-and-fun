@@ -8,4 +8,6 @@ public interface AppConstants {
 
     public final static String SESSION_ACCESS_TOKEN = "accessToken";
 
+    public final static String SESSION_APP_STATE = "appState";
+
 }

@@ -1,31 +1,17 @@
 <!doctype html>
-<!--
- - @author    Marcel Jänicke
- - @since     02.02.2015
- -->
-<html data-ng-app="runAndFun">
+<html data-ng-app="runAndFun" data-ng-strict-di>
   <head>
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
   </head>
   <body>
-    <div class="container" data-ng-controller="LoginController as vm">
-      <div data-ng-hide="vm.appState.accessToken">
-        <h1>Hallo Run and funnler!</h1>
-        <p>Please login to show your activities!</p>
-        <a data-ng-href="https://runkeeper.com/apps/authorize?client_id={{vm.appState.clientId}}&amp;redirect_uri={{vm.appState.redirectUri}}&amp;response_type=code">
-          <img src="//static1.runkeeper.com/images/assets/login-blue-white-200x38.png" />
-        </a>
+    <div class="container">
+      <div class="page-header">
+        <p><a href="#/">Home</a> | <a href="#/activities">Activities</a></p>
       </div>
-      <div data-ng-show="vm.appState.accessToken" data-ng-cloak>
-        <h1>Hallo {{vm.appState.username}}!</h1>
-        <ul>
-          <li><a href="/indexActivities">Index your activities</a></li>
-          <li><a href="/activities.html">Show your activities</a></li>
-          <li><a href="/logout">Logout</a></li>
-        </ul>
-      </div>
+      <div data-ng-view></div>
     </div>
     <script src="bower_components/angularjs/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
     <script src="js/app.min.js"></script>
   </body>
 </html>

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 import javax.servlet.http.HttpSession;
 
+import net.inpercima.runandfun.constants.AppConstants;
 import net.inpercima.runandfun.model.Activity;
 import net.inpercima.runandfun.model.AppState;
 import net.inpercima.runandfun.service.RunAndFunService;
@@ -22,7 +23,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -40,11 +40,15 @@ public class RestApiController {
 
     @RequestMapping(value = "/state", method = RequestMethod.GET)
     public AppState state(final HttpSession session) {
-        return runAndFunService.getAppState((String) session.getAttribute(SESSION_ACCESS_TOKEN));
+        AppState appState = (AppState) session.getAttribute(AppConstants.SESSION_APP_STATE);
+        if (appState == null || appState.getUsername() == null) {
+            appState = runAndFunService.getAppState((String) session.getAttribute(SESSION_ACCESS_TOKEN));
+            session.setAttribute(AppConstants.SESSION_APP_STATE, appState);
+        }
+        return appState;
     }
 
     @RequestMapping(value = "/listActivities", method = RequestMethod.GET)
-    @ResponseBody
     public Page<Activity> listActivities(
             @PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable,
             @RequestParam(required = false) final String type,
@@ -52,7 +56,7 @@ public class RestApiController {
             @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate maxDate,
             @RequestParam(required = false) final Float minDistance,
             @RequestParam(required = false) final Float maxDistance, @RequestParam(required = false) final String query) {
-        LOGGER.info("listActivities of type '{}' for date between {} - {}, distance between {} - {}, {}", type,
+        LOGGER.debug("listActivities of type '{}' for date between {} - {}, distance between {} - {}, {}", type,
                 minDate, maxDate, minDistance, maxDistance, pageable);
         return runAndFunService.listActivities(pageable, type, minDate, maxDate, minDistance, maxDistance, query);
     }
