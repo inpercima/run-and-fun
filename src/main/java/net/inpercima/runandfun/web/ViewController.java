@@ -39,7 +39,7 @@ public class ViewController {
 
     @RequestMapping(value = "/logout")
     public String logout(final HttpSession session) {
-        session.removeAttribute(SESSION_ACCESS_TOKEN);
+        session.invalidate();
         return REDIRECT_TO_BASE;
     }
 
