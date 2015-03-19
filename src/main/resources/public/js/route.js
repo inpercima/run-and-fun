@@ -2,11 +2,11 @@
   'use strict';
   angular.module('runAndFun').config([ '$routeProvider', function($routeProvider) {
     $routeProvider.when('/', {
-      templateUrl : 'home.html',
+      templateUrl : 'partials/home.html',
       controller : 'LoginController',
       controllerAs : 'vm'
     }).when('/activities', {
-      templateUrl : 'activities.html',
+      templateUrl : 'partials/activities.html',
       controller : 'ActivityController',
       controllerAs : 'vm'
     }).otherwise({
