@@ -57,12 +57,12 @@
     <caption data-ng-bind="title"></caption>
     <thead>
     <tr>
-      <th><a href="" data-ng-click="predicate = 'date'; reverse=!reverse" title="Order by date">Date</a></th>
-      <th><a href="" data-ng-click="predicate = 'distance'; reverse=!reverse" title="Order by distance">Distance</a></th>
-      <th><a href="" data-ng-click="predicate = 'duration'; reverse=!reverse" title="Order by duration">Duration</a></th>
-      <th><a href="" data-ng-click="predicate = 'timePerKm'; reverse=!reverse" title="Order by time for one kilometer">Time/km</a></th>
-      <th><a href="" data-ng-click="predicate = 'timePer5Km'; reverse=!reverse" title="Order by time for five kilometers">Time/5km</a></th>
-      <th><a href="" data-ng-click="predicate = 'timePer10Km'; reverse=!reverse" title="Order by time for ten kilometers">Time/10km</a></th>
+      <th><a href="" data-ng-click="vm.predicate = 'date'; vm.reverse=!vm.reverse" title="Order by date">Date</a></th>
+      <th><a href="" data-ng-click="vm.predicate = 'distance'; vm.reverse=!vm.reverse" title="Order by distance">Distance</a></th>
+      <th><a href="" data-ng-click="vm.predicate = 'duration'; vm.reverse=!vm.reverse" title="Order by duration">Duration</a></th>
+      <th><a href="" data-ng-click="vm.predicate = 'timePerKm'; vm.reverse=!vm.reverse" title="Order by time for one kilometer">Time/km</a></th>
+      <th><a href="" data-ng-click="vm.predicate = 'timePer5Km'; vm.reverse=!vm.reverse" title="Order by time for five kilometers">Time/5km</a></th>
+      <th><a href="" data-ng-click="vm.predicate = 'timePer10Km'; vm.reverse=!vm.reverse" title="Order by time for ten kilometers">Time/10km</a></th>
       <th class="sr-only">Functions</th>
     </tr>
     </thead>
@@ -80,7 +80,7 @@
       <td>No activities found!</td>
       <td/><td/><td/><td/><td/><td/>
     </tr>
-    <tr data-ng-repeat="activity in vm.activities.content | orderBy:predicate:reverse">
+    <tr data-ng-repeat="activity in vm.activities.content | orderBy:vm.predicate:vm.reverse">
       <td><span data-ng-bind="::activity.date | date:'dd.MM.yyyy'"></span></td>
       <td><span data-ng-bind="::activity.distance | number:2"></span></td>
       <td><span data-ng-bind="::activity.duration"></span></td>

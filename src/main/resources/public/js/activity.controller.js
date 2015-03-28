@@ -15,6 +15,9 @@
     vm.activities = {
       totalElements : 0
     };
+    vm.predicate = 'date';
+    vm.reverse = true;
+
     vm.size = 10;
     vm.filterType = 'Running';
 
