@@ -28,16 +28,19 @@
     vm.totalTimePer5Km = 0;
     vm.totalTimePer10Km = 0;
 
+    vm.years = [];
+
     // init
+    years();
     list();
 
     function list() {
       console.debug('ActivityController.list');
       var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
       var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
-      if (vm.filterYear) {
-        minDate = vm.filterYear + '-01-01';
-        maxDate = vm.filterYear + '-12-31';
+      if (vm.filterYear.key !== '') {
+        minDate = vm.filterYear.year + '-01-01';
+        maxDate = vm.filterYear.year + '-12-31';
       }
       ActivityService.list(vm.size, vm.filterType, minDate, maxDate, vm.filterMinDistance, vm.filterMaxDistance, vm.filterFulltext).then(
           function(data) {
@@ -51,6 +54,20 @@
       var index = vm.activities.content.indexOf(activity);
       vm.activities.content.splice(index, 1);
       ActivityService.recalculateTotals(vm);
+    }
+
+    function years() {
+      var filterAll = {
+        'key' : '',
+        'year' : 'All years'
+      };
+      vm.years.push(filterAll);
+      var startYear = 2010;
+      var endYear = 2020;
+      for (var i = startYear; i <= endYear; i++) {
+        vm.years.push({'key' : i, 'year' : i });
+      }
+      vm.filterYear = filterAll;
     }
   }
 })();

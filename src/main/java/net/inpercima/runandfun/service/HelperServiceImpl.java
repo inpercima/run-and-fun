@@ -84,9 +84,7 @@ public class HelperServiceImpl implements HelperService {
 
     @Override
     public void postForObject(final String url, final String accessToken) {
-        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add(ACCESS_TOKEN, accessToken);
-        restTemplate.postForLocation(url, params);
+        restTemplate.postForLocation(url, createTokenParams(accessToken));
     }
 
     @Override
