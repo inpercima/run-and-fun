@@ -38,7 +38,7 @@
       console.debug('ActivityController.list');
       var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
       var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
-      if (vm.filterYear.key !== '') {
+      if (vm.filterYear.key) {
         minDate = vm.filterYear.year + '-01-01';
         maxDate = vm.filterYear.year + '-12-31';
       }
