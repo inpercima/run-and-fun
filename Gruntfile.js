@@ -65,9 +65,9 @@ module.exports = function(grunt) {
         files : '<%= jshint.gruntfile.src %>',
         tasks : [ 'jshint:gruntfile' ]
       },
-      lib_test : {
+      main_js : {
         files : '<%= src_dir_js %>/**/*.js',
-        tasks : [ 'jshint:main_js' ]
+        tasks : [ 'jshint:main_js', 'concat', 'uglify' ]
       }
     }
   });
