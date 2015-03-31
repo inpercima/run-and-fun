@@ -62,10 +62,13 @@
         'year' : 'All years'
       };
       vm.years.push(filterAll);
-      var startYear = 2010;
-      var endYear = 2020;
+      var startYear = 2000;
+      var endYear = new Date().getFullYear();
       for (var i = startYear; i <= endYear; i++) {
-        vm.years.push({'key' : i, 'year' : i });
+        vm.years.push({
+          'key' : i,
+          'year' : i
+        });
       }
       vm.filterYear = filterAll;
     }
