@@ -14,11 +14,8 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     # add clientId, clientSecret and redirectUri to application.properties
     # redirectUri should end with /verify
 
-    # install frontend tools
+    # install tools and frontend dependencies
     npm install
-
-    # install frontend dependencies
-    bower install
 
     # check, concat and minify javascript
     grunt build
