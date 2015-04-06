@@ -19,7 +19,6 @@
     vm.reverse = true;
 
     vm.size = 10;
-    vm.filterType = 'Running';
 
     vm.totalActivities = 0;
     vm.totalDistance = 0;
@@ -28,9 +27,14 @@
     vm.totalTimePer5Km = 0;
     vm.totalTimePer10Km = 0;
 
+    vm.allActivityTypes = false;
+
     vm.years = [];
+    vm.types = [];
+    vm.filterType = [];
 
     // init
+    types();
     years();
     list();
 
@@ -42,11 +46,17 @@
         minDate = vm.filterYear.year + '-01-01';
         maxDate = vm.filterYear.year + '-12-31';
       }
-      ActivityService.list(vm.size, vm.filterType, minDate, maxDate, vm.filterMinDistance, vm.filterMaxDistance, vm.filterFulltext).then(
-          function(data) {
-            vm.activities = data;
-            ActivityService.recalculateTotals(vm);
-          });
+      var filterType = [];
+      if (!vm.allActivityTypes) {
+        angular.forEach(vm.filterType, function(type) {
+          filterType.push(type.key);
+        });
+      }
+      ActivityService.list(vm.size, filterType, minDate, maxDate, vm.filterMinDistance, vm.filterMaxDistance,
+          vm.filterFulltext).then(function(data) {
+        vm.activities = data;
+        ActivityService.recalculateTotals(vm);
+      });
     }
 
     function remove(activity) {
@@ -71,6 +81,22 @@
         });
       }
       vm.filterYear = filterAll;
+    }
+
+    function types() {
+      var filterRunning = simpleKeyType('Running');
+      vm.types.push(filterRunning);
+      vm.types.push(simpleKeyType('Cycling'));
+      vm.types.push(simpleKeyType('Hiking'));
+      vm.types.push(simpleKeyType('Walking'));
+      vm.filterType.push(filterRunning);
+    }
+
+    function simpleKeyType(key) {
+      return {
+        'key' : key,
+        'type' : key
+      };
     }
   }
 })();
