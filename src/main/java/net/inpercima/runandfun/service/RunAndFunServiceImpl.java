@@ -199,7 +199,8 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         state.setRedirectUri(helperService.getRedirectUri());
         if (state.getAccessToken() != null) {
             final RunkeeperProfile profile = getProfile(state.getAccessToken());
-            state.setUsername(profile.getName());
+            state.setFullName(profile.getName());
+            state.setUsername(profile.getUsername());
         }
         return state;
     }

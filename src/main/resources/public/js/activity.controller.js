@@ -2,9 +2,9 @@
   'use strict';
   angular.module('runAndFun').controller('ActivityController', ActivityController);
 
-  ActivityController.$inject = [ 'ActivityService', '$filter' ];
+  ActivityController.$inject = [ 'ActivityService', '$filter', '$http' ];
 
-  function ActivityController(ActivityService, $filter) {
+  function ActivityController(ActivityService, $filter, $http) {
     var vm = this;
 
     // public methods
@@ -40,6 +40,9 @@
 
     function list() {
       console.debug('ActivityController.list');
+      $http.get('/state').success(function(data) {
+        vm.appState = data;
+      });
       var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
       var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
       if (vm.filterYear.key) {
@@ -67,18 +70,12 @@
     }
 
     function years() {
-      var filterAll = {
-        'key' : '',
-        'year' : 'All years'
-      };
+      var filterAll = simpleKeyYear('');
       vm.years.push(filterAll);
       var startYear = 2010;
       var endYear = new Date().getFullYear();
       for (var i = startYear; i <= endYear; i++) {
-        vm.years.push({
-          'key' : i,
-          'year' : i
-        });
+        vm.years.push(simpleKeyYear(i));
       }
       vm.filterYear = filterAll;
     }
@@ -90,6 +87,13 @@
       vm.types.push(simpleKeyType('Hiking'));
       vm.types.push(simpleKeyType('Walking'));
       vm.filterType.push(filterRunning);
+    }
+    
+    function simpleKeyYear(key) {
+      return {
+        'key' : key,
+        'year' : key === '' ? 'All years' : key
+      };
     }
 
     function simpleKeyType(key) {
