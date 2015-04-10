@@ -2,9 +2,9 @@
   'use strict';
   angular.module('runAndFun').controller('ActivityController', ActivityController);
 
-  ActivityController.$inject = [ 'ActivityService', '$filter', '$http' ];
+  ActivityController.$inject = [ 'ActivityService', 'LoginService', '$filter' ];
 
-  function ActivityController(ActivityService, $filter, $http) {
+  function ActivityController(ActivityService, LoginService, $filter) {
     var vm = this;
 
     // public methods
@@ -40,9 +40,7 @@
 
     function list() {
       console.debug('ActivityController.list');
-      $http.get('/state').success(function(data) {
-        vm.appState = data;
-      });
+      LoginService.state(vm);
       var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
       var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
       if (vm.filterYear.key) {

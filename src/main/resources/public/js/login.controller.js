@@ -2,12 +2,20 @@
   'use strict';
   angular.module('runAndFun').controller('LoginController', LoginController);
 
-  LoginController.$inject = [ '$http' ];
+  LoginController.$inject = [ 'LoginService' ];
 
-  function LoginController($http) {
+  function LoginController(LoginService) {
     var vm = this;
-    $http.get('/state').success(function(data) {
-      vm.appState = data;
-    });
+
+    // public methods
+    vm.state = state;
+
+    // init
+    state();
+
+    function state() {
+      console.debug('LoginController.state');
+      LoginService.state(vm);
+    }
   }
 })();
