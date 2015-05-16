@@ -12,7 +12,6 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
 
     # use existing runkeeper app or register new app at http://runkeeper.com/partner/applications
     # add clientId, clientSecret and redirectUri to application.properties
-    # redirectUri should end with /verify
 
     # install tools and frontend dependencies
     npm install

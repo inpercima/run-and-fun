@@ -3,6 +3,7 @@
 #
 app.clientId=
 app.clientSecret=
+# redirectUri must end with /verify
 app.redirectUri=
 
 # ELASTICSEARCH (ElasticsearchProperties})
