@@ -48,6 +48,8 @@
       vm.totalTimePer10Km = DateTimeUtils.formatTime(10 * calcTimePerKm(totalTime, vm.totalDistance));
     }
 
+    var distanceHalfMarathon = 21.097;
+
     function enrichWithTimePerKm(content) {
       // console.debug('enrichWithTimePerKm');
       angular.forEach(content, function(activity) {
@@ -55,7 +57,28 @@
         activity.timePerKm = DateTimeUtils.formatTime(calcTimePerKm(seconds, activity.distance));
         activity.timePer5Km = DateTimeUtils.formatTime(calcTimePerKm(5 * seconds, activity.distance));
         activity.timePer10Km = DateTimeUtils.formatTime(calcTimePerKm(10 * seconds, activity.distance));
+
+        activity.additionalInfo = '';
+        // prepend half marathon time if distance is in interval [17, 20]
+        if (activity.distance >= 17 && activity.distance <= 20) {
+          addTimeForKm(activity, seconds, distanceHalfMarathon);
+        }
+        // calculate time for every distance starting with nearest km (round ceil)
+        for (var i = Math.ceil(activity.distance); i >= 1; i--) {
+          if (activity.additionalInfo.length > 0) {
+            activity.additionalInfo += '\n';
+          }
+          if (i === 21) {
+            addTimeForKm(activity, seconds, distanceHalfMarathon);
+            activity.additionalInfo += '\n';
+          }
+          addTimeForKm(activity, seconds, i);
+        }
       });
+    }
+
+    function addTimeForKm(activity, totalSeconds, distance) {
+      activity.additionalInfo += DateTimeUtils.formatTime(calcTimePerKm(distance * totalSeconds, activity.distance)) + 'min/' + distance + 'km';
     }
 
     function calcTimePerKm(time, distance) {

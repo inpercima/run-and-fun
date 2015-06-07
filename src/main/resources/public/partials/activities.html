@@ -75,6 +75,7 @@
           <a class="glyphicon glyphicon-globe" data-ng-href="http://runkeeper.com/user/{{vm.appState.username}}/activity/{{::activity.id}}"
             target="_blank" title="Open activity {{::activity.id}} on runkeeper.com">
           </a>
+          <a class="glyphicon glyphicon-list-alt" title="{{::activity.additionalInfo}}"></a>
           <a class="glyphicon glyphicon-remove" data-ng-click="vm.remove(activity)"
             title="Remove activity {{::activity.id}} from view">
           </a>
