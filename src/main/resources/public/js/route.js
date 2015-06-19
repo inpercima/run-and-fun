@@ -9,6 +9,10 @@
       templateUrl : 'partials/activities.html',
       controller : 'ActivityController',
       controllerAs : 'vm'
+    }).when('/graphs', {
+      templateUrl : 'partials/graphs.html',
+      controller : 'GraphsController',
+      controllerAs : 'vm'
     }).otherwise({
       redirectTo : '/'
     });

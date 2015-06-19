@@ -1,4 +1,4 @@
 (function() {
   'use strict';
-  angular.module('runAndFun', [ 'ngRoute' ]);
+  angular.module('runAndFun', [ 'ngRoute' , 'chart.js' ]);
 })();
