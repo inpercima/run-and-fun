@@ -33,6 +33,7 @@
       return $http.get(url).then(function(result) {
         var activities = result.data;
         enrichWithTimePerKm(activities.content);
+        enrichWithStatistics(activities.content);
         return activities;
       });
     }
@@ -54,7 +55,8 @@
       // console.debug('enrichWithTimePerKm');
       angular.forEach(content, function(activity) {
         var seconds = DateTimeUtils.formattedTimeToSeconds(activity.duration);
-        activity.timePerKm = DateTimeUtils.formatTime(calcTimePerKm(seconds, activity.distance));
+        activity.timePerKmInSeconds = calcTimePerKm(seconds, activity.distance);
+        activity.timePerKm = DateTimeUtils.formatTime(activity.timePerKmInSeconds);
         activity.timePer5Km = DateTimeUtils.formatTime(calcTimePerKm(5 * seconds, activity.distance));
         activity.timePer10Km = DateTimeUtils.formatTime(calcTimePerKm(10 * seconds, activity.distance));
 
@@ -75,6 +77,30 @@
           addTimeForKm(activity, seconds, i);
         }
       });
+    }
+
+    function enrichWithStatistics(activities) {
+      // console.debug('enrichWithStatistics');
+      angular.forEach(activities, function(activity) {
+        var distanceRound = Math.round(activity.distance);
+        var distanceStep = Math.ceil(Math.sqrt(distanceRound));
+        rateByDistance(activity, activities, distanceRound - distanceStep, distanceRound + distanceStep);
+      });
+    }
+
+    function rateByDistance(activity, activities, minDistance, maxDistance) {
+      var matches = activities.filter(function (current) {
+        return current.distance > minDistance && current.distance <= maxDistance;
+      }).sort(function(o1, o2) {
+        return o1.timePerKmInSeconds - o2.timePerKmInSeconds;
+      });
+      var i = 0;
+      while (i < matches.length) {
+        if (activity.timePerKmInSeconds <= matches[i++].timePerKmInSeconds) {
+          break;
+        }
+      }
+      activity.intervalStats = 'Platz ' + i + ' von ' + matches.length + ' zwischen ' + minDistance + ' und ' + maxDistance + 'km';
     }
 
     function addTimeForKm(activity, totalSeconds, distance) {
