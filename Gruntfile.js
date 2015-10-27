@@ -17,6 +17,7 @@ module.exports = function(grunt) {
         esnext : true,
         globals : {
           angular : true,
+          '_' : true,
         },
         immed : true,
         newcap : true,

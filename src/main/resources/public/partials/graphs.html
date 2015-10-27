@@ -1,0 +1,25 @@
+<div>
+  <h1>Graphs</h1>
+  <p data-ng-cloak>Activities indexed: {{vm.activities.totalElements}}</p>
+</div>
+<div>
+  <h2>Distribution of activities</h2>
+  <canvas id="pie" class="chart chart-pie"
+    data="vm.pieOverviewData" 
+    labels="vm.pieOverviewLabels"
+    legend="true">
+  </canvas>
+</div>
+<div>
+  <h2>Show km per 
+    <select ng-model="vm.averageKmDropdown" ng-change="vm.refreshLineKmPerMonth();">
+      <option value="year">Year</option>
+      <option value="month" selected>Month</option>
+      <option value="day">Day</option>
+    </select>
+  </h2>
+  <canvas id="line" class="chart chart-line" 
+    data="vm.lineKmPerMonthData"
+    labels="vm.lineKmPerMonthLabels">
+  </canvas>
+</div>
