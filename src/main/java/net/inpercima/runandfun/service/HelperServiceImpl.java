@@ -88,8 +88,7 @@ public class HelperServiceImpl implements HelperService {
     }
 
     @Override
-    public <T> HttpEntity<T> getForObject(final String url, final String applicationType, final String accessToken,
-            final Class<T> clazz) {
+    public <T> HttpEntity<T> getForObject(final String url, final String applicationType, final String accessToken, final Class<T> clazz) {
         LOGGER.debug("get {} with {} for token {}", url, applicationType, accessToken);
         return restTemplate.exchange(url, HttpMethod.GET, createHttpEntity(accessToken, applicationType), clazz,
                 createAccessParams(accessToken));
@@ -105,18 +104,18 @@ public class HelperServiceImpl implements HelperService {
         return params;
     }
 
-    private MultiValueMap<String, String> createAccessParams(final String accessToken) {
+    private static MultiValueMap<String, String> createAccessParams(final String accessToken) {
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add(ACCESS_TOKEN, accessToken);
         return params;
     }
 
-    private <T> HttpEntity<T> createHttpEntity(final String accessToken, final String applicationType) {
+    private static <T> HttpEntity<T> createHttpEntity(final String accessToken, final String applicationType) {
         final HttpHeaders headers = new HttpHeaders();
         headers.set(ACCEPT, applicationType);
         headers.set(AUTHORIZATION, BEARER.concat(Strings.nullToEmpty(accessToken)));
         headers.set(ACCEPT_CHARSET, StandardCharsets.UTF_8.displayName());
-        final HttpEntity<T> entity = new HttpEntity<T>(headers);
+        final HttpEntity<T> entity = new HttpEntity<>(headers);
         return entity;
     }
 
