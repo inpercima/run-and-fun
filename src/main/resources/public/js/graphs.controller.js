@@ -2,17 +2,19 @@
   'use strict';
   angular.module('runAndFun').controller('GraphsController', GraphsController);
 
-  GraphsController.$inject = [ 'ActivityService', 'DateTimeUtils' , 'LoginService', '$filter' ];
+  GraphsController.$inject = [ 'ActivityService', 'LoginService', '$filter' ];
 
-  function GraphsController(ActivityService, DateTimeUtils, LoginService, $filter) {
+  function GraphsController(ActivityService, LoginService, $filter) {
     var vm = this;
 
     // public methods
-    vm.list = list;
     vm.refreshLineKmPerMonth = refreshLineKmPerMonth;
 
     // public fields
     vm.activities = {
+      totalElements : 0
+    };
+    vm.runs = {
       totalElements : 0
     };
     vm.averageKmDropdown = 'month';
@@ -34,10 +36,15 @@
 
     function list() {
       LoginService.state(vm);
-      ActivityService.list().then(function(data) {
+      // TODO set default maxSize of 500, later we need a list method that loads all activities at once
+      var maxSize = 500;
+      ActivityService.list(maxSize).then(function(data) {
         vm.activities = data;
-        getLineKmPerMonth(vm.activities.content, vm.averageKmDropdown);
         getPieOverview(vm.activities.content);
+      });
+      ActivityService.list(maxSize, 'Running').then(function(data) {
+        vm.runs = data;
+        refreshLineKmPerMonth();
       });
     }
 
@@ -93,7 +100,7 @@
     }
 
     function refreshLineKmPerMonth() {
-        getLineKmPerMonth(vm.activities.content, vm.averageKmDropdown);
+        getLineKmPerMonth(vm.runs.content, vm.averageKmDropdown);
     }
   }
 })();
