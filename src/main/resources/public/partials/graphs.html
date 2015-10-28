@@ -1,6 +1,5 @@
 <div>
   <h1>Graphs</h1>
-  <p data-ng-cloak>Activities indexed: {{vm.activities.totalElements}}</p>
 </div>
 <div>
   <h2>
@@ -16,15 +15,16 @@
   </canvas>
 </div>
 <div>
-  <h2>Show km per 
+  <h2>Show kilometers per 
     <select ng-model="vm.averageKmDropdown" ng-change="vm.refreshLineKmPerMonth();">
       <option value="year">Year</option>
       <option value="month" selected>Month</option>
       <option value="day">Day</option>
-    </select>
+    </select> for running activities
   </h2>
+  <p data-ng-cloak>Running Activities: {{vm.runs.totalElements}}</p>
   <canvas id="line" class="chart chart-line" 
-    data="vm.lineKmPerMonthData"
-    labels="vm.lineKmPerMonthLabels">
+    chart-data="vm.lineKmPerMonthData"
+    chart-labels="vm.lineKmPerMonthLabels">
   </canvas>
 </div>
