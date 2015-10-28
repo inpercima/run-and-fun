@@ -1,5 +1,7 @@
 # run-and-fun
 
+![MIT license](https://img.shields.io/github/license/mashape/apistatus.svg)
+
 Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).
 
 # Usage
