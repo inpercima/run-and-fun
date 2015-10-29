@@ -52,6 +52,8 @@
         angular.forEach(vm.filterType, function(type) {
           filterType.push(type.key);
         });
+      } else {
+        filterType = '';
       }
       ActivityService.list(vm.size, filterType, minDate, maxDate, vm.filterMinDistance, vm.filterMaxDistance,
           vm.filterFulltext).then(function(data) {
