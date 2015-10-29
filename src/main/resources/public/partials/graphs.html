@@ -2,12 +2,16 @@
   <h1>Graphs</h1>
 </div>
 <div>
-  <h2>Distribution of activities</h2>
+  <h2>
+    Distribution of activities
+    <button type="button" class="btn btn-success" style="margin-eft: 10px" ng-click="vm.changeChartType();">Change Chart Type</button>
+  </h2>
   <p data-ng-cloak>All Activities: {{vm.activities.totalElements}}</p>
-  <canvas id="pie" class="chart chart-pie"
+  <canvas id="pie" class="chart-base"
     chart-data="vm.pieOverviewData" 
     chart-labels="vm.pieOverviewLabels"
-    chart-legend="true">
+    chart-legend="true"
+    chart-type="vm.kindOfChart">
   </canvas>
 </div>
 <div>

@@ -26,10 +26,13 @@
     var readableDateShort = [];
     var seriesArray = [];
 
+    vm.changeChartType = changeChartType;
+
     vm.lineKmPerMonthData = [];
     vm.lineKmPerMonthLabels = [];
     vm.pieOverviewData = [];
     vm.pieOverviewLabels = [];
+    vm.kindOfChart = 'Pie';
 
     // init
     list();
@@ -64,12 +67,7 @@
         else if (groupBy === 'month') { groupByString = readableDateLong[1] + '-' + readableDateLong[0]; }
         else if (groupBy === 'day') { groupByString = readableDateShort[2] + '.' + readableDateShort[1]; }
         
-
-        if(!countObject[groupByString]) {
-          countObject[groupByString] = parseFloat((activites[i].distance).toFixed(2,10));
-        } else {
-          countObject[groupByString] += parseFloat((activites[i].distance).toFixed(2,10));
-        }
+        countObject[groupByString] = countObject[groupByString] + parseFloat((activites[i].distance).toFixed(2,10)) || parseFloat((activites[i].distance).toFixed(2,10));
 
       }
 
@@ -85,13 +83,10 @@
     function getPieOverview(activites){
       countObject = {};
 
-      for (var i = 0, len = activites.length; i < len; i++) {
-        if(!countObject[activites[i].type]) {
-          countObject[activites[i].type] = 1;
-        } else {
-          countObject[activites[i].type] = parseInt(countObject[activites[i].type]) + 1;
-        }
-      }
+      activites.reduce(function(obj, val){
+        obj[val.type] = obj[val.type] + 1 || 1;
+        return obj;
+      }, countObject);
 
       for (var key in countObject) {
         vm.pieOverviewData.push(countObject[key]);
@@ -101,6 +96,10 @@
 
     function refreshLineKmPerMonth() {
         getLineKmPerMonth(vm.runs.content, vm.averageKmDropdown);
+    }
+
+    function changeChartType() {
+      vm.kindOfChart = vm.kindOfChart === 'PolarArea' ? 'Pie' : 'PolarArea';
     }
   }
 })();
