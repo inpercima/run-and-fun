@@ -1,10 +1,10 @@
 (function() {
   'use strict';
-  angular.module('runAndFun').controller('GraphsController', GraphsController);
+  angular.module('app').controller('GraphsController', GraphsController);
 
-  GraphsController.$inject = [ 'ActivityService', 'LoginService', '$filter' ];
+  GraphsController.$inject = [ 'activityService', 'loginService', '$filter' ];
 
-  function GraphsController(ActivityService, LoginService, $filter) {
+  function GraphsController(activityService, loginService, $filter) {
     var vm = this;
 
     // public methods
@@ -35,14 +35,14 @@
     list();
 
     function list() {
-      LoginService.state(vm);
+      loginService.state(vm);
       // TODO set default maxSize of 500, later we need a list method that loads all activities at once
       var maxSize = 500;
-      ActivityService.list(maxSize).then(function(data) {
+      activityService.list(maxSize).then(function(data) {
         vm.activities = data;
         getPieOverview(vm.activities.content);
       });
-      ActivityService.list(maxSize, 'Running').then(function(data) {
+      activityService.list(maxSize, 'Running').then(function(data) {
         vm.runs = data;
         refreshLineKmPerMonth();
       });
@@ -63,21 +63,19 @@
         if (groupBy === 'year') { groupByString = readableDateLong[0]; }
         else if (groupBy === 'month') { groupByString = readableDateLong[1] + '-' + readableDateLong[0]; }
         else if (groupBy === 'day') { groupByString = readableDateShort[2] + '.' + readableDateShort[1]; }
-        
 
         if(!countObject[groupByString]) {
           countObject[groupByString] = parseFloat((activites[i].distance).toFixed(2,10));
         } else {
           countObject[groupByString] += parseFloat((activites[i].distance).toFixed(2,10));
         }
-
       }
 
       for (var key in countObject) {
         seriesArray.push(countObject[key]);
-        vm.lineKmPerMonthLabels.push(key);     
+        vm.lineKmPerMonthLabels.push(key);
       }
-      
+
       //need Array in Array for data since "series" allows multiple lines -> multiple data-arrays in main data-array
       vm.lineKmPerMonthData.push(seriesArray);
     }
@@ -100,7 +98,7 @@
     }
 
     function refreshLineKmPerMonth() {
-        getLineKmPerMonth(vm.runs.content, vm.averageKmDropdown);
+      getLineKmPerMonth(vm.runs.content, vm.averageKmDropdown);
     }
   }
 })();

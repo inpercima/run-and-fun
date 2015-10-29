@@ -1,15 +1,16 @@
 (function() {
   'use strict';
-  angular.module('runAndFun').service('LoginService', LoginService);
+  angular.module('app').service('loginService', loginService);
 
-  LoginService.$inject = [ '$http' ];
+  loginService.$inject = [ '$http', '$log' ];
 
-  function LoginService($http) {
+  function loginService($http, $log) {
     // public methods
+    /* jshint validthis: true */
     this.state = state;
 
     function state(vm) {
-      console.debug('LoginService.state');
+      $log.debug('loginService.state');
       $http.get('/state').success(function(data) {
         vm.appState = data;
       });

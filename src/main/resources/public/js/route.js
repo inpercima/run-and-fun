@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  angular.module('runAndFun').config([ '$routeProvider', function($routeProvider) {
+  angular.module('app').config([ '$routeProvider', function($routeProvider) {
     $routeProvider.when('/', {
       templateUrl : 'partials/home.html',
       controller : 'LoginController',
