@@ -1,35 +1,20 @@
 (function() {
   'use strict';
-  angular.module('runAndFun').service('ActivityService', ActivityService);
+  angular.module('app').service('activityService', activityService);
 
-  ActivityService.$inject = [ '$http', 'DateTimeUtils' ];
+  activityService.$inject = [ '$http', '$log', 'dateTimeUtils' ];
 
-  function ActivityService($http, DateTimeUtils) {
+  function activityService($http, $log, dateTimeUtils) {
     // public methods
+    /* jshint validthis: true */
     this.list = list;
+    /* jshint validthis: true */
     this.recalculateTotals = recalculateTotals;
 
-    function list(size, type, minDate, maxDate, minDistance, maxDistance, query) {
-      var url = '/listActivities?size=' + size;
-      if (type) {
-        url += '&type=' + type;
-      }
-      if (minDate) {
-        url += '&minDate=' + minDate;
-      }
-      if (maxDate) {
-        url += '&maxDate=' + maxDate;
-      }
-      if (minDistance) {
-        url += '&minDistance=' + minDistance;
-      }
-      if (maxDistance) {
-        url += '&maxDistance=' + maxDistance;
-      }
-      if (query) {
-        url += '&query=' + query;
-      }
-      console.debug('ActivityService ' + url);
+    function list(params) {
+      var url = '/listActivities?size=' + params.size;
+      url += addParams(params);
+      $log.debug('activityService ' + url);
       return $http.get(url).then(function(result) {
         var activities = result.data;
         enrichWithTimePerKm(activities.content);
@@ -39,26 +24,26 @@
     }
 
     function recalculateTotals(vm) {
-      // console.debug('recalculateTotals');
+      $log.debug('recalculateTotals');
       vm.totalActivities = vm.activities.content.length;
       vm.totalDistance = getTotalDistance(vm.activities.content);
       var totalTime = getTotalTime(vm.activities.content);
-      vm.totalDuration = DateTimeUtils.formatTime(totalTime);
-      vm.totalTimePerKm = DateTimeUtils.formatTime(calcTimePerKm(totalTime, vm.totalDistance));
-      vm.totalTimePer5Km = DateTimeUtils.formatTime(5 * calcTimePerKm(totalTime, vm.totalDistance));
-      vm.totalTimePer10Km = DateTimeUtils.formatTime(10 * calcTimePerKm(totalTime, vm.totalDistance));
+      vm.totalDuration = dateTimeUtils.formatTime(totalTime);
+      vm.totalTimePerKm = dateTimeUtils.formatTime(calcTimePerKm(totalTime, vm.totalDistance));
+      vm.totalTimePer5Km = dateTimeUtils.formatTime(5 * calcTimePerKm(totalTime, vm.totalDistance));
+      vm.totalTimePer10Km = dateTimeUtils.formatTime(10 * calcTimePerKm(totalTime, vm.totalDistance));
     }
 
     var distanceHalfMarathon = 21.097;
 
     function enrichWithTimePerKm(content) {
-      // console.debug('enrichWithTimePerKm');
+      $log.debug('enrichWithTimePerKm');
       angular.forEach(content, function(activity) {
-        var seconds = DateTimeUtils.formattedTimeToSeconds(activity.duration);
+        var seconds = dateTimeUtils.formattedTimeToSeconds(activity.duration);
         activity.timePerKmInSeconds = calcTimePerKm(seconds, activity.distance);
-        activity.timePerKm = DateTimeUtils.formatTime(activity.timePerKmInSeconds);
-        activity.timePer5Km = DateTimeUtils.formatTime(calcTimePerKm(5 * seconds, activity.distance));
-        activity.timePer10Km = DateTimeUtils.formatTime(calcTimePerKm(10 * seconds, activity.distance));
+        activity.timePerKm = dateTimeUtils.formatTime(activity.timePerKmInSeconds);
+        activity.timePer5Km = dateTimeUtils.formatTime(calcTimePerKm(5 * seconds, activity.distance));
+        activity.timePer10Km = dateTimeUtils.formatTime(calcTimePerKm(10 * seconds, activity.distance));
 
         activity.additionalInfo = '';
         // prepend half marathon time if distance is in interval [17, 20]
@@ -80,7 +65,7 @@
     }
 
     function enrichWithStatistics(activities) {
-      // console.debug('enrichWithStatistics');
+      $log.debug('enrichWithStatistics');
       angular.forEach(activities, function(activity) {
         var distanceRound = Math.round(activity.distance);
         var distanceStep = Math.ceil(Math.sqrt(distanceRound));
@@ -104,7 +89,7 @@
     }
 
     function addTimeForKm(activity, totalSeconds, distance) {
-      activity.additionalInfo += DateTimeUtils.formatTime(calcTimePerKm(distance * totalSeconds, activity.distance)) + 'min/' + distance + 'km';
+      activity.additionalInfo += dateTimeUtils.formatTime(calcTimePerKm(distance * totalSeconds, activity.distance)) + 'min/' + distance + 'km';
     }
 
     function calcTimePerKm(time, distance) {
@@ -112,7 +97,7 @@
     }
 
     function getTotalDistance(activities) {
-      // console.debug('getTotalDistance');
+      $log.debug('getTotalDistance');
       var sum = 0;
       for (var i = 0; i < activities.length; i++) {
         sum += activities[i].distance;
@@ -121,12 +106,22 @@
     }
 
     function getTotalTime(activities) {
-      // console.debug('getTotalTime');
+      $log.debug('getTotalTime');
       var sum = 0;
       for (var i = 0; i < activities.length; i++) {
-        sum += DateTimeUtils.formattedTimeToSeconds(activities[i].duration);
+        sum += dateTimeUtils.formattedTimeToSeconds(activities[i].duration);
       }
       return sum;
+    }
+
+    function addParams(params) {
+      var url = '';
+      for (var param in params) {
+        if (params[param]) {
+          url += '&' + param + '=' + params[param];
+        }
+      }
+      return url;
     }
   }
 })();

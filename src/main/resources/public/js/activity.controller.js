@@ -1,10 +1,10 @@
 (function() {
   'use strict';
-  angular.module('runAndFun').controller('ActivityController', ActivityController);
+  angular.module('app').controller('ActivityController', ActivityController);
 
-  ActivityController.$inject = [ 'ActivityService', 'LoginService', '$filter' ];
+  ActivityController.$inject = [ '$filter', '$log', 'activityService', 'loginService' ];
 
-  function ActivityController(ActivityService, LoginService, $filter) {
+  function ActivityController($filter, $log, activityService, loginService) {
     var vm = this;
 
     // public methods
@@ -39,8 +39,8 @@
     list();
 
     function list() {
-      console.debug('ActivityController.list');
-      LoginService.state(vm);
+      $log.debug('ActivityController.list');
+      loginService.state(vm);
       var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
       var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
       if (vm.filterYear.key) {
@@ -55,18 +55,26 @@
       } else {
         filterType = '';
       }
-      ActivityService.list(vm.size, filterType, minDate, maxDate, vm.filterMinDistance, vm.filterMaxDistance,
-          vm.filterFulltext).then(function(data) {
+      var params = {
+        'size': vm.size,
+        'type': filterType,
+        'minDate': minDate,
+        'maxDate': maxDate,
+        'minDistance': vm.filterMinDistance,
+        'maxDistance': vm.filterMaxDistance,
+        'query': vm.filterFulltext
+      };
+      activityService.list(params).then(function(data) {
         vm.activities = data;
-        ActivityService.recalculateTotals(vm);
+        activityService.recalculateTotals(vm);
       });
     }
 
     function remove(activity) {
-      console.debug('ActivityController.remove');
+      $log.debug('ActivityController.remove');
       var index = vm.activities.content.indexOf(activity);
       vm.activities.content.splice(index, 1);
-      ActivityService.recalculateTotals(vm);
+      activityService.recalculateTotals(vm);
     }
 
     function years() {

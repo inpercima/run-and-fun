@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  angular.module('runAndFun').directive('navbar', function() {
+  angular.module('app').directive('navbar', function() {
     return {
       controller : [ '$location', function($location) {
         this.navClass = function(tabName) {

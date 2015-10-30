@@ -1,10 +1,10 @@
 (function() {
   'use strict';
-  angular.module('runAndFun').controller('LoginController', LoginController);
+  angular.module('app').controller('LoginController', LoginController);
 
-  LoginController.$inject = [ 'LoginService' ];
+  LoginController.$inject = [ '$log', 'loginService' ];
 
-  function LoginController(LoginService) {
+  function LoginController($log, loginService) {
     var vm = this;
 
     // public methods
@@ -14,8 +14,8 @@
     state();
 
     function state() {
-      console.debug('LoginController.state');
-      LoginService.state(vm);
+      $log.debug('LoginController.state');
+      loginService.state(vm);
     }
   }
 })();
