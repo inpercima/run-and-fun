@@ -12,8 +12,7 @@
     this.recalculateTotals = recalculateTotals;
 
     function list(params) {
-      var url = '/listActivities?size=' + params.size;
-      url += addParams(params);
+      var url = '/listActivities' + addParams(params);
       $log.debug('activityService ' + url);
       return $http.get(url).then(function(result) {
         var activities = result.data;
@@ -115,10 +114,11 @@
     }
 
     function addParams(params) {
-      var url = '';
+      var url = '?';
       for (var param in params) {
         if (params[param]) {
-          url += '&' + param + '=' + params[param];
+          url = url === '?' ? url : url + '&';
+          url += param + '=' + params[param];
         }
       }
       return url;
