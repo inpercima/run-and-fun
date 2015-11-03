@@ -24,10 +24,11 @@
       var hr = Math.floor(seconds / 3600);
       var min = Math.floor((seconds - (hr * 3600)) / 60);
       var sec = Math.floor(seconds - (hr * 3600) - (min * 60));
-      hr = hr < 1 ? '00' : (hr < 10 ? '0' + hr : hr);
-      min = min < 10 ? '0' + min : min;
-      sec = sec < 10 ? '0' + sec : sec;
-      return hr + ':' + min + ':' + sec;
+      return getTimePart(hr) + ':' + getTimePart(min) + ':' + getTimePart(sec);
+    }
+
+    function getTimePart(part) {
+      return part < 1 ? '00' : (part < 10 ? '0' + part : part);
     }
   }
 })();
