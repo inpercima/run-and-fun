@@ -36,13 +36,15 @@
 
     function list() {
       loginService.state(vm);
-      // TODO set default maxSize of 500, later we need a list method that loads all activities at once
-      var maxSize = 500;
-      activityService.list(maxSize).then(function(data) {
+      var params = {
+        'size': -1
+      };
+      activityService.list(params).then(function(data) {
         vm.activities = data;
         getPieOverview(vm.activities.content);
       });
-      activityService.list(maxSize, 'Running').then(function(data) {
+      params.type = 'Running';
+      activityService.list(params).then(function(data) {
         vm.runs = data;
         refreshLineKmPerMonth();
       });

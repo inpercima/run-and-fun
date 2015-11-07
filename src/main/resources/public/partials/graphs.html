@@ -3,7 +3,7 @@
 </div>
 <div>
   <h2>Distribution of activities</h2>
-  <p data-ng-cloak>All Activities: {{vm.activities.totalElements}}</p>
+  <p data-ng-cloak>All Activities: {{vm.activities.numberOfElements}}</p>
   <canvas id="pie" class="chart chart-pie"
     chart-data="vm.pieOverviewData" 
     chart-labels="vm.pieOverviewLabels"
@@ -18,7 +18,7 @@
       <option value="day">Day</option>
     </select> for running activities
   </h2>
-  <p data-ng-cloak>Running Activities: {{vm.runs.totalElements}}</p>
+  <p data-ng-cloak>Running Activities: {{vm.runs.numberOfElements}}</p>
   <canvas id="line" class="chart chart-line" 
     chart-data="vm.lineKmPerMonthData"
     chart-labels="vm.lineKmPerMonthLabels">

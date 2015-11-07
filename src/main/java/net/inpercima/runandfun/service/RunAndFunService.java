@@ -24,8 +24,10 @@ public interface RunAndFunService {
 
     void indexActivities(String accessToken);
 
-    Page<Activity> listActivities(Pageable pageable, String type, LocalDate minDate, LocalDate maxDate,
-            Float minDistance, Float maxDistance, String query);
+    Page<Activity> listAllActivitiesByType(String type);
+
+    Page<Activity> listActivities(Pageable pageable, String type, LocalDate minDate, LocalDate maxDate, Float minDistance,
+            Float maxDistance, String query);
 
     AppState getAppState(String accessToken);
 
