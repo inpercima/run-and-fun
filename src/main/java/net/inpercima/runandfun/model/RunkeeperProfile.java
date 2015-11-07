@@ -1,5 +1,7 @@
 package net.inpercima.runandfun.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -7,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @since 11.02.2015
  */
 public class RunkeeperProfile {
+
+    private static final String SEPARATOR_USER = "user/";
 
     private String name;
 
@@ -20,6 +24,8 @@ public class RunkeeperProfile {
     private boolean elite;
 
     private String gender;
+
+    private String profile;
 
     public String getName() {
         return name;
@@ -67,6 +73,18 @@ public class RunkeeperProfile {
 
     public void setGender(final String gender) {
         this.gender = gender;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public String getUsername() {
+        return StringUtils.substringAfter(getProfile(), SEPARATOR_USER);
     }
 
 }

@@ -9,6 +9,8 @@ public class AppState {
     private String accessToken;
 
     private String username;
+    
+    private String fullName;
 
     public String getClientId() {
         return clientId;
@@ -40,5 +42,13 @@ public class AppState {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

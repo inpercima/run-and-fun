@@ -39,48 +39,50 @@
   <table class="table table-striped">
     <caption data-ng-bind="title"></caption>
     <thead>
-    <tr>
-      <th><a href="" data-ng-click="vm.predicate = 'date'; vm.reverse=!vm.reverse" title="Order by date">Date</a></th>
-      <th><a href="" data-ng-click="vm.predicate = 'distance'; vm.reverse=!vm.reverse" title="Order by distance">Distance</a></th>
-      <th><a href="" data-ng-click="vm.predicate = 'duration'; vm.reverse=!vm.reverse" title="Order by duration">Duration</a></th>
-      <th><a href="" data-ng-click="vm.predicate = 'timePerKm'; vm.reverse=!vm.reverse" title="Order by time for one kilometer">Time/km</a></th>
-      <th><a href="" data-ng-click="vm.predicate = 'timePer5Km'; vm.reverse=!vm.reverse" title="Order by time for five kilometers">Time/5km</a></th>
-      <th><a href="" data-ng-click="vm.predicate = 'timePer10Km'; vm.reverse=!vm.reverse" title="Order by time for ten kilometers">Time/10km</a></th>
-      <th class="sr-only">Functions</th>
-    </tr>
+      <tr>
+        <th><a href="" data-ng-click="vm.predicate = 'date'; vm.reverse=!vm.reverse" title="Order by date">Date</a></th>
+        <th><a href="" data-ng-click="vm.predicate = 'distance'; vm.reverse=!vm.reverse" title="Order by distance">Distance</a></th>
+        <th><a href="" data-ng-click="vm.predicate = 'duration'; vm.reverse=!vm.reverse" title="Order by duration">Duration</a></th>
+        <th><a href="" data-ng-click="vm.predicate = 'timePerKm'; vm.reverse=!vm.reverse" title="Order by time for one kilometer">Time/km</a></th>
+        <th><a href="" data-ng-click="vm.predicate = 'timePer5Km'; vm.reverse=!vm.reverse" title="Order by time for five kilometers">Time/5km</a></th>
+        <th><a href="" data-ng-click="vm.predicate = 'timePer10Km'; vm.reverse=!vm.reverse" title="Order by time for ten kilometers">Time/10km</a></th>
+        <th class="sr-only">Functions</th>
+      </tr>
     </thead>
     <tbody>
-    <tr class="success" data-ng-hide="vm.activities.totalElements < 1">
-      <td>Total: <span data-ng-bind="vm.totalActivities"></span></td>
-      <td><span data-ng-bind="vm.totalDistance | number:2"></span></td>
-      <td><span data-ng-bind="vm.totalDuration"></span></td>
-      <td><span data-ng-bind="vm.totalTimePerKm"></span></td>
-      <td><span data-ng-bind="vm.totalTimePer5Km"></span></td>
-      <td><span data-ng-bind="vm.totalTimePer10Km"></span></td>
-      <td></td>
-    </tr>
-    <tr class="warning" data-ng-show="vm.activities.totalElements < 1">
-      <td>No activities found!</td>
-      <td/><td/><td/><td/><td/><td/>
-    </tr>
-    <tr data-ng-repeat="activity in vm.activities.content | orderBy:vm.predicate:vm.reverse">
-      <td><span data-ng-bind="::activity.date | date:'dd.MM.yyyy'"></span></td>
-      <td><span data-ng-bind="::activity.distance | number:2"></span></td>
-      <td><span data-ng-bind="::activity.duration"></span></td>
-      <td><span data-ng-bind="::activity.timePerKm"></span></td>
-      <td><span data-ng-bind="::activity.timePer5Km"></span></td>
-      <td><span data-ng-bind="::activity.timePer10Km"></span></td>
-      <td>
-        <span data-ng-show="activity.id">
-          <a class="glyphicon glyphicon-globe" data-ng-href="http://runkeeper.com/user/sepe/activity/{{::activity.id}}"
-            target="_blank" title="Open activity {{::activity.id}} on runkeeper.com">
-          </a>
-          <a class="glyphicon glyphicon-remove" data-ng-click="vm.remove(activity)"
-            title="Remove activity {{::activity.id}} from view">
-          </a>
-        </span>
-      </td>
-    </tr>
+      <tr class="success" data-ng-hide="vm.activities.totalElements < 1">
+        <td>Total: <span data-ng-bind="vm.totalActivities"></span></td>
+        <td><span data-ng-bind="vm.totalDistance | number:2"></span></td>
+        <td><span data-ng-bind="vm.totalDuration"></span></td>
+        <td><span data-ng-bind="vm.totalTimePerKm"></span></td>
+        <td><span data-ng-bind="vm.totalTimePer5Km"></span></td>
+        <td><span data-ng-bind="vm.totalTimePer10Km"></span></td>
+        <td></td>
+      </tr>
+      <tr class="warning" data-ng-show="vm.activities.totalElements < 1">
+        <td>No activities found!</td>
+        <td/><td/><td/><td/><td/><td/>
+      </tr>
+      <tr data-ng-repeat="activity in vm.activities.content | orderBy:vm.predicate:vm.reverse">
+        <td><span data-ng-bind="::activity.date | date:'dd.MM.yyyy'"></span></td>
+        <td><span data-ng-bind="::activity.distance | number:2"></span></td>
+        <td><span data-ng-bind="::activity.duration"></span></td>
+        <td><span data-ng-bind="::activity.timePerKm"></span></td>
+        <td><span data-ng-bind="::activity.timePer5Km"></span></td>
+        <td><span data-ng-bind="::activity.timePer10Km"></span></td>
+        <td>
+          <span data-ng-show="activity.id">
+            <a class="glyphicon glyphicon-globe" data-ng-href="http://runkeeper.com/user/{{vm.appState.username}}/activity/{{::activity.id}}"
+              target="_blank" title="Open activity {{::activity.id}} on runkeeper.com">
+            </a>
+            <a class="glyphicon glyphicon-list-alt" title="{{::activity.additionalInfo}}"></a>
+            <a class="glyphicon glyphicon-stats" title="{{::activity.intervalStats}}"></a>
+            <a class="glyphicon glyphicon-remove" data-ng-click="vm.remove(activity)"
+              title="Remove activity {{::activity.id}} from view">
+            </a>
+          </span>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

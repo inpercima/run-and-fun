@@ -1,5 +1,7 @@
 # run-and-fun
 
+![MIT license](https://img.shields.io/github/license/mashape/apistatus.svg)
+
 Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).
 
 # Usage
@@ -12,7 +14,6 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
 
     # use existing runkeeper app or register new app at http://runkeeper.com/partner/applications
     # add clientId, clientSecret and redirectUri to application.properties
-    # redirectUri should end with /verify
 
     # install tools and frontend dependencies
     npm install

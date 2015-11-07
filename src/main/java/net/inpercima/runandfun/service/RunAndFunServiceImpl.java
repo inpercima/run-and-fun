@@ -104,15 +104,15 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         int pageSize = RunkeeperApiConstants.DEFAULT_PAGE_SIZE;
         if (from.until(LocalDate.now(), ChronoUnit.DAYS) > pageSize) {
             // get one item only to get full size
-            final HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(
-                    ACTIVITIES_URL_WITH_PAGE_SIZE_ONE, ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
+            final HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(ACTIVITIES_URL_WITH_PAGE_SIZE_ONE,
+                    ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
             pageSize = activitiesForSize.getBody().getSize();
         }
 
         // get new activities
         return helperService.getForObject(
-                String.format(ACTIVITIES_URL_NO_EARLIER_THAN, from.format(DateTimeFormatter.ISO_LOCAL_DATE), pageSize),
-                ACTIVITIES_APP, accessToken, RunkeeperActivities.class).getBody();
+                String.format(ACTIVITIES_URL_NO_EARLIER_THAN, from.format(DateTimeFormatter.ISO_LOCAL_DATE), pageSize), ACTIVITIES_APP,
+                accessToken, RunkeeperActivities.class).getBody();
     }
 
     @Override
@@ -133,13 +133,13 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     private LocalDate calculateFetchDate() {
         final Pageable pageable = new PageRequest(0, 1, Direction.DESC, Activity.FIELD_DATE);
         final Iterator<Activity> lastFetchedActivity = repository.findAll(pageable).getContent().iterator();
-        return lastFetchedActivity.hasNext() ? lastFetchedActivity.next().getDate().toInstant()
-                .atZone(ZoneId.systemDefault()).toLocalDate() : INITIAL_RELEASE_OF_RUNKEEPER;
+        return lastFetchedActivity.hasNext() ? lastFetchedActivity.next().getDate().toInstant().atZone(ZoneId.systemDefault())
+                .toLocalDate() : INITIAL_RELEASE_OF_RUNKEEPER;
     }
 
     @Override
-    public Page<Activity> listActivities(final Pageable pageable, final String types, final LocalDate minDate,
-            final LocalDate maxDate, final Float minDistance, final Float maxDistance, final String query) {
+    public Page<Activity> listActivities(final Pageable pageable, final String types, final LocalDate minDate, final LocalDate maxDate,
+            final Float minDistance, final Float maxDistance, final String query) {
         final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         if (!Strings.isNullOrEmpty(types)) {
             final BoolQueryBuilder typesQuery = QueryBuilders.boolQuery();
@@ -161,15 +161,15 @@ public class RunAndFunServiceImpl implements RunAndFunService {
             queryBuilder.must(QueryBuilders.matchAllQuery());
         }
         LOGGER.info("{}", queryBuilder);
-        return elasticsearchTemplate.queryForPage(
-                new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(), Activity.class);
+        return elasticsearchTemplate.queryForPage(new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(),
+                Activity.class);
     }
 
-    private void addFulltextQuery(final BoolQueryBuilder queryBuilder, final String query) {
+    private static void addFulltextQuery(final BoolQueryBuilder queryBuilder, final String query) {
         queryBuilder.must(QueryBuilders.termQuery("_all", query.trim()));
     }
 
-    private void addDateQuery(final BoolQueryBuilder queryBuilder, final LocalDate minDate, final LocalDate maxDate) {
+    private static void addDateQuery(final BoolQueryBuilder queryBuilder, final LocalDate minDate, final LocalDate maxDate) {
         final RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery(Activity.FIELD_DATE);
         if (minDate != null) {
             rangeQuery.gte(minDate);
@@ -180,7 +180,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         queryBuilder.must(rangeQuery);
     }
 
-    private void addDistanceQuery(final BoolQueryBuilder queryBuilder, final Float minDistance, final Float maxDistance) {
+    private static void addDistanceQuery(final BoolQueryBuilder queryBuilder, final Float minDistance, final Float maxDistance) {
         final RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery(Activity.FIELD_DISTANCE);
         if (minDistance != null) {
             rangeQuery.gte(minDistance);
@@ -199,7 +199,8 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         state.setRedirectUri(helperService.getRedirectUri());
         if (state.getAccessToken() != null) {
             final RunkeeperProfile profile = getProfile(state.getAccessToken());
-            state.setUsername(profile.getName());
+            state.setFullName(profile.getName());
+            state.setUsername(profile.getUsername());
         }
         return state;
     }

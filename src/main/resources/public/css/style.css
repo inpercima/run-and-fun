@@ -1,0 +1,11 @@
+/**
+ * @author Marcel Jänicke
+ * @since 08.04.2015
+*/
+a.glyphicon {
+	text-decoration: none;
+}
+
+.glyphicon.glyphicon-remove {
+	cursor: pointer;
+}
