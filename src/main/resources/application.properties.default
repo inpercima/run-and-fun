@@ -4,7 +4,7 @@
 app.clientId=
 app.clientSecret=
 # redirectUri must end with /verify
-app.redirectUri=
+app.redirectUri=http://localhost:8080/verify
 
 # ELASTICSEARCH (ElasticsearchProperties})
 spring.data.elasticsearch.cluster-name=run-and-fun

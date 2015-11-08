@@ -1,5 +1,8 @@
 # Created by http://www.gitignore.io
 
+# spring boot local environment
+application.properties
+
 ### Eclipse ###
 .metadata
 .gradle
