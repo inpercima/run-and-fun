@@ -138,6 +138,13 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
+    public Page<Activity> listAllActivitiesByType(String type) {
+        final int count = type != null ? repository.countByType(type) : (int) repository.count();
+        final Pageable pageable = new PageRequest(0, count);
+        return repository.findAllByTypeOrderByDateDesc(type, pageable);
+    }
+
+    @Override
     public Page<Activity> listActivities(final Pageable pageable, final String types, final LocalDate minDate, final LocalDate maxDate,
             final Float minDistance, final Float maxDistance, final String query) {
         final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();

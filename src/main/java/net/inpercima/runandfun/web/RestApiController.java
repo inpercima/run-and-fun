@@ -48,16 +48,21 @@ public class RestApiController {
         return appState;
     }
 
+    @RequestMapping(value = "/listActivitiesByType", method = RequestMethod.GET)
+    public Page<Activity> listActivitiesByType(@RequestParam(required = false) final String type) {
+        LOGGER.debug("listActivitiesByType '{}'", type);
+        return runAndFunService.listAllActivitiesByType(type);
+    }
+
     @RequestMapping(value = "/listActivities", method = RequestMethod.GET)
-    public Page<Activity> listActivities(
-            @PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable,
+    public Page<Activity> listActivities(@PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable,
             @RequestParam(required = false) final String type,
             @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate minDate,
             @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate maxDate,
-            @RequestParam(required = false) final Float minDistance,
-            @RequestParam(required = false) final Float maxDistance, @RequestParam(required = false) final String query) {
-        LOGGER.debug("listActivities of type '{}' for date between {} - {}, distance between {} - {}, {}", type,
-                minDate, maxDate, minDistance, maxDistance, pageable);
+            @RequestParam(required = false) final Float minDistance, @RequestParam(required = false) final Float maxDistance,
+            @RequestParam(required = false) final String query) {
+        LOGGER.debug("listActivities of type '{}' for date between {} - {}, distance between {} - {}, {}", type, minDate, maxDate,
+                minDistance, maxDistance, pageable);
         return runAndFunService.listActivities(pageable, type, minDate, maxDate, minDistance, maxDistance, query);
     }
 

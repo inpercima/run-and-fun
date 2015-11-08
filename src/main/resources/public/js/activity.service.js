@@ -12,7 +12,11 @@
     this.recalculateTotals = recalculateTotals;
 
     function list(params) {
-      var url = '/listActivities' + addParams(params);
+      var url = '/listActivities';
+      if (params.size === -1) {
+        url += 'ByType';
+      }
+      url += addParams(params);
       $log.debug('activityService ' + url);
       return $http.get(url).then(function(result) {
         var activities = result.data;

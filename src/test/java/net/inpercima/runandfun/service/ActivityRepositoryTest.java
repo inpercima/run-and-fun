@@ -1,11 +1,13 @@
 package net.inpercima.runandfun.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
 import net.inpercima.runandfun.Application;
 import net.inpercima.runandfun.model.Activity;
+import net.inpercima.runandfun.model.RunkeeperItem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,5 +32,28 @@ public class ActivityRepositoryTest {
         final Page<Activity> page = repository.findAll(pageable);
         final List<Activity> content = page.getContent();
         assertEquals(1, content.size());
+    }
+
+    @Test
+    public void countAndfindAllByType() {
+        final int count = repository.countByType(RunkeeperItem.TYPE_RUNNING);
+        final Pageable pageable = new PageRequest(0, count);
+        final Page<Activity> page = repository.findAllByTypeOrderByDateDesc(RunkeeperItem.TYPE_RUNNING, pageable);
+        assertNotNull(page);
+        final List<Activity> content = page.getContent();
+        assertEquals(count, content.size());
+        content.stream().forEach(result -> {
+            assertEquals(RunkeeperItem.TYPE_RUNNING, result.getType());
+        });
+    }
+
+    @Test
+    public void countAndfindAllByTypeNull() {
+        final long count = repository.count();
+        final Pageable pageable = new PageRequest(0, (int) count);
+        final Page<Activity> page = repository.findAllByTypeOrderByDateDesc(null, pageable);
+        assertNotNull(page);
+        final List<Activity> content = page.getContent();
+        assertEquals(count, content.size());
     }
 }
