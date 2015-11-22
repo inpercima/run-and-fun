@@ -5,9 +5,21 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg : grunt.file.readJSON('package.json'),
 
-    src_dir_js : [ 'src/main/resources/public/js' ],
+    build_app_js: 'build/resources/main/public/js/app.js',
 
-    build_dir_js : [ 'build/resources/main/public/js' ],
+    build_app_min_js: 'build/resources/main/public/js/app.min.js',
+
+    build_dir_css: 'build/resources/main/public/css',
+
+    build_dir_fonts: 'build/resources/main/public/fonts',
+
+    build_dir_js: 'build/resources/main/public/js',
+
+    gruntfile_js: 'Gruntfile.js',
+
+    src_app_js: 'src/main/resources/public/js/app.js',
+
+    src_files_js: 'src/main/resources/public/js/**/*.js',
 
     jshint : {
       options : {
@@ -28,11 +40,8 @@ module.exports = function(grunt) {
         unused : true,
         'quotmark' : 'single'
       },
-      gruntfile : {
-        src : 'Gruntfile.js'
-      },
-      main_js : {
-        src : [ '<%= src_dir_js %>/**/*.js' ]
+      dist : {
+        src : [ '<%= gruntfile_js %>', '<%= src_files_js %>' ]
       }
     },
     concat : {
@@ -41,12 +50,12 @@ module.exports = function(grunt) {
       },
       // first build without app.js
       core : {
-        src : [ '<%= src_dir_js %>/**/*.js', '!<%= src_dir_js %>/app.js' ],
-        dest : '<%= build_dir_js %>/app.js'
+        src : [ '<%= src_files_js %>', '!<%= src_app_js %>' ],
+        dest : '<%= build_app_js %>'
       },
       // second build with prepended app.js
       dist : {
-        src : [ '<%= src_dir_js %>/app.js', '<%= concat.core.dest %>' ],
+        src : [ '<%= src_app_js %>', '<%= concat.core.dest %>' ],
         dest : '<%= concat.core.dest %>'
       }
     },
@@ -55,24 +64,36 @@ module.exports = function(grunt) {
         // the banner is inserted at the top of the output
         banner : '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
       },
-      dist : {
-        files : {
-          '<%= build_dir_js %>/app.min.js' : [ '<%= concat.dist.dest %>' ]
-        }
+      dist: {
+        src: '<%= concat.dist.dest %>',
+        dest: '<%= build_app_min_js %>'
       }
     },
-    watch : {
-      gruntfile : {
-        files : '<%= jshint.gruntfile.src %>',
-        tasks : [ 'jshint:gruntfile' ]
-      },
-      main_js : {
-        files : '<%= src_dir_js %>/**/*.js',
-        tasks : [ 'jshint:main_js', 'concat', 'uglify' ]
+    watch: {
+      files: [ '<%= gruntfile_js %>', '<%= src_files_js %>' ],
+      tasks: [ 'jshint', 'concat', 'uglify', 'clean' ]
+    },
+    clean: {
+      dist: {
+        src: '<%= build_app_js %>'
+      }
+    },
+    bowercopy: {
+      dist: {
+        files: {
+          '<%= build_dir_css %>/angular-chart.min.css': 'angular-chart.js/dist/angular-chart.min.css',
+          '<%= build_dir_css %>/bootstrap.min.css': 'bootstrap/dist/css/bootstrap.min.css',
+          '<%= build_dir_fonts %>': 'bootstrap/dist/fonts',
+          '<%= build_dir_js %>/angular.min.js': 'angularjs/angular.min.js',
+          '<%= build_dir_js %>/angular-chart.min.js': 'angular-chart.js/dist/angular-chart.min.js',
+          '<%= build_dir_js %>/angular-route.min.js': 'angular-route/angular-route.min.js',
+          '<%= build_dir_js %>/Chart.min.js': 'Chart.js/Chart.min.js',
+          '<%= build_dir_js %>/lodash.min.js': 'lodash/lodash.min.js'
+        }
       }
     }
   });
 
-  grunt.registerTask('build', [ 'jshint', 'concat', 'uglify' ]);
+  grunt.registerTask('build', [ 'jshint', 'concat', 'uglify', 'bowercopy', 'clean' ]);
   grunt.registerTask('default', [ 'jshint' ]);
 };

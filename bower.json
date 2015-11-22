@@ -10,7 +10,6 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
     "build/resources/main/public/bower_components",
     "test",
     "tests"
