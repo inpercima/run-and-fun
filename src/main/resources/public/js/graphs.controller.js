@@ -20,12 +20,8 @@
     vm.averageKmDropdown = 'month';
 
     //private fields
-    var countObject = {};
-    var groupByString = null;
-    var readableDateLong = [];
-    var readableDateShort = [];
-    var seriesArray = [];
-
+    vm.changeChartType = changeChartType;
+    vm.kindOfChart = 'Pie';
     vm.lineKmPerMonthData = [];
     vm.lineKmPerMonthLabels = [];
     vm.pieOverviewData = [];
@@ -50,57 +46,67 @@
       });
     }
 
-    function getLineKmPerMonth(activites, groupBy){
-      countObject = {};
-      seriesArray = [];
+    function getLineKmPerMonth(activities, groupBy){
       vm.lineKmPerMonthData = [];
       vm.lineKmPerMonthLabels = [];
 
-      activites = _.sortBy(activites, 'date');
+      activities = _.sortBy(activities, 'date');
 
-      for (var i = 0, len = activites.length; i < len; i++) {
-        readableDateLong = $filter('date')(activites[i].date, 'yyyy-MMM-dd').split('-');
-        readableDateShort = $filter('date')(activites[i].date, 'yyyy-MM-dd').split('-');
+      var data = {};
+      var labels = {};
+      var dash = '-';
+      var dot = '.';
+      for (var i = 0, len = activities.length; i < len; i++) {
+        var readableDateLong = $filter('date')(activities[i].date, 'yyyy-MMM-dd').split(dash);
+        var readableDateShort = $filter('date')(activities[i].date, 'yyyy-MM-dd').split(dash);
 
-        if (groupBy === 'year') { groupByString = readableDateLong[0]; }
-        else if (groupBy === 'month') { groupByString = readableDateLong[1] + '-' + readableDateLong[0]; }
-        else if (groupBy === 'day') { groupByString = readableDateShort[2] + '.' + readableDateShort[1]; }
-
-        if(!countObject[groupByString]) {
-          countObject[groupByString] = parseFloat((activites[i].distance).toFixed(2,10));
-        } else {
-          countObject[groupByString] += parseFloat((activites[i].distance).toFixed(2,10));
+        var label;
+        var groupByKey;
+        if (groupBy === 'year') {
+          label = readableDateLong[0];
+          groupByKey = label;
+        } else if (groupBy === 'month') {
+          label = readableDateLong[1] + dash + readableDateLong[0];
+          groupByKey = label;
+        } else if (groupBy === 'day') {
+          label = readableDateShort[2] + dot + readableDateShort[1];
+          groupByKey = label + dot + readableDateShort[0];
         }
+        var distance = parseFloat(activities[i].distance.toFixed(2,2));
+        data[groupByKey] = data[groupByKey] +  distance || distance;
+        labels[groupByKey] = labels[groupByKey] = label;
       }
 
-      for (var key in countObject) {
-        seriesArray.push(countObject[key]);
-        vm.lineKmPerMonthLabels.push(key);
+      var series = [];
+      for (var key in data) {
+        series.push(data[key]);
+        vm.lineKmPerMonthLabels.push(labels[key]);
       }
 
-      //need Array in Array for data since "series" allows multiple lines -> multiple data-arrays in main data-array
-      vm.lineKmPerMonthData.push(seriesArray);
+      // need array within array because series allows multiple lines -> multiple data-arrays in main data-array
+      vm.lineKmPerMonthData.push(series);
     }
 
-    function getPieOverview(activites){
-      countObject = {};
+    function getPieOverview(activities){
+      var data = {};
 
-      for (var i = 0, len = activites.length; i < len; i++) {
-        if(!countObject[activites[i].type]) {
-          countObject[activites[i].type] = 1;
-        } else {
-          countObject[activites[i].type] = parseInt(countObject[activites[i].type]) + 1;
-        }
-      }
+      activities.reduce(function(obj, val){
+        obj[val.type] = obj[val.type] + 1 || 1;
+        return obj;
+      }, data);
 
-      for (var key in countObject) {
-        vm.pieOverviewData.push(countObject[key]);
+      for (var key in data) {
+        vm.pieOverviewData.push(data[key]);
         vm.pieOverviewLabels.push(key);
       }
     }
 
     function refreshLineKmPerMonth() {
       getLineKmPerMonth(vm.runs.content, vm.averageKmDropdown);
+    }
+
+    function changeChartType() {
+      vm.kindOfChart = vm.kindOfChart === 'PolarArea' ? 'Pie' : 'PolarArea';
     }
   }
 })();
