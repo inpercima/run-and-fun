@@ -9,11 +9,11 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     git clone https://github.com/inpercima/run-and-fun
     cd run-and-fun
 
-    # copy application.properties.default to application.properties
-    cp src/main/resources/application.properties.default src/main/resources/application.properties
+    # copy application-default.properties to application.properties
+    cp src/main/resources/application-default.properties src/main/resources/application.properties
 
     # use existing runkeeper app or register new app at http://runkeeper.com/partner/applications
-    # add clientId, clientSecret and redirectUri to application.properties
+    # define clientId, clientSecret and redirectUri within application.properties and remove all unchanged properties
 
     # install tools and frontend dependencies
     npm install
