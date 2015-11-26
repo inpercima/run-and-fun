@@ -7,6 +7,12 @@
           var currentRoute = $location.path().substring(1) || 'home';
           return currentRoute === tabName ? 'active' : '';
         };
+
+        this.navEntries = [
+          { display: 'Home', url: '' },
+          { display: 'Activities', url: 'activities' },
+          { display: 'Graphs', url: 'graphs' },
+        ];
       } ],
       controllerAs : 'tab',
       restrict : 'E',
