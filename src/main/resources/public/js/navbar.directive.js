@@ -4,7 +4,7 @@
     return {
       controller : [ '$location', function($location) {
         this.navClass = function(tabName) {
-          var currentRoute = $location.path().substring(1) || 'home';
+          var currentRoute = $location.path().substring(1);
           return currentRoute === tabName ? 'active' : '';
         };
 
