@@ -1,8 +1,8 @@
 <nav>
   <div data-ng-transclude></div>
   <ul class="nav nav-tabs">
-    <li data-ng-class="tab.navClass('home')"><a href="#/">Home</a></li>
-    <li data-ng-class="tab.navClass('activities')"><a href="#/activities">Activities</a></li>
-    <li data-ng-class="tab.navClass('graphs')"><a href="#/graphs">Graphs</a></li>
+    <li ng-repeat="entry in tab.navEntries" data-ng-class="tab.navClass(entry.url)">
+      <a ng-href="#/{{entry.url}}" ng-bind="entry.display"></a>
+    </li>
   </ul>
 </nav>
