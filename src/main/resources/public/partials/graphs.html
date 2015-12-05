@@ -8,14 +8,14 @@
   </h2>
   <p data-ng-cloak>All Activities: {{vm.activities.numberOfElements}}</p>
   <canvas id="pie" class="chart-base"
-    chart-data="vm.pieOverviewData" 
+    chart-data="vm.pieOverviewData"
     chart-labels="vm.pieOverviewLabels"
     chart-legend="true"
     chart-type="vm.kindOfChart">
   </canvas>
 </div>
 <div>
-  <h2>Show kilometers per 
+  <h2>Show kilometers per
     <select ng-model="vm.averageKmDropdown" ng-change="vm.refreshLineKmPerMonth();">
       <option value="year">Year</option>
       <option value="month" selected>Month</option>
@@ -23,7 +23,7 @@
     </select> for running activities
   </h2>
   <p data-ng-cloak>Running Activities: {{vm.runs.numberOfElements}}</p>
-  <canvas id="line" class="chart chart-line" 
+  <canvas id="line" class="chart chart-line"
     chart-data="vm.lineKmPerMonthData"
     chart-labels="vm.lineKmPerMonthLabels">
   </canvas>

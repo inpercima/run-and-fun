@@ -96,7 +96,7 @@
       vm.types.push(simpleKeyType('Walking'));
       vm.filterType.push(filterRunning);
     }
-    
+
     function simpleKeyYear(key) {
       return {
         'key' : key,

@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   angular.module('app').service('dateTimeUtils', dateTimeUtils);
-  
+
   dateTimeUtils.$inject = [ '$log' ];
 
   function dateTimeUtils($log) {
