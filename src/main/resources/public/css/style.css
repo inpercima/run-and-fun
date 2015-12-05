@@ -3,9 +3,9 @@
  * @since 08.04.2015
 */
 a.glyphicon {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 .glyphicon.glyphicon-remove {
-	cursor: pointer;
+  cursor: pointer;
 }

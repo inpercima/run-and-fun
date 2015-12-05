@@ -1,4 +1,4 @@
-{ 
+{
   "activity": {
     "properties": {
       "type": { "type": "string", "index": "analyzed" },
