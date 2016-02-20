@@ -15,10 +15,10 @@
     "tests"
   ],
   "dependencies": {
-    "angularjs": "~1.4.8",
-    "angular-route": "~1.4.8",
-    "bootstrap": "~3.3.5",
+    "angularjs": "~1.5.0",
+    "angular-route": "~1.5.0",
+    "bootstrap": "~3.3.6",
     "angular-chart.js": "~0.8.5",
-    "lodash": "^3.10.1"
+    "lodash": "~4.4.0"
   }
 }

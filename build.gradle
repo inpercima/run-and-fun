@@ -19,10 +19,10 @@ springBoot { mainClass = "net.inpercima.runandfun.Application" }
 
 repositories { mavenCentral() }
 dependencies {
-    def slf4jVersion = "1.7.12"
+    def slf4jVersion = "1.7.13"
 
     compile "org.slf4j:slf4j-api:$slf4jVersion",
-            "com.google.guava:guava:18.0"
+            "com.google.guava:guava:19.0"
 
     compile "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-starter-logging",

@@ -88,7 +88,7 @@ module.exports = function(grunt) {
           '<%= build_dir_js %>/angular-chart.min.js': 'angular-chart.js/dist/angular-chart.min.js',
           '<%= build_dir_js %>/angular-route.min.js': 'angular-route/angular-route.min.js',
           '<%= build_dir_js %>/Chart.min.js': 'Chart.js/Chart.min.js',
-          '<%= build_dir_js %>/lodash.min.js': 'lodash/lodash.min.js'
+          '<%= build_dir_js %>/lodash.min.js': 'lodash/dist/lodash.min.js'
         }
       }
     }
