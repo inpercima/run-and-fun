@@ -14,7 +14,7 @@
     function decorator($delegate) {
       var originalDebug = $delegate.debug;
       // intercept the call to $log.debug() and add our extension
-      $delegate.debug = function () {
+      $delegate.debug = function() {
         if ($logProvider.debugEnabled()) {
           var args = [].slice.call(arguments);
           args[0] = ['[DEBUG] ', new Date().toString(), ': ', args[0]].join('');

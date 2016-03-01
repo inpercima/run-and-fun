@@ -12,10 +12,10 @@
 
     // public fields
     vm.activities = {
-      totalElements : 0
+      totalElements: 0
     };
     vm.runs = {
-      totalElements : 0
+      totalElements: 0
     };
     vm.averageKmDropdown = 'month';
 
@@ -46,7 +46,7 @@
       });
     }
 
-    function getLineKmPerMonth(activities, groupBy){
+    function getLineKmPerMonth(activities, groupBy) {
       vm.lineKmPerMonthData = [];
       vm.lineKmPerMonthLabels = [];
 
@@ -72,8 +72,8 @@
           label = readableDateShort[2] + dot + readableDateShort[1];
           groupByKey = label + dot + readableDateShort[0];
         }
-        var distance = parseFloat(activities[i].distance.toFixed(2,2));
-        data[groupByKey] = data[groupByKey] +  distance || distance;
+        var distance = parseFloat(activities[i].distance.toFixed(2, 2));
+        data[groupByKey] = data[groupByKey] + distance || distance;
         labels[groupByKey] = labels[groupByKey] = label;
       }
 
@@ -87,10 +87,10 @@
       vm.lineKmPerMonthData.push(series);
     }
 
-    function getPieOverview(activities){
+    function getPieOverview(activities) {
       var data = {};
 
-      activities.reduce(function(obj, val){
+      activities.reduce(function(obj, val) {
         obj[val.type] = obj[val.type] + 1 || 1;
         return obj;
       }, data);

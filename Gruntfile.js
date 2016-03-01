@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
-    pkg : grunt.file.readJSON('package.json'),
+    pkg: grunt.file.readJSON('package.json'),
 
     build_app_js: 'build/resources/main/public/js/app.js',
 
@@ -21,48 +21,54 @@ module.exports = function(grunt) {
 
     src_files_js: 'src/main/resources/public/js/**/*.js',
 
-    jshint : {
-      options : {
-        boss : true,
-        browser : true,
-        curly : true,
-        esnext : true,
-        globals : {
-          angular : true,
-          '_' : true,
+    jshint: {
+      options: {
+        boss: true,
+        browser: true,
+        curly: true,
+        esnext: true,
+        globals: {
+          angular: true,
+          '_': true,
         },
-        immed : true,
-        newcap : true,
-        noarg : true,
-        node : true,
-        sub : true,
-        undef : true,
-        unused : true,
-        'quotmark' : 'single'
+        immed: true,
+        newcap: true,
+        noarg: true,
+        node: true,
+        sub: true,
+        undef: true,
+        unused: true,
+        'quotmark': 'single'
       },
-      dist : {
-        src : [ '<%= gruntfile_js %>', '<%= src_files_js %>' ]
+      dist: {
+        src: [ '<%= gruntfile_js %>', '<%= src_files_js %>' ]
       }
     },
-    concat : {
-      options : {
-        separator : grunt.util.linefeed
+    jscs: {
+      src: [ '<%= gruntfile_js %>', '<%= src_files_js %>' ],
+      options: {
+        config: '.jscs.json'
+      }
+    },
+    concat: {
+      options: {
+        separator: grunt.util.linefeed
       },
       // first build without app.js
-      core : {
-        src : [ '<%= src_files_js %>', '!<%= src_app_js %>' ],
-        dest : '<%= build_app_js %>'
+      core: {
+        src: [ '<%= src_files_js %>', '!<%= src_app_js %>' ],
+        dest: '<%= build_app_js %>'
       },
       // second build with prepended app.js
-      dist : {
-        src : [ '<%= src_app_js %>', '<%= concat.core.dest %>' ],
-        dest : '<%= concat.core.dest %>'
+      dist: {
+        src: [ '<%= src_app_js %>', '<%= concat.core.dest %>' ],
+        dest: '<%= concat.core.dest %>'
       }
     },
-    uglify : {
-      options : {
+    uglify: {
+      options: {
         // the banner is inserted at the top of the output
-        banner : '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
       },
       dist: {
         src: '<%= concat.dist.dest %>',
@@ -94,6 +100,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('build', [ 'jshint', 'concat', 'uglify', 'bowercopy', 'clean' ]);
-  grunt.registerTask('default', [ 'jshint' ]);
+  grunt.registerTask('build', [ 'jshint', 'jscs', 'concat', 'uglify', 'bowercopy', 'clean' ]);
+  grunt.registerTask('default', [ 'jshint', 'jscs' ]);
 };
