@@ -77,7 +77,7 @@
     }
 
     function rateByDistance(activity, activities, minDistance, maxDistance) {
-      var matches = activities.filter(function (current) {
+      var matches = activities.filter(function(current) {
         return current.distance > minDistance && current.distance <= maxDistance;
       }).sort(function(o1, o2) {
         return o1.timePerKmInSeconds - o2.timePerKmInSeconds;

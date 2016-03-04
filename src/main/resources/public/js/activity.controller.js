@@ -13,7 +13,7 @@
 
     // public fields
     vm.activities = {
-      totalElements : 0
+      totalElements: 0
     };
     vm.predicate = 'date';
     vm.reverse = true;
@@ -99,15 +99,15 @@
 
     function simpleKeyYear(key) {
       return {
-        'key' : key,
-        'year' : key === '' ? 'All years' : key
+        'key': key,
+        'year': key === '' ? 'All years' : key
       };
     }
 
     function simpleKeyType(key) {
       return {
-        'key' : key,
-        'type' : key
+        'key': key,
+        'type': key
       };
     }
   }
