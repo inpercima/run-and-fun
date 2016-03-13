@@ -77,7 +77,7 @@ module.exports = function(grunt) {
     },
     watch: {
       files: [ '<%= gruntfile_js %>', '<%= src_files_js %>' ],
-      tasks: [ 'jshint', 'concat', 'uglify', 'clean' ]
+      tasks: [ 'jshint', 'jscs', 'concat', 'uglify', 'bowercopy', 'clean' ]
     },
     clean: {
       dist: {
