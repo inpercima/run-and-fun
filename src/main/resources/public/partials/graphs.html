@@ -1,10 +1,14 @@
 <div>
   <h1>Graphs</h1>
+  <div class="form-group form-inline">
+    <select class="form-control" data-ng-change="vm.list()" data-ng-model="vm.filterYear" id="filterYear" data-ng-options="filterYear.year for filterYear in vm.years track by filterYear.key"></select>
+  </div>
 </div>
 <div>
   <h2>
     Distribution of activities
-    <button type="button" class="btn btn-success" style="margin-eft: 10px" ng-click="vm.changeChartType();">Change Chart Type</button>
+
+    <button type="button" class="btn btn-success" style="margin-eft: 10px" data-ng-click="vm.changeChartType()">Change Chart Type</button>
   </h2>
   <p data-ng-cloak>All Activities: {{vm.activities.numberOfElements}}</p>
   <canvas id="pie" class="chart-base"
@@ -16,7 +20,7 @@
 </div>
 <div>
   <h2>Show kilometers per
-    <select ng-model="vm.averageKmDropdown" ng-change="vm.refreshLineKmPerMonth();">
+    <select data-ng-model="vm.averageKmDropdown" data-ng-change="vm.refreshLineKmPerMonth()">
       <option value="year">Year</option>
       <option value="month" selected>Month</option>
       <option value="day">Day</option>
@@ -25,6 +29,7 @@
   <p data-ng-cloak>Running Activities: {{vm.runs.numberOfElements}}</p>
   <canvas id="line" class="chart chart-line"
     chart-data="vm.lineKmPerMonthData"
-    chart-labels="vm.lineKmPerMonthLabels">
+    chart-labels="vm.lineKmPerMonthLabels"
+    chart-series="vm.lineKmPerMonthSeriesLabels">
   </canvas>
 </div>
