@@ -2,9 +2,9 @@
   'use strict';
   angular.module('app').controller('GraphsController', GraphsController);
 
-  GraphsController.$inject = [ '$filter', '$log', 'activityService', 'loginService' ];
+  GraphsController.$inject = [ '$filter', '$log', 'activityService', 'loginService', 'utilService' ];
 
-  function GraphsController($filter, $log, activityService, loginService) {
+  function GraphsController($filter, $log, activityService, loginService, utilService) {
     var vm = this;
 
     const DASH = '-';
@@ -47,17 +47,12 @@
       $log.debug('GraphsController.list');
       loginService.state(vm);
 
-      var minDate = $filter(DATE)(vm.filterMinDate, DATE_PATTERN);
-      var maxDate = $filter(DATE)(vm.filterMaxDate, DATE_PATTERN);
-      if (vm.filterYear.key !== KEY_ALL) {
-        minDate = vm.filterYear.year + '-01-01';
-        maxDate = vm.filterYear.year + '-12-31';
-      }
+      var dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
 
       var params = {
         'size': 1000,
-        'minDate': minDate,
-        'maxDate': maxDate,
+        'minDate': dates.minDate,
+        'maxDate': dates.maxDate,
       };
       activityService.list(params).then(function(data) {
         vm.activities = data;
@@ -183,21 +178,9 @@
     }
 
     function years() {
-      var filterAll = simpleKeyYear(KEY_ALL);
-      vm.years.push(filterAll);
-      var startYear = 2010;
-      var endYear = new Date().getFullYear();
-      for (var i = startYear; i <= endYear; i++) {
-        vm.years.push(simpleKeyYear(i));
-      }
+      var filterAll = utilService.simpleKeyYear('all');
       vm.filterYear = filterAll;
-    }
-
-    function simpleKeyYear(key) {
-      return {
-        'key': key,
-        'year': key === KEY_ALL ? 'All years' : key
-      };
+      vm.years = utilService.listYears(filterAll);
     }
   }
 })();
