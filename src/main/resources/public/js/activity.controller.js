@@ -2,9 +2,9 @@
   'use strict';
   angular.module('app').controller('ActivityController', ActivityController);
 
-  ActivityController.$inject = [ '$filter', '$log', 'activityService', 'loginService' ];
+  ActivityController.$inject = [ '$filter', '$log', 'activityService', 'loginService', 'utilService' ];
 
-  function ActivityController($filter, $log, activityService, loginService) {
+  function ActivityController($filter, $log, activityService, loginService, utilService) {
     var vm = this;
 
     // public methods
@@ -78,37 +78,23 @@
     }
 
     function years() {
-      var filterAll = simpleKeyYear('all');
+      var filterAll = utilService.simpleKeyYear('all');
       vm.years.push(filterAll);
       var startYear = 2010;
       var endYear = new Date().getFullYear();
       for (var i = startYear; i <= endYear; i++) {
-        vm.years.push(simpleKeyYear(i));
+        vm.years.push(utilService.simpleKeyYear(i));
       }
       vm.filterYear = filterAll;
     }
 
     function types() {
-      var filterRunning = simpleKeyType('Running');
+      var filterRunning = utilService.simpleKeyType('Running');
       vm.types.push(filterRunning);
-      vm.types.push(simpleKeyType('Cycling'));
-      vm.types.push(simpleKeyType('Hiking'));
-      vm.types.push(simpleKeyType('Walking'));
+      vm.types.push(utilService.simpleKeyType('Cycling'));
+      vm.types.push(utilService.simpleKeyType('Hiking'));
+      vm.types.push(utilService.simpleKeyType('Walking'));
       vm.filterType.push(filterRunning);
-    }
-
-    function simpleKeyYear(key) {
-      return {
-        'key': key,
-        'year': key === 'all' ? 'All years' : key
-      };
-    }
-
-    function simpleKeyType(key) {
-      return {
-        'key': key,
-        'type': key
-      };
     }
   }
 })();
