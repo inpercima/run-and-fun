@@ -43,7 +43,7 @@
       loginService.state(vm);
       var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
       var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
-      if (vm.filterYear.key) {
+      if (vm.filterYear.key !== 'all') {
         minDate = vm.filterYear.year + '-01-01';
         maxDate = vm.filterYear.year + '-12-31';
       }
@@ -78,7 +78,7 @@
     }
 
     function years() {
-      var filterAll = simpleKeyYear('');
+      var filterAll = simpleKeyYear('all');
       vm.years.push(filterAll);
       var startYear = 2010;
       var endYear = new Date().getFullYear();
@@ -100,7 +100,7 @@
     function simpleKeyYear(key) {
       return {
         'key': key,
-        'year': key === '' ? 'All years' : key
+        'year': key === 'all' ? 'All years' : key
       };
     }
 
