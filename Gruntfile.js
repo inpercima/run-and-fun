@@ -19,6 +19,8 @@ module.exports = function(grunt) {
 
     src_app_js: 'src/main/resources/public/js/app.js',
 
+    src_config_json: 'src/main/resources/public/js/config.json',
+
     src_files_js: 'src/main/resources/public/js/**/*.js',
 
     jshint: {
@@ -56,12 +58,12 @@ module.exports = function(grunt) {
       },
       // first build without app.js
       core: {
-        src: [ '<%= src_files_js %>', '!<%= src_app_js %>' ],
+        src: [ '<%= src_files_js %>', '!<%= src_app_js %>', '!<%= src_config_json %>' ],
         dest: '<%= build_app_js %>'
       },
       // second build with prepended app.js
       dist: {
-        src: [ '<%= src_app_js %>', '<%= concat.core.dest %>' ],
+        src: [ '<%= src_app_js %>', '<%= concat.core.dest %>', '!<%= src_config_json %>' ],
         dest: '<%= concat.core.dest %>'
       }
     },
@@ -98,6 +100,7 @@ module.exports = function(grunt) {
           { src: [ 'node_modules/bootstrap/dist/css/bootstrap.min.css'], dest: '<%= build_dir_css %>/bootstrap.min.css' },
           // fonts
           { expand: true, cwd: 'node_modules/bootstrap/dist/fonts/', src: [ '**'], dest: '<%= build_dir_fonts %>' },
+          { src: [ 'src/main/resources/public/js/config.json' ], dest: '<%= build_dir_js %>/config.json' },
         ]
       }
     }
