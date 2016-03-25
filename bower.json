@@ -9,8 +9,8 @@
   "private": true,
   "ignore": [
     "**/.*",
+    "bower_components",
     "node_modules",
-    "build/resources/main/public/bower_components",
     "test",
     "tests"
   ],
