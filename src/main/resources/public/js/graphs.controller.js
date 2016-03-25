@@ -2,16 +2,13 @@
   'use strict';
   angular.module('app').controller('GraphsController', GraphsController);
 
-  GraphsController.$inject = [ '$filter', '$log', 'activityService', 'loginService', 'utilService' ];
+  GraphsController.$inject = [ '$log', 'activityService', 'CONST', 'loginService', 'utilService' ];
 
-  function GraphsController($filter, $log, activityService, loginService, utilService) {
+  function GraphsController($log, activityService, CONST, loginService, utilService) {
     var vm = this;
 
     const DASH = '-';
     const DOT = '.';
-
-    const DATE = 'date';
-    const DATE_PATTERN = 'yyyy-MM-dd';
 
     const CHART_PIE = 'Pie';
     const CHART_POLAR_AREA = 'PolarArea';
@@ -19,8 +16,6 @@
     const KM_PER_YEAR = 'year';
     const KM_PER_MONTH = 'month';
     const KM_PER_DAY = 'day';
-
-    const KEY_ALL = 'all';
 
     // public methods
     vm.list = list;
@@ -36,11 +31,11 @@
     };
     vm.averageKmDropdown = KM_PER_MONTH;
 
-    vm.years = [];
+    vm.filterYear = utilService.simpleKeyYear(CONST.KEY_ALL);
+    vm.years = utilService.listYears(vm.filterYear);
     vm.kindOfChart = CHART_PIE;
 
     // init
-    years();
     list();
 
     function list() {
@@ -48,7 +43,6 @@
       loginService.state(vm);
 
       var dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
-
       var params = {
         'size': 1000,
         'minDate': dates.minDate,
@@ -58,7 +52,7 @@
         vm.activities = data;
         getPieOverview(vm.activities.content);
       });
-      params.type = 'Running';
+      params.type = CONST.DEFAULT_ACTIVITY_TYPE;
       activityService.list(params).then(function(data) {
         vm.runs = data;
         refreshLineKmPerMonth();
@@ -77,12 +71,12 @@
         return;
       }
 
-      activities = _.sortBy(activities, DATE);
+      activities = _.sortBy(activities, CONST.DATE);
 
       var data = {};
       var labels = {};
 
-      var multipleSeries = vm.filterYear.key === KEY_ALL && groupBy === KM_PER_MONTH;
+      var multipleSeries = vm.filterYear.key === CONST.KEY_ALL && groupBy === KM_PER_MONTH;
       if (multipleSeries) {
         for (var month = 1; month <= 12; month++) {
           vm.lineKmPerMonthLabels.push((month < 10 ? '0' : '') + month);
@@ -90,8 +84,8 @@
       }
 
       for (var i = 0, len = activities.length; i < len; i++) {
-        var readableDateLong = $filter(DATE)(activities[i].date, DATE_PATTERN).split(DASH);
-        var readableDateShort = $filter(DATE)(activities[i].date, DATE_PATTERN).split(DASH);
+        var readableDateLong = utilService.dateFilter(activities[i].date).split(DASH);
+        var readableDateShort = utilService.dateFilter(activities[i].date).split(DASH);
 
         var label;
         var groupByKey;
@@ -118,7 +112,7 @@
         data[groupByKey] = data[groupByKey] + distance || distance;
         labels[groupByKey] = labels[groupByKey] = label;
 
-        if (i + 1 === len || year && year != $filter(DATE)(activities[i + 1].date, DATE_PATTERN).split(DASH)[0]) {
+        if (i + 1 === len || year && year != utilService.dateFilter(activities[i + 1].date).split(DASH)[0]) {
           $log.debug('end of series');
 
           var series = [];
@@ -175,12 +169,6 @@
     function changeChartType() {
       $log.debug('GraphsController.changeChartType');
       vm.kindOfChart = vm.kindOfChart === CHART_POLAR_AREA ? CHART_PIE : CHART_POLAR_AREA;
-    }
-
-    function years() {
-      var filterAll = utilService.simpleKeyYear('all');
-      vm.filterYear = filterAll;
-      vm.years = utilService.listYears(filterAll);
     }
   }
 })();

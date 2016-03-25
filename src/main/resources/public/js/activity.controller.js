@@ -2,9 +2,9 @@
   'use strict';
   angular.module('app').controller('ActivityController', ActivityController);
 
-  ActivityController.$inject = [ '$filter', '$log', 'activityService', 'loginService', 'utilService' ];
+  ActivityController.$inject = [ '$log', 'activityService', 'CONST', 'loginService', 'utilService' ];
 
-  function ActivityController($filter, $log, activityService, loginService, utilService) {
+  function ActivityController($log, activityService, CONST, loginService, utilService) {
     var vm = this;
 
     // public methods
@@ -29,22 +29,18 @@
 
     vm.allActivityTypes = false;
 
-    vm.years = [];
-    vm.types = [];
+    vm.filterYear = utilService.simpleKeyYear(CONST.KEY_ALL);
+    vm.years = utilService.listYears(vm.filterYear);
     vm.filterType = [];
+    vm.types = [];
 
     // init
     types();
-    years();
     list();
 
     function list() {
       $log.debug('ActivityController.list');
       loginService.state(vm);
-
-      var dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
-      var minDate = dates.minDate;
-      var maxDate = dates.maxDate;
 
       var filterType = [];
       if (!vm.allActivityTypes) {
@@ -54,11 +50,12 @@
       } else {
         filterType = '';
       }
+      var dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
       var params = {
         'size': vm.size,
         'type': filterType,
-        'minDate': minDate,
-        'maxDate': maxDate,
+        'minDate': dates.minDate,
+        'maxDate': dates.maxDate,
         'minDistance': vm.filterMinDistance,
         'maxDistance': vm.filterMaxDistance,
         'query': vm.filterFulltext
@@ -76,16 +73,9 @@
       activityService.recalculateTotals(vm);
     }
 
-    function years() {
-      var filterAll = utilService.simpleKeyYear('all');
-      vm.filterYear = filterAll;
-      vm.years = utilService.listYears(filterAll);
-    }
-
     function types() {
-      var filterRunning = utilService.simpleKeyType('Running');
-      vm.filterType.push(filterRunning);
-      vm.types.push(filterRunning);
+      vm.filterType.push(utilService.simpleKeyType(CONST.DEFAULT_ACTIVITY_TYPE));
+      vm.types.push(vm.filterType[0]);
       vm.types.push(utilService.simpleKeyType('Cycling'));
       vm.types.push(utilService.simpleKeyType('Hiking'));
       vm.types.push(utilService.simpleKeyType('Walking'));
