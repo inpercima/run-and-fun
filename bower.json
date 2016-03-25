@@ -15,13 +15,13 @@
     "tests"
   ],
   "dependencies": {
-    "angularjs": "~1.5.0",
-    "angular-route": "~1.5.0",
-    "bootstrap": "~3.3.6",
-    "angular-chart.js": "~0.8.9",
-    "lodash": "~4.6.1"
+    "angular": "^1.5.3",
+    "angular-route": "^1.5.3",
+    "bootstrap": "^3.3.6",
+    "angular-chart.js": "^0.9.0",
+    "lodash": "^4.6.1"
   },
   "resolutions": {
-    "angular": "1.5.0"
+    "angular": "1.5.3"
   }
 }
