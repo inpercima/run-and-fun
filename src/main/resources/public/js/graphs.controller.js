@@ -2,9 +2,9 @@
   'use strict';
   angular.module('app').controller('GraphsController', GraphsController);
 
-  GraphsController.$inject = [ '$filter', '$log', 'activityService', 'loginService' ];
+  GraphsController.$inject = [ '$filter', '$log', 'activityService', 'loginService', 'utilService' ];
 
-  function GraphsController($filter, $log, activityService, loginService) {
+  function GraphsController($filter, $log, activityService, loginService, utilService) {
     var vm = this;
 
     const DASH = '-';
@@ -183,21 +183,14 @@
     }
 
     function years() {
-      var filterAll = simpleKeyYear(KEY_ALL);
+      var filterAll = utilService.simpleKeyYear(KEY_ALL);
       vm.years.push(filterAll);
       var startYear = 2010;
       var endYear = new Date().getFullYear();
       for (var i = startYear; i <= endYear; i++) {
-        vm.years.push(simpleKeyYear(i));
+        vm.years.push(utilService.simpleKeyYear(i));
       }
       vm.filterYear = filterAll;
-    }
-
-    function simpleKeyYear(key) {
-      return {
-        'key': key,
-        'year': key === KEY_ALL ? 'All years' : key
-      };
     }
   }
 })();
