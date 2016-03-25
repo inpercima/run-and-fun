@@ -2,9 +2,9 @@
   'use strict';
   angular.module('app').controller('ActivityController', ActivityController);
 
-  ActivityController.$inject = [ '$filter', '$log', 'activityService', 'loginService' ];
+  ActivityController.$inject = [ '$log', 'activityService', 'CONST', 'loginService', 'utilService' ];
 
-  function ActivityController($filter, $log, activityService, loginService) {
+  function ActivityController($log, activityService, CONST, loginService, utilService) {
     var vm = this;
 
     // public methods
@@ -29,24 +29,19 @@
 
     vm.allActivityTypes = false;
 
-    vm.years = [];
-    vm.types = [];
+    vm.filterYear = utilService.simpleKeyYear(CONST.KEY_ALL);
+    vm.years = utilService.listYears(vm.filterYear);
     vm.filterType = [];
+    vm.types = [];
 
     // init
     types();
-    years();
     list();
 
     function list() {
       $log.debug('ActivityController.list');
       loginService.state(vm);
-      var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
-      var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
-      if (vm.filterYear.key !== 'all') {
-        minDate = vm.filterYear.year + '-01-01';
-        maxDate = vm.filterYear.year + '-12-31';
-      }
+
       var filterType = [];
       if (!vm.allActivityTypes) {
         angular.forEach(vm.filterType, function(type) {
@@ -55,11 +50,12 @@
       } else {
         filterType = '';
       }
+      var dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
       var params = {
         'size': vm.size,
         'type': filterType,
-        'minDate': minDate,
-        'maxDate': maxDate,
+        'minDate': dates.minDate,
+        'maxDate': dates.maxDate,
         'minDistance': vm.filterMinDistance,
         'maxDistance': vm.filterMaxDistance,
         'query': vm.filterFulltext
@@ -77,38 +73,12 @@
       activityService.recalculateTotals(vm);
     }
 
-    function years() {
-      var filterAll = simpleKeyYear('all');
-      vm.years.push(filterAll);
-      var startYear = 2010;
-      var endYear = new Date().getFullYear();
-      for (var i = startYear; i <= endYear; i++) {
-        vm.years.push(simpleKeyYear(i));
-      }
-      vm.filterYear = filterAll;
-    }
-
     function types() {
-      var filterRunning = simpleKeyType('Running');
-      vm.types.push(filterRunning);
-      vm.types.push(simpleKeyType('Cycling'));
-      vm.types.push(simpleKeyType('Hiking'));
-      vm.types.push(simpleKeyType('Walking'));
-      vm.filterType.push(filterRunning);
-    }
-
-    function simpleKeyYear(key) {
-      return {
-        'key': key,
-        'year': key === 'all' ? 'All years' : key
-      };
-    }
-
-    function simpleKeyType(key) {
-      return {
-        'key': key,
-        'type': key
-      };
+      vm.filterType.push(utilService.simpleKeyType(CONST.DEFAULT_ACTIVITY_TYPE));
+      vm.types.push(vm.filterType[0]);
+      vm.types.push(utilService.simpleKeyType('Cycling'));
+      vm.types.push(utilService.simpleKeyType('Hiking'));
+      vm.types.push(utilService.simpleKeyType('Walking'));
     }
   }
 })();
