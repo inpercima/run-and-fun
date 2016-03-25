@@ -20,6 +20,8 @@
     const KM_PER_MONTH = 'month';
     const KM_PER_DAY = 'day';
 
+    const KEY_ALL = 'all';
+
     // public methods
     vm.list = list;
     vm.refreshLineKmPerMonth = refreshLineKmPerMonth;
@@ -47,7 +49,7 @@
 
       var minDate = $filter(DATE)(vm.filterMinDate, DATE_PATTERN);
       var maxDate = $filter(DATE)(vm.filterMaxDate, DATE_PATTERN);
-      if (vm.filterYear.key !== 'all') {
+      if (vm.filterYear.key !== KEY_ALL) {
         minDate = vm.filterYear.year + '-01-01';
         maxDate = vm.filterYear.year + '-12-31';
       }
@@ -85,7 +87,7 @@
       var data = {};
       var labels = {};
 
-      var multipleSeries = !vm.filterYear.key && groupBy === KM_PER_MONTH;
+      var multipleSeries = vm.filterYear.key === KEY_ALL && groupBy === KM_PER_MONTH;
       if (multipleSeries) {
         for (var month = 1; month <= 12; month++) {
           vm.lineKmPerMonthLabels.push((month < 10 ? '0' : '') + month);
@@ -181,7 +183,7 @@
     }
 
     function years() {
-      var filterAll = simpleKeyYear('all');
+      var filterAll = simpleKeyYear(KEY_ALL);
       vm.years.push(filterAll);
       var startYear = 2010;
       var endYear = new Date().getFullYear();
@@ -194,7 +196,7 @@
     function simpleKeyYear(key) {
       return {
         'key': key,
-        'year': key === 'all' ? 'All years' : key
+        'year': key === KEY_ALL ? 'All years' : key
       };
     }
   }
