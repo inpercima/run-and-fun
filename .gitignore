@@ -4,12 +4,11 @@ application-default.properties
 # Elasticsearch
 data/
 
-# Created by https://www.gitignore.io/api/eclipse,gradle,java,node
+# Created by https://www.gitignore.io/api/eclipse,gradle,java,node,bower
 
 ### Eclipse ###
-*.pydevproject
+
 .metadata
-.gradle
 bin/
 tmp/
 *.tmp
@@ -19,6 +18,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
+.recommenders
 
 # Eclipse Core
 .project
@@ -29,7 +29,10 @@ local.properties
 # Locally stored "Eclipse launch configurations"
 *.launch
 
-# CDT-specific
+# PyDev specific (Python IDE for Eclipse)
+*.pydevproject
+
+# CDT-specific (C/C++ Development Tooling)
 .cproject
 
 # JDT-specific (Eclipse Java Development Tools)
@@ -38,17 +41,23 @@ local.properties
 # Java annotation processor (APT)
 .factorypath
 
-# PDT-specific
+# PDT-specific (PHP Development Tools)
 .buildpath
 
 # sbteclipse plugin
 .target
+
+# Tern plugin
+.tern-project
 
 # TeXlipse plugin
 .texlipse
 
 # STS (Spring Tool Suite)
 .springBeans
+
+# Code Recommenders
+.recommenders/
 
 
 ### Gradle ###
@@ -63,6 +72,9 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
 
 
 ### Java ###
@@ -106,12 +118,19 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directory
-# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
+# Dependency directories
 node_modules
+jspm_packages
 
 # Optional npm cache directory
 .npm
 
 # Optional REPL history
 .node_repl_history
+
+
+### Bower ###
+bower_components
+.bower-cache
+.bower-registry
+.bower-tmp
