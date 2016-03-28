@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <h3 class="modal-title">Index activities...</h3>
+</div>
+<div class="progress" data-ng-show="!vm.activities">
+  <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: 100%"></div>
+</div>
+<div class="modal-body" data-ng-show="vm.activities">
+  You indexed {{vm.activities}} from runkeeper.
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" data-ng-click="vm.ok()" data-ng-show="vm.activities">OK</button>
+</div>

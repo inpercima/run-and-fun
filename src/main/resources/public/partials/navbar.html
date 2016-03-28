@@ -1,8 +1,29 @@
-<nav>
-  <div data-ng-transclude></div>
-  <ul class="nav nav-tabs">
-    <li data-ng-class="tab.navClass('home')"><a href="#/">Home</a></li>
-    <li data-ng-class="tab.navClass('activities')"><a href="#/activities">Activities</a></li>
-    <li data-ng-class="tab.navClass('graphs')"><a href="#/graphs">Graphs</a></li>
-  </ul>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-ng-click="showMobileNav = !showMobileNav">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/">run-and-fun</a>
+  </div>
+  <div class="collapse navbar-collapse" data-ng-class="{in: showMobileNav}">
+    <ul class="nav navbar-nav">
+      <li data-ng-repeat="route in vm.routes" data-ng-class="{active: vm.activeRoute(route)}">
+        <a href="#{{route.path}}">{{route.name}}</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right" data-ng-show="vm.appState.username">
+      <li class="dropdown" data-uib-dropdown>
+        <a href="" class="dropdown-toggle" data-uib-dropdown-toggle>
+          Hey {{vm.appState.fullName}} ({{vm.appState.username}}) <span class="caret"></span>
+        </a>
+        <ul data-uib-dropdown-menu>
+          <li><a href="" data-ng-click="vm.open()">Index activities</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="logout">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </nav>

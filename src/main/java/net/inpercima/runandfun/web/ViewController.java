@@ -4,7 +4,6 @@ import static net.inpercima.runandfun.constants.AppConstants.SESSION_ACCESS_TOKE
 
 import javax.servlet.http.HttpSession;
 
-import net.inpercima.runandfun.constants.AppConstants;
 import net.inpercima.runandfun.service.RunAndFunService;
 
 import org.slf4j.Logger;
@@ -38,13 +37,6 @@ public class ViewController {
         } else {
             LOGGER.warn(error);
         }
-        return REDIRECT_TO_BASE;
-    }
-
-    @RequestMapping(value = "/indexActivities")
-    public String indexActivities(final HttpSession session) {
-        final String accessToken = (String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN);
-        runAndFunService.indexActivities(accessToken);
         return REDIRECT_TO_BASE;
     }
 

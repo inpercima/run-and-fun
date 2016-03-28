@@ -9,6 +9,7 @@
     // public methods
     this.list = list; // jshint ignore:line
     this.recalculateTotals = recalculateTotals; // jshint ignore:line
+    this.indexActivities = indexActivities; // jshint ignore:line
 
     function list(params) {
       var url = '/listActivities';
@@ -125,6 +126,14 @@
         }
       }
       return url;
+    }
+
+    function indexActivities() {
+      $log.debug('indexActivities');
+      var promise = $http.get('/indexActivities').success(function(data) {
+        return data;
+      });
+      return promise;
     }
   }
 })();

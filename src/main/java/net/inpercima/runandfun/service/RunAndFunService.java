@@ -22,7 +22,7 @@ public interface RunAndFunService {
 
     RunkeeperProfile getProfile(String accessToken);
 
-    void indexActivities(String accessToken);
+    int indexActivities(String accessToken);
 
     Page<Activity> listAllActivitiesByType(String type);
 

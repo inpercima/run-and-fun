@@ -9,3 +9,7 @@ a.glyphicon {
 .glyphicon.glyphicon-remove {
   cursor: pointer;
 }
+
+.modal-dialog .progress {
+  margin: 10px;
+}

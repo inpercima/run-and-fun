@@ -53,6 +53,12 @@ public class RestApiController {
         LOGGER.debug("listActivitiesByType '{}'", type);
         return runAndFunService.listAllActivitiesByType(type);
     }
+    
+    @RequestMapping(value = "/indexActivities")
+    public String indexActivities(final HttpSession session) {
+        final String accessToken = (String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN);
+        return String.valueOf(runAndFunService.indexActivities(accessToken));
+    }
 
     @RequestMapping(value = "/listActivities", method = RequestMethod.GET)
     public Page<Activity> listActivities(@PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable,

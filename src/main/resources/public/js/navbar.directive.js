@@ -1,17 +1,15 @@
 (function() {
   'use strict';
-  angular.module('app').directive('navbar', function() {
+  angular.module('app').directive('navbar', navbar);
+
+  navbar.$inject = [];
+
+  function navbar() {
     return {
-      controller: [ '$location', function($location) {
-        this.navClass = function(tabName) {
-          var currentRoute = $location.path().substring(1) || 'home';
-          return currentRoute === tabName ? 'active' : '';
-        };
-      } ],
-      controllerAs: 'tab',
+      controller: 'NavbarController',
+      controllerAs: 'vm',
       restrict: 'E',
-      templateUrl: '../partials/navbar.html',
-      transclude: true
+      templateUrl: '../partials/navbar.html'
     };
-  });
+  }
 })();
