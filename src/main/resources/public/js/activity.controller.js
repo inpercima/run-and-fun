@@ -5,6 +5,7 @@
   ActivityController.$inject = [ '$filter', '$log', 'activityService', 'loginService', 'utilService' ];
 
   function ActivityController($filter, $log, activityService, loginService, utilService) {
+    $log.getInstance('ActivityController');
     var vm = this;
 
     // public methods
@@ -39,7 +40,7 @@
     list();
 
     function list() {
-      $log.debug('ActivityController.list');
+      $log.debug('list');
       loginService.state(vm);
       var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
       var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
