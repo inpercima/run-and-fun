@@ -5,6 +5,7 @@
   ActivityController.$inject = [ '$filter', '$log', 'activityService', 'loginService', 'utilService' ];
 
   function ActivityController($filter, $log, activityService, loginService, utilService) {
+    var logger = $log.getInstance('ActivityController');
     var vm = this;
 
     // public methods
@@ -39,7 +40,7 @@
     list();
 
     function list() {
-      $log.debug('ActivityController.list');
+      logger.debug('list');
       loginService.state(vm);
       var minDate = $filter('date')(vm.filterMinDate, 'yyyy-MM-dd');
       var maxDate = $filter('date')(vm.filterMaxDate, 'yyyy-MM-dd');
@@ -71,7 +72,7 @@
     }
 
     function remove(activity) {
-      $log.debug('ActivityController.remove');
+      logger.debug('ActivityController.remove');
       var index = vm.activities.content.indexOf(activity);
       vm.activities.content.splice(index, 1);
       activityService.recalculateTotals(vm);

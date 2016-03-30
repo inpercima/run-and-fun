@@ -5,6 +5,7 @@
   GraphsController.$inject = [ '$filter', '$log', 'activityService', 'loginService', 'utilService' ];
 
   function GraphsController($filter, $log, activityService, loginService, utilService) {
+    var logger = $log.getInstance('GraphsController');
     var vm = this;
 
     const DASH = '-';
@@ -44,7 +45,7 @@
     list();
 
     function list() {
-      $log.debug('GraphsController.list');
+      logger.debug('list');
       loginService.state(vm);
 
       var minDate = $filter(DATE)(vm.filterMinDate, DATE_PATTERN);
@@ -124,7 +125,7 @@
         labels[groupByKey] = labels[groupByKey] = label;
 
         if (i + 1 === len || year && year != $filter(DATE)(activities[i + 1].date, DATE_PATTERN).split(DASH)[0]) {
-          $log.debug('end of series');
+          logger.debug('end of series');
 
           var series = [];
           if (multipleSeries) {
@@ -149,7 +150,7 @@
     }
 
     function getPieOverview(activities) {
-      $log.debug('GraphsController.getPieOverview');
+      logger.debug('getPieOverview');
       vm.pieOverviewData = [];
       vm.pieOverviewLabels = [];
 
@@ -173,12 +174,12 @@
     }
 
     function refreshLineKmPerMonth() {
-      $log.debug('GraphsController.refreshLineKmPerMonth');
+      logger.debug('refreshLineKmPerMonth');
       getLineKmPerMonth(vm.runs.content, vm.averageKmDropdown);
     }
 
     function changeChartType() {
-      $log.debug('GraphsController.changeChartType');
+      logger.debug('changeChartType');
       vm.kindOfChart = vm.kindOfChart === CHART_POLAR_AREA ? CHART_PIE : CHART_POLAR_AREA;
     }
 

@@ -5,6 +5,7 @@
   dateTimeUtils.$inject = [ '$log' ];
 
   function dateTimeUtils($log) {
+    var logger = $log.getInstance('dateTimeUtils');
     /* jshint validthis: true */
     var vm = this;
 
@@ -14,7 +15,7 @@
 
     // convert '00:01:11' to 71
     function formattedTimeToSeconds(formattedTime) {
-      $log.debug('formattedTimeToSeconds: ' + formattedTime);
+      logger.debug('formattedTimeToSeconds: ' + formattedTime);
       var tt = formattedTime.split(':');
       return tt[0] * 3600 + tt[1] * 60 + tt[2] * 1;
     }

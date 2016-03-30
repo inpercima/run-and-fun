@@ -12,16 +12,24 @@
     decorator.$inject = [ '$delegate' ];
 
     function decorator($delegate) {
-      var originalDebug = $delegate.debug;
-      // intercept the call to $log.debug() and add our extension
-      $delegate.debug = function() {
-        if ($logProvider.debugEnabled()) {
-          var args = [].slice.call(arguments);
-          args[0] = ['[DEBUG] ', new Date().toString(), ': ', args[0]].join('');
-          // add new message to the original debug method
-          originalDebug.apply(null, args);
-        }
+      $delegate.getInstance = function(className) {
+        return {
+          log: enhanceLogging($delegate.log, className, 'STANDARD'),
+          info: enhanceLogging($delegate.info, className, 'INFO'),
+          warn: enhanceLogging($delegate.warn, className, 'WARN'),
+          debug: enhanceLogging($delegate.debug, className, 'DEBUG'),
+          error: enhanceLogging($delegate.error, className, 'ERROR')
+        };
       };
+
+      function enhanceLogging(logger, className, logText) {
+        return function() {
+          var args = [].slice.call(arguments);
+          args[0] = [new Date().toString(), ' [' + logText + '] ', className, ': ', args[0]].join('');
+          // add new message to the original debug method
+          logger.apply(null, args);
+        };
+      }
       return $delegate;
     }
   }

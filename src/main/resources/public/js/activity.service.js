@@ -5,6 +5,7 @@
   activityService.$inject = [ '$http', '$log', 'dateTimeUtils' ];
 
   function activityService($http, $log, dateTimeUtils) {
+    var logger = $log.getInstance('activityService');
     // public methods
     /* jshint validthis: true */
     this.list = list;
@@ -17,7 +18,7 @@
         url += 'ByType';
       }
       url += addParams(params);
-      $log.debug('activityService ' + url);
+      logger.debug(url);
       return $http.get(url).then(function(result) {
         var activities = result.data;
         enrichWithTimePerKm(activities.content);
@@ -27,7 +28,7 @@
     }
 
     function recalculateTotals(vm) {
-      $log.debug('recalculateTotals');
+      logger.debug('recalculateTotals');
       vm.totalActivities = vm.activities.content.length;
       vm.totalDistance = getTotalDistance(vm.activities.content);
       var totalTime = getTotalTime(vm.activities.content);
@@ -40,7 +41,7 @@
     var distanceHalfMarathon = 21.097;
 
     function enrichWithTimePerKm(content) {
-      $log.debug('enrichWithTimePerKm');
+      logger.debug('enrichWithTimePerKm');
       angular.forEach(content, function(activity) {
         var seconds = dateTimeUtils.formattedTimeToSeconds(activity.duration);
         activity.timePerKmInSeconds = calcTimePerKm(seconds, activity.distance);
@@ -68,7 +69,7 @@
     }
 
     function enrichWithStatistics(activities) {
-      $log.debug('enrichWithStatistics');
+      logger.debug('enrichWithStatistics');
       angular.forEach(activities, function(activity) {
         var distanceRound = Math.round(activity.distance);
         var distanceStep = Math.ceil(Math.sqrt(distanceRound));
@@ -100,7 +101,7 @@
     }
 
     function getTotalDistance(activities) {
-      $log.debug('getTotalDistance');
+      logger.debug('getTotalDistance');
       var sum = 0;
       for (var i = 0; i < activities.length; i++) {
         sum += activities[i].distance;
@@ -109,7 +110,7 @@
     }
 
     function getTotalTime(activities) {
-      $log.debug('getTotalTime');
+      logger.debug('getTotalTime');
       var sum = 0;
       for (var i = 0; i < activities.length; i++) {
         sum += dateTimeUtils.formattedTimeToSeconds(activities[i].duration);
