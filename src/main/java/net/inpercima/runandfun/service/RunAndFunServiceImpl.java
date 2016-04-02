@@ -118,8 +118,10 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Override
     public void indexActivities(final String accessToken) {
         final Collection<Activity> activities = new ArrayList<>();
+
+        final String username = getAppState(accessToken).getUsername();
         for (final RunkeeperItem item : getActivities(accessToken, calculateFetchDate()).getItemsAsList()) {
-            final Activity activity = new Activity(item.getId(), item.getType(), item.getDate(), item.getDistance(),
+            final Activity activity = new Activity(item.getId(), username, item.getType(), item.getDate(), item.getDistance(),
                     item.getFormattedDuration());
             LOGGER.debug("prepare {}", activity);
             activities.add(activity);
