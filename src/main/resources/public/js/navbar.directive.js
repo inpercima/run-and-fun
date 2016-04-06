@@ -4,9 +4,15 @@
     return {
       controller: [ '$location', function($location) {
         this.navClass = function(tabName) {
-          var currentRoute = $location.path().substring(1) || 'home';
+          var currentRoute = $location.path().substring(1);
           return currentRoute === tabName ? 'active' : '';
         };
+
+        this.navEntries = [
+          { display: 'Home', url: '' },
+          { display: 'Activities', url: 'activities' },
+          { display: 'Graphs', url: 'graphs' },
+        ];
       } ],
       controllerAs: 'tab',
       restrict: 'E',
