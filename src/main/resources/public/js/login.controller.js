@@ -5,6 +5,7 @@
   LoginController.$inject = [ '$log', 'loginService' ];
 
   function LoginController($log, loginService) {
+    var logger = $log.getInstance('LoginController');
     var vm = this;
 
     // public methods
@@ -14,7 +15,7 @@
     state();
 
     function state() {
-      $log.debug('LoginController.state');
+      logger.debug('state');
       loginService.state(vm);
     }
   }
