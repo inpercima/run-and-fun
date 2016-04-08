@@ -77,29 +77,32 @@ module.exports = function(grunt) {
     },
     watch: {
       files: [ '<%= gruntfile_js %>', '<%= src_files_js %>' ],
-      tasks: [ 'jshint', 'jscs', 'concat', 'uglify', 'bowercopy', 'clean' ]
+      tasks: [ 'jshint', 'jscs', 'concat', 'uglify', 'copy', 'clean' ]
     },
     clean: {
       dist: {
         src: '<%= build_app_js %>'
       }
     },
-    bowercopy: {
+    copy: {
       dist: {
-        files: {
-          '<%= build_dir_css %>/angular-chart.min.css': 'angular-chart.js/dist/angular-chart.min.css',
-          '<%= build_dir_css %>/bootstrap.min.css': 'bootstrap/dist/css/bootstrap.min.css',
-          '<%= build_dir_fonts %>': 'bootstrap/dist/fonts',
-          '<%= build_dir_js %>/angular.min.js': 'angular/angular.min.js',
-          '<%= build_dir_js %>/angular-chart.min.js': 'angular-chart.js/dist/angular-chart.min.js',
-          '<%= build_dir_js %>/angular-route.min.js': 'angular-route/angular-route.min.js',
-          '<%= build_dir_js %>/Chart.min.js': 'Chart.js/Chart.min.js',
-          '<%= build_dir_js %>/lodash.min.js': 'lodash/dist/lodash.min.js'
-        }
+        files: [
+          // js
+          { src: [ 'node_modules/angular/angular.min.js' ], dest: '<%= build_dir_js %>/angular.min.js' },
+          { src: [ 'node_modules/angular-chart.js/dist/angular-chart.min.js' ], dest: '<%= build_dir_js %>/angular-chart.min.js' },
+          { src: [ 'node_modules/angular-route/angular-route.min.js' ], dest: '<%= build_dir_js %>/angular-route.min.js' },
+          { src: [ 'node_modules/chart.js/Chart.min.js'], dest: '<%= build_dir_js %>/Chart.min.js' },
+          { src: [ 'node_modules/lodash/lodash.min.js'], dest: '<%= build_dir_js %>/lodash.min.js' },
+          // css
+          { src: [ 'node_modules/angular-chart.js/dist/angular-chart.min.css'], dest: '<%= build_dir_css %>/angular-chart.min.css' },
+          { src: [ 'node_modules/bootstrap/dist/css/bootstrap.min.css'], dest: '<%= build_dir_css %>/bootstrap.min.css' },
+          // fonts
+          { expand: true, cwd: 'node_modules/bootstrap/dist/fonts/', src: [ '**'], dest: '<%= build_dir_fonts %>' },
+        ]
       }
     }
   });
 
-  grunt.registerTask('build', [ 'jshint', 'jscs', 'concat', 'uglify', 'bowercopy', 'clean' ]);
+  grunt.registerTask('build', [ 'jshint', 'jscs', 'concat', 'uglify', 'copy', 'clean' ]);
   grunt.registerTask('default', [ 'jshint', 'jscs' ]);
 };
