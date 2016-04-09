@@ -113,16 +113,8 @@
         data[groupByKey] = data[groupByKey] + distance || distance;
         labels[groupByKey] = labels[groupByKey] = label;
 
-<<<<<<< HEAD
-        if (i + 1 === len || year && year != $filter(DATE)(activities[i + 1].date, DATE_PATTERN).split(DASH)[0]) {
-          logger.debug('end of series');
-<<<<<<< HEAD
-=======
         if (i + 1 === len || year && year != utilService.dateFilter(activities[i + 1].date).split(DASH)[0]) {
-          $log.debug('end of series');
->>>>>>> master
-=======
->>>>>>> 2cecf380cb3d126b3c27db76d6707b548674deab
+          logger.debug('end of series');
 
           var series = [];
           if (multipleSeries) {
