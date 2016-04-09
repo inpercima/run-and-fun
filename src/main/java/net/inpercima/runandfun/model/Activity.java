@@ -19,6 +19,8 @@ public class Activity {
 
     public static final String FIELD_ID = "id";
 
+    public static final String FIELD_USERNAME = "username";
+
     public static final String FIELD_TYPE = "type";
 
     public static final String FIELD_DATE = "date";
@@ -30,6 +32,8 @@ public class Activity {
     @Id
     private final String id;
 
+    private final String username;
+
     private final String type;
 
     private final Date date;
@@ -39,11 +43,11 @@ public class Activity {
     private final String duration;
 
     @JsonCreator
-    public Activity(@JsonProperty(value = FIELD_ID) final String id,
+    public Activity(@JsonProperty(value = FIELD_ID) final String id, @JsonProperty(value = FIELD_USERNAME) final String username,
             @JsonProperty(value = FIELD_TYPE) final String type, @JsonProperty(value = FIELD_DATE) final Date date,
-            @JsonProperty(value = FIELD_DISTANCE) final double distance,
-            @JsonProperty(value = FIELD_DURATION) final String duration) {
+            @JsonProperty(value = FIELD_DISTANCE) final double distance, @JsonProperty(value = FIELD_DURATION) final String duration) {
         this.id = id;
+        this.username = username;
         this.type = type;
         this.date = date;
         this.distance = distance;
@@ -57,6 +61,10 @@ public class Activity {
 
     public String getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getType() {
