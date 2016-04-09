@@ -5,6 +5,7 @@
   ActivityController.$inject = [ '$log', 'activityService', 'CONST', 'loginService', 'utilService' ];
 
   function ActivityController($log, activityService, CONST, loginService, utilService) {
+    var logger = $log.getInstance('ActivityController');
     var vm = this;
 
     // public methods
@@ -39,7 +40,7 @@
     list();
 
     function list() {
-      $log.debug('ActivityController.list');
+      logger.debug('list');
       loginService.state(vm);
 
       var filterType = [];
@@ -67,7 +68,7 @@
     }
 
     function remove(activity) {
-      $log.debug('ActivityController.remove');
+      logger.debug('ActivityController.remove');
       var index = vm.activities.content.indexOf(activity);
       vm.activities.content.splice(index, 1);
       activityService.recalculateTotals(vm);
