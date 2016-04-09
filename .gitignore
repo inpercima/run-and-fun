@@ -4,7 +4,7 @@ application-default.properties
 # Elasticsearch
 data/
 
-# Created by https://www.gitignore.io/api/eclipse,gradle,java,node,bower
+# Created by https://www.gitignore.io/api/eclipse,gradle,java,node
 
 ### Eclipse ###
 
@@ -127,10 +127,3 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
-
-
-### Bower ###
-bower_components
-.bower-cache
-.bower-registry
-.bower-tmp
