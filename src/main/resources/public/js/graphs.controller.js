@@ -4,7 +4,6 @@
 
   GraphsController.$inject = [ '$log', 'activityService', 'CONST', 'loginService', 'utilService' ];
 
-<<<<<<< HEAD
   function GraphsController($log, activityService, CONST, loginService, utilService) {
     var logger = $log.getInstance('GraphsController');
     var vm = this;
@@ -117,10 +116,13 @@
 <<<<<<< HEAD
         if (i + 1 === len || year && year != $filter(DATE)(activities[i + 1].date, DATE_PATTERN).split(DASH)[0]) {
           logger.debug('end of series');
+<<<<<<< HEAD
 =======
         if (i + 1 === len || year && year != utilService.dateFilter(activities[i + 1].date).split(DASH)[0]) {
           $log.debug('end of series');
 >>>>>>> master
+=======
+>>>>>>> 2cecf380cb3d126b3c27db76d6707b548674deab
 
           var series = [];
           if (multipleSeries) {
