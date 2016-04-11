@@ -113,7 +113,7 @@
         data[groupByKey] = data[groupByKey] + distance || distance;
         labels[groupByKey] = labels[groupByKey] = label;
 
-        if (i + 1 === len || year && year != utilService.dateFilter(activities[i + 1].date).split(DASH)[0]) {
+        if (i + 1 === len || year && year !== utilService.dateFilter(activities[i + 1].date).split(DASH)[0]) {
           logger.debug('end of series');
 
           var series = [];
