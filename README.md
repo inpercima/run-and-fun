@@ -3,7 +3,6 @@
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 [![Dependency Status](https://david-dm.org/inpercima/run-and-fun.svg)](https://david-dm.org/inpercima/run-and-fun)
 [![devDependency Status](https://david-dm.org/inpercima/run-and-fun/dev-status.svg)](https://david-dm.org/inpercima/run-and-fun#info=devDependencies)
-[![Code Climate](https://codeclimate.com/github/inpercima/run-and-fun/badges/gpa.svg)](https://codeclimate.com/github/inpercima/run-and-fun)
 
 Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).
 
