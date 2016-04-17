@@ -5,8 +5,7 @@
   utilService.$inject = [ '$filter', 'CONST' ];
 
   function utilService($filter, CONST) {
-    /* jshint validthis: true */
-    var service = this;
+    var service = this; // jshint ignore:line
 
     const LABEL_ALL_YEARS = 'All years';
 

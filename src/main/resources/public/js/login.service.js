@@ -7,8 +7,7 @@
   function loginService($http, $log) {
     var logger = $log.getInstance('loginService');
     // public methods
-    /* jshint validthis: true */
-    this.state = state;
+    this.state = state; // jshint ignore:line
 
     function state(vm) {
       logger.debug('state');

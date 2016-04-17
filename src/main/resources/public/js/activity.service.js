@@ -7,10 +7,8 @@
   function activityService($http, $log, dateTimeUtils) {
     var logger = $log.getInstance('activityService');
     // public methods
-    /* jshint validthis: true */
-    this.list = list;
-    /* jshint validthis: true */
-    this.recalculateTotals = recalculateTotals;
+    this.list = list; // jshint ignore:line
+    this.recalculateTotals = recalculateTotals; // jshint ignore:line
 
     function list(params) {
       var url = '/listActivities';
