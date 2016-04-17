@@ -2,11 +2,10 @@
   'use strict';
   angular.module('app').config(logProvider);
 
-  logProvider.$inject = [ '$logProvider', '$provide' ];
+  logProvider.$inject = [ '$logProvider', '$provide', 'xmlRequestProvider' ];
 
-  function logProvider($logProvider, $provide) {
-    $logProvider.debugEnabled(true);
-
+  function logProvider($logProvider, $provide, xmlRequestProvider) {
+    $logProvider.debugEnabled(xmlRequestProvider.$get().synchronousRequest().debug);
     $provide.decorator('$log', decorator);
 
     decorator.$inject = [ '$delegate' ];
