@@ -7,29 +7,30 @@
 <div>
   <h2>
     Distribution of activities
-
-    <button type="button" class="btn btn-success" data-ng-click="vm.changeChartType()">Change Chart Type</button>
+    <span data-ng-cloak>{{vm.activities.numberOfElements}}</span>
+    activities
+    <button type="button" class="btn btn-success" data-ng-click="vm.changeDistributionChartType()">Change Chart Type</button>
   </h2>
-  <p data-ng-cloak>All Activities: {{vm.activities.numberOfElements}}</p>
-  <canvas id="pie" class="chart-base"
-    chart-data="vm.pieOverviewData"
-    chart-labels="vm.pieOverviewLabels"
+  <canvas class="chart-base"
+    chart-data="vm.distributionData"
+    chart-labels="vm.distributionLabels"
     chart-legend="true"
-    chart-type="vm.kindOfChart">
+    chart-type="vm.distributionChartType">
   </canvas>
 </div>
 <div>
-  <h2>Show kilometers per
-    <select data-ng-model="vm.averageKmDropdown" data-ng-change="vm.refreshLineKmPerMonth()">
+  <h2>Kilometers per
+    <select data-ng-model="vm.distanceGrouping" data-ng-change="vm.refreshDistanceChart()">
       <option value="year">Year</option>
       <option value="month" selected>Month</option>
       <option value="day">Day</option>
-    </select> for running activities
+    </select> for
+    <span data-ng-cloak>{{vm.runs.numberOfElements}}</span>
+    running activities
   </h2>
-  <p data-ng-cloak>Running Activities: {{vm.runs.numberOfElements}}</p>
-  <canvas id="line" class="chart chart-line"
-    chart-data="vm.lineKmPerMonthData"
-    chart-labels="vm.lineKmPerMonthLabels"
-    chart-series="vm.lineKmPerMonthSeriesLabels">
+  <canvas class="chart chart-line"
+    chart-data="vm.distanceData"
+    chart-labels="vm.distanceLabels"
+    chart-series="vm.distanceSeriesLabels">
   </canvas>
 </div>

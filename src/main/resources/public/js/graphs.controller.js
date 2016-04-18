@@ -20,8 +20,8 @@
 
     // public methods
     vm.list = list;
-    vm.refreshLineKmPerMonth = refreshLineKmPerMonth;
-    vm.changeChartType = changeChartType;
+    vm.refreshDistanceChart = refreshDistanceChart;
+    vm.changeDistributionChartType = changeDistributionChartType;
 
     // public fields
     vm.activities = {
@@ -30,11 +30,11 @@
     vm.runs = {
       totalElements: 0
     };
-    vm.averageKmDropdown = KM_PER_MONTH;
+    vm.distanceGrouping = KM_PER_MONTH;
 
     vm.filterYear = utilService.simpleKeyYear(CONST.KEY_ALL);
     vm.years = utilService.listYears(vm.filterYear);
-    vm.kindOfChart = CHART_PIE;
+    vm.distributionChartType = CHART_PIE;
 
     // init
     list();
@@ -51,24 +51,24 @@
       };
       activityService.list(params).then(function(data) {
         vm.activities = data;
-        getPieOverview(vm.activities.content);
+        renderDistributionChart(vm.activities.content);
       });
       params.type = CONST.DEFAULT_ACTIVITY_TYPE;
       activityService.list(params).then(function(data) {
         vm.runs = data;
-        refreshLineKmPerMonth();
+        refreshDistanceChart();
       });
     }
 
-    function getLineKmPerMonth(activities, groupBy) {
-      vm.lineKmPerMonthData = [];
-      vm.lineKmPerMonthLabels = [];
-      vm.lineKmPerMonthSeriesLabels = [];
+    function renderDistanceChart(activities, groupBy) {
+      vm.distanceData = [];
+      vm.distanceLabels = [];
+      vm.distanceSeriesLabels = [];
 
       if (_.isEmpty(activities)) {
         // reset graphics canvas
-        vm.lineKmPerMonthData.push(0);
-        vm.lineKmPerMonthSeriesLabels.push(0);
+        vm.distanceData.push(0);
+        vm.distanceSeriesLabels.push(0);
         return;
       }
 
@@ -80,7 +80,7 @@
       var multipleSeries = vm.filterYear.key === CONST.KEY_ALL && groupBy === KM_PER_MONTH;
       if (multipleSeries) {
         for (var month = 1; month <= 12; month++) {
-          vm.lineKmPerMonthLabels.push((month < 10 ? '0' : '') + month);
+          vm.distanceLabels.push((month < 10 ? '0' : '') + month);
         }
       }
 
@@ -118,19 +118,19 @@
 
           var series = [];
           if (multipleSeries) {
-            vm.lineKmPerMonthSeriesLabels.push(year);
-            for (var monthKey in vm.lineKmPerMonthLabels) {
-              series.push(data[vm.lineKmPerMonthLabels[monthKey]] || 0);
+            vm.distanceSeriesLabels.push(year);
+            for (var monthKey in vm.distanceLabels) {
+              series.push(data[vm.distanceLabels[monthKey]] || 0);
             }
           } else {
-            for (var key in data) {
+            for (var key in labels) {
               series.push(data[key]);
-              vm.lineKmPerMonthLabels.push(labels[key]);
+              vm.distanceLabels.push(labels[key]);
             }
           }
 
           // need array within array because series allows multiple lines -> multiple data-arrays in main data-array
-          vm.lineKmPerMonthData.push(series);
+          vm.distanceData.push(series);
 
           data = {};
           labels = {};
@@ -138,15 +138,15 @@
       }
     }
 
-    function getPieOverview(activities) {
-      logger.debug('getPieOverview');
-      vm.pieOverviewData = [];
-      vm.pieOverviewLabels = [];
+    function renderDistributionChart(activities) {
+      logger.debug('renderDistributionChart');
+      vm.distributionData = [];
+      vm.distributionLabels = [];
 
       if (_.isEmpty(activities)) {
         // reset graphics canvas
-        vm.pieOverviewData.push(0);
-        vm.pieOverviewLabels.push('No data');
+        vm.distributionData.push(0);
+        vm.distributionLabels.push('No data');
         return;
       }
 
@@ -157,19 +157,19 @@
       }, data);
 
       for (var key in data) {
-        vm.pieOverviewData.push(data[key]);
-        vm.pieOverviewLabels.push(key);
+        vm.distributionData.push(data[key]);
+        vm.distributionLabels.push(key);
       }
     }
 
-    function refreshLineKmPerMonth() {
-      logger.debug('refreshLineKmPerMonth');
-      getLineKmPerMonth(vm.runs.content, vm.averageKmDropdown);
+    function refreshDistanceChart() {
+      logger.debug('refreshDistanceChart');
+      renderDistanceChart(vm.runs.content, vm.distanceGrouping);
     }
 
-    function changeChartType() {
+    function changeDistributionChartType() {
       logger.debug('changeChartType');
-      vm.kindOfChart = vm.kindOfChart === CHART_POLAR_AREA ? CHART_PIE : CHART_POLAR_AREA;
+      vm.distributionChartType = vm.distributionChartType === CHART_POLAR_AREA ? CHART_PIE : CHART_POLAR_AREA;
     }
   }
 })();
