@@ -1,10 +1,10 @@
 (function() {
   'use strict';
-  angular.module('app').config(logProvider);
+  angular.module('app').config(logConfig);
 
-  logProvider.$inject = [ '$logProvider', '$provide', 'xmlRequestProvider' ];
+  logConfig.$inject = [ '$logProvider', '$provide', 'xmlRequestProvider' ];
 
-  function logProvider($logProvider, $provide, xmlRequestProvider) {
+  function logConfig($logProvider, $provide, xmlRequestProvider) {
     $logProvider.debugEnabled(xmlRequestProvider.$get().synchronousRequest().debug);
     $provide.decorator('$log', decorator);
 

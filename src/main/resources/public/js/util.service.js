@@ -2,9 +2,9 @@
   'use strict';
   angular.module('app').service('utilService', utilService);
 
-  utilService.$inject = [ '$filter', 'CONST' ];
+  utilService.$inject = [ '$filter', '$route', 'CONST' ];
 
-  function utilService($filter, CONST) {
+  function utilService($filter, $route, CONST) {
     var service = this; // jshint ignore:line
 
     const LABEL_ALL_YEARS = 'All years';
@@ -42,6 +42,13 @@
       return {
         minDate: filterYear.key !== CONST.KEY_ALL ? filterYear.year + YEAR_BEGIN : service.dateFilter(filterMinDate),
         maxDate: filterYear.key !== CONST.KEY_ALL ? filterYear.year + YEAR_END : service.dateFilter(filterMaxDate)
+      };
+    };
+
+    service.getCurrentPage = function() {
+      return {
+        name: $route.current.name,
+        subtext: $route.current.text
       };
     };
   }

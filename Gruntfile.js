@@ -93,14 +93,16 @@ module.exports = function(grunt) {
           { src: [ 'node_modules/angular/angular.min.js' ], dest: '<%= build_dir_js %>/angular.min.js' },
           { src: [ 'node_modules/angular-chart.js/dist/angular-chart.min.js' ], dest: '<%= build_dir_js %>/angular-chart.min.js' },
           { src: [ 'node_modules/angular-route/angular-route.min.js' ], dest: '<%= build_dir_js %>/angular-route.min.js' },
+          { src: [ 'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js'], dest: '<%= build_dir_js %>/angular-ui-bootstrap-tpls.js' },
           { src: [ 'node_modules/chart.js/Chart.min.js'], dest: '<%= build_dir_js %>/Chart.min.js' },
           { src: [ 'node_modules/lodash/lodash.min.js'], dest: '<%= build_dir_js %>/lodash.min.js' },
+          // json
+          { src: [ 'src/main/resources/public/js/config.json' ], dest: '<%= build_dir_js %>/config.json' },
           // css
           { src: [ 'node_modules/angular-chart.js/dist/angular-chart.min.css'], dest: '<%= build_dir_css %>/angular-chart.min.css' },
           { src: [ 'node_modules/bootstrap/dist/css/bootstrap.min.css'], dest: '<%= build_dir_css %>/bootstrap.min.css' },
           // fonts
           { expand: true, cwd: 'node_modules/bootstrap/dist/fonts/', src: [ '**'], dest: '<%= build_dir_fonts %>' },
-          { src: [ 'src/main/resources/public/js/config.json' ], dest: '<%= build_dir_js %>/config.json' },
         ]
       }
     }

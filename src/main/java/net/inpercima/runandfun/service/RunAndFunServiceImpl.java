@@ -116,7 +116,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
-    public void indexActivities(final String accessToken) {
+    public int indexActivities(final String accessToken) {
         final Collection<Activity> activities = new ArrayList<>();
 
         final String username = getAppState(accessToken).getUsername();
@@ -130,6 +130,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         if (!activities.isEmpty()) {
             repository.save(activities);
         }
+        return activities.size();
     }
 
     private LocalDate calculateFetchDate() {

@@ -42,6 +42,7 @@
     function list() {
       logger.debug('list');
       loginService.state(vm);
+      vm.page = utilService.getCurrentPage();
 
       var dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
       var params = {

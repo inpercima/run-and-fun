@@ -8,9 +8,6 @@
     var logger = $log.getInstance('LoginController');
     var vm = this;
 
-    // public methods
-    vm.state = state;
-
     // init
     state();
 
