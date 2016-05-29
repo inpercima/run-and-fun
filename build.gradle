@@ -19,18 +19,12 @@ springBoot { mainClass = "net.inpercima.runandfun.Application" }
 
 repositories { mavenCentral() }
 dependencies {
-    def slf4jVersion = "1.7.21"
-
-    compile "org.slf4j:slf4j-api:$slf4jVersion",
-            "com.google.guava:guava:19.0"
+    compile "com.google.guava:guava:19.0"
 
     compile "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-starter-logging",
             "org.springframework.boot:spring-boot-starter-data-elasticsearch",
             "org.springframework.boot:spring-boot-starter-actuator"
-
-    runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion",
-            "ch.qos.logback:logback-classic:1.1.7"
 
     testCompile "org.springframework.boot:spring-boot-starter-test",
             "junit:junit:4.12"
