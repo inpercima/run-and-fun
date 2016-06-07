@@ -2,6 +2,10 @@
  * @author Marcel Jänicke
  * @since 08.04.2015
 */
+body {
+  overflow-y: scroll;
+}
+
 a.glyphicon {
   text-decoration: none;
 }
