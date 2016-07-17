@@ -9,18 +9,18 @@ public class RunkeeperActivities {
 
     private int size = 0;
 
-    private RunkeeperItem[] items = new RunkeeperItem[0];
+    private RunkeeperActivityItem[] items = new RunkeeperActivityItem[0];
 
     private String previous;
 
     private String next;
 
-    public List<RunkeeperItem> getItemsAsList() {
+    public List<RunkeeperActivityItem> getItemsAsList() {
         return items != null ? Arrays.asList(items) : new ArrayList<>();
     }
 
-    public List<RunkeeperItem> getRuns() {
-        return getItemsAsList().stream().filter(item -> item.getType().equals(RunkeeperItem.TYPE_RUNNING))
+    public List<RunkeeperActivityItem> getRuns() {
+        return getItemsAsList().stream().filter(item -> item.getType().equals(RunkeeperActivityItem.TYPE_RUNNING))
                 .collect(Collectors.toList());
     }
 
@@ -32,11 +32,11 @@ public class RunkeeperActivities {
         this.size = size;
     }
 
-    public RunkeeperItem[] getItems() {
+    public RunkeeperActivityItem[] getItems() {
         return items;
     }
 
-    public void setItems(final RunkeeperItem[] items) {
+    public void setItems(final RunkeeperActivityItem[] items) {
         this.items = items;
     }
 

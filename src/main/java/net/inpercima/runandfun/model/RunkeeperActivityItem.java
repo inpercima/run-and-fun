@@ -9,7 +9,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RunkeeperItem {
+public class RunkeeperActivityItem {
 
     public static final String ID_PREFIX = "/fitnessActivities/";
 

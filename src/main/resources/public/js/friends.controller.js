@@ -2,22 +2,25 @@
   'use strict';
   angular.module('app').controller('FriendsController', FriendsController);
 
-  FriendsController.$inject = [ '$log', 'loginService', 'utilService' ];
+  FriendsController.$inject = [ '$log', 'friendsService', 'utilService' ];
 
-  function FriendsController($log, loginService, utilService) {
+  function FriendsController($log, friendsService, utilService) {
     var logger = $log.getInstance('FriendsController');
     var vm = this;
 
     // public methods
-    vm.state = state;
+    vm.list = list;
 
     // init
-    state();
+    list();
 
-    function state() {
-      logger.debug('state');
-      loginService.state(vm);
+    function list() {
+      logger.debug('list');
+      friendsService.state(vm);
       vm.page = utilService.getCurrentPage();
+      friendsService.list().then(function(promise) {
+        vm.friends = promise;
+      });
     }
   }
 })();

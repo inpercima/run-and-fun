@@ -29,13 +29,19 @@ public interface RunkeeperApiConstants {
     public final static String AUTHORIZATION_CODE = "authorization_code";
 
     public final static String BEARER = "Bearer ";
-
+    
+    public final static String PAGE_SIZE_ONE = "?pageSize=1";
+    
+    public final static int DEFAULT_PAGE_SIZE = 25;
+    
     // application types
     public final static String USER_APP = "application/vnd.com.runkeeper.User+json";
 
     public final static String PROFILE_APP = "application/vnd.com.runkeeper.Profile+json";
 
     public final static String ACTIVITIES_APP = "application/vnd.com.runkeeper.FitnessActivityFeed+json";
+
+    public final static String FRIENDS_APP = "application/vnd.com.runkeeper.TeamFeed+json";
 
     // urls
     public final static String TOKEN_URL = "https://runkeeper.com/apps/token";
@@ -50,10 +56,14 @@ public interface RunkeeperApiConstants {
 
     public final static String ACTIVITIES_URL = "http://api.runkeeper.com/fitnessActivities";
 
-    public final static int DEFAULT_PAGE_SIZE = 25;
+    public final static String FRIENDS_URL = "http://api.runkeeper.com/team";
+    
+    public final static String FRIENDS_URL_WITH_SPECIFIED_SIZE = FRIENDS_URL + "?pageSize=%s";
 
     public final static String ACTIVITIES_URL_NO_EARLIER_THAN = ACTIVITIES_URL + "?noEarlierThan=%s&pageSize=%s";
 
-    public final static String ACTIVITIES_URL_WITH_PAGE_SIZE_ONE = ACTIVITIES_URL + "?pageSize=1";
+    public final static String ACTIVITIES_URL_WITH_PAGE_SIZE_ONE = ACTIVITIES_URL + PAGE_SIZE_ONE;
+
+    public final static String FRIENDS_URL_WITH_PAGE_SIZE_ONE = FRIENDS_URL + PAGE_SIZE_ONE;
 
 }

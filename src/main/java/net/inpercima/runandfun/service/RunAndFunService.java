@@ -1,14 +1,16 @@
 package net.inpercima.runandfun.service;
 
 import java.time.LocalDate;
-
-import net.inpercima.runandfun.model.Activity;
-import net.inpercima.runandfun.model.AppState;
-import net.inpercima.runandfun.model.RunkeeperProfile;
-import net.inpercima.runandfun.model.RunkeeperUser;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import net.inpercima.runandfun.model.Activity;
+import net.inpercima.runandfun.model.AppState;
+import net.inpercima.runandfun.model.RunkeeperFriendItem;
+import net.inpercima.runandfun.model.RunkeeperProfile;
+import net.inpercima.runandfun.model.RunkeeperUser;
 
 /**
  * @author Marcel Jänicke
@@ -21,6 +23,8 @@ public interface RunAndFunService {
     RunkeeperUser getUser(String accessToken);
 
     RunkeeperProfile getProfile(String accessToken);
+    
+    List<RunkeeperFriendItem> getFriends(String accessToken);
 
     int indexActivities(String accessToken);
 

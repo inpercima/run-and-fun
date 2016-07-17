@@ -7,7 +7,7 @@ import java.util.List;
 
 import net.inpercima.runandfun.Application;
 import net.inpercima.runandfun.model.Activity;
-import net.inpercima.runandfun.model.RunkeeperItem;
+import net.inpercima.runandfun.model.RunkeeperActivityItem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,14 +36,14 @@ public class ActivityRepositoryTest {
 
     @Test
     public void countAndfindAllByType() {
-        final int count = repository.countByType(RunkeeperItem.TYPE_RUNNING);
+        final int count = repository.countByType(RunkeeperActivityItem.TYPE_RUNNING);
         final Pageable pageable = new PageRequest(0, count);
-        final Page<Activity> page = repository.findAllByTypeOrderByDateDesc(RunkeeperItem.TYPE_RUNNING, pageable);
+        final Page<Activity> page = repository.findAllByTypeOrderByDateDesc(RunkeeperActivityItem.TYPE_RUNNING, pageable);
         assertNotNull(page);
         final List<Activity> content = page.getContent();
         assertEquals(count, content.size());
         content.stream().forEach(result -> {
-            assertEquals(RunkeeperItem.TYPE_RUNNING, result.getType());
+            assertEquals(RunkeeperActivityItem.TYPE_RUNNING, result.getType());
         });
     }
 
