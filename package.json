@@ -11,20 +11,20 @@
     "angular-ui-bootstrap": "^2.1.1",
     "bootstrap": "^3.3.7",
     "chart.js": "~2.2.1",
-    "lodash": "^4.15.0"
-  },
-  "description": "run-and-fun javascript project",
-  "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
+    "load-grunt-tasks": "^3.5.2",
+    "lodash": "^4.15.0"
+  },
+  "description": "run-and-fun javascript project",
+  "devDependencies": {
+    "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-jscs": "^3.0.1",
-    "load-grunt-tasks": "^3.5.2"
+    "grunt-jscs": "^3.0.1"
   },
   "homepage": "https://github.com/inpercima/run-and-fun",
   "license": "MIT",
