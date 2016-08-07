@@ -11,8 +11,8 @@
     const DASH = '-';
     const DOT = '.';
 
-    const CHART_PIE = 'Pie';
-    const CHART_POLAR_AREA = 'PolarArea';
+    const CHART_PIE = 'pie';
+    const CHART_POLAR_AREA = 'polarArea';
 
     const KM_PER_YEAR = 'year';
     const KM_PER_MONTH = 'month';
