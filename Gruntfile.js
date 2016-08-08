@@ -99,7 +99,6 @@ module.exports = function(grunt) {
           // json
           { src: [ 'src/main/resources/public/js/config.json' ], dest: '<%= build_dir_js %>/config.json' },
           // css
-          { src: [ 'node_modules/angular-chart.js/dist/angular-chart.min.css'], dest: '<%= build_dir_css %>/angular-chart.min.css' },
           { src: [ 'node_modules/bootstrap/dist/css/bootstrap.min.css'], dest: '<%= build_dir_css %>/bootstrap.min.css' },
           // fonts
           { expand: true, cwd: 'node_modules/bootstrap/dist/fonts/', src: [ '**'], dest: '<%= build_dir_fonts %>' },

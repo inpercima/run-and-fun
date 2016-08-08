@@ -1,4 +1,22 @@
 <ng-include src="'partials/header.html'"></ng-include>
+<div class="row">
+  <div class="col-sm-6">
+    <h2>Distribution</h2>
+    <h2>
+      Distribution of
+      <span data-ng-cloak>{{vm.activities.numberOfElements}}</span>
+      activities
+    </h2>
+  </div>
+  <div class="col-sm-6">
+    <h2>Kilometers</h2>
+    <h2>
+      Distribution of
+      <span data-ng-cloak>{{vm.activities.numberOfElements}}</span>
+      activities
+    </h2>
+  </div>
+</div>
 <div>
   <div class="form-group form-inline">
     <select class="form-control" data-ng-change="vm.list()" data-ng-model="vm.filterYear" id="filterYear" data-ng-options="filterYear.year for filterYear in vm.years track by filterYear.key"></select>
@@ -6,15 +24,12 @@
 </div>
 <div>
   <h2>
-    Distribution of
-    <span data-ng-cloak>{{vm.activities.numberOfElements}}</span>
-    activities
+    
     <button type="button" class="btn btn-success" data-ng-click="vm.changeDistributionChartType()">Change Chart Type</button>
   </h2>
-  <canvas class="chart-base"
+  <canvas class="chart chart-pie"
     chart-data="vm.distributionData"
     chart-labels="vm.distributionLabels"
-    chart-legend="true"
     chart-type="vm.distributionChartType">
   </canvas>
 </div>

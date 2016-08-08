@@ -160,6 +160,11 @@
       for (var key in data) {
         vm.distributionData.push(data[key]);
         vm.distributionLabels.push(key);
+        vm.distributionOptions = {
+          legend: {
+            display: true
+           }
+        };
       }
     }
 
