@@ -11,8 +11,8 @@
     const DASH = '-';
     const DOT = '.';
 
-    const CHART_PIE = 'pie';
-    const CHART_POLAR_AREA = 'polarArea';
+    const CHART_BAR = 'bar';
+    const CHART_LINE = 'line';
 
     const KM_PER_YEAR = 'year';
     const KM_PER_MONTH = 'month';
@@ -34,7 +34,7 @@
 
     vm.filterYear = utilService.simpleKeyYear(CONST.KEY_ALL);
     vm.years = utilService.listYears(vm.filterYear);
-    vm.distributionChartType = CHART_PIE;
+    vm.distributionChartType = CHART_LINE;
 
     // init
     list();
@@ -175,7 +175,7 @@
 
     function changeDistributionChartType() {
       logger.debug('changeChartType');
-      vm.distributionChartType = vm.distributionChartType === CHART_POLAR_AREA ? CHART_PIE : CHART_POLAR_AREA;
+      vm.distributionChartType = vm.distributionChartType === CHART_BAR ? CHART_LINE : CHART_BAR;
     }
   }
 })();

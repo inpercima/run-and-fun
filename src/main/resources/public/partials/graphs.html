@@ -1,51 +1,95 @@
 <ng-include src="'partials/header.html'"></ng-include>
 <div class="row">
-  <div class="col-sm-6">
-    <h2>Distribution</h2>
+  <div class="col-sm-12">
     <h2>
-      Distribution of
-      <span data-ng-cloak>{{vm.activities.numberOfElements}}</span>
-      activities
-    </h2>
-  </div>
-  <div class="col-sm-6">
-    <h2>Kilometers</h2>
-    <h2>
-      Distribution of
-      <span data-ng-cloak>{{vm.activities.numberOfElements}}</span>
-      activities
+      Settings
+      <small>set what you want to see</small>
     </h2>
   </div>
 </div>
-<div>
-  <div class="form-group form-inline">
-    <select class="form-control" data-ng-change="vm.list()" data-ng-model="vm.filterYear" id="filterYear" data-ng-options="filterYear.year for filterYear in vm.years track by filterYear.key"></select>
+<div class="row">
+  <div class="col-sm-12">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label for="filterYear" class="col-sm-2 control-label">show</label>
+        <div class="col-sm-2">
+          <select
+            class="form-control"
+            data-ng-change="vm.list()"
+            data-ng-model="vm.filterYear"
+            data-ng-options="filterYear.year for filterYear in vm.years track by filterYear.key"
+            id="filterYear"
+          ></select>
+        </div>
+        <div class="col-sm-2">
+          <span class="label label-default">distribution</span>
+          <span class="label label-default">kilometers</span>
+        </div>
+        <label for="kilometers" class="col-sm-2 control-label">kilometers per</label>
+        <div class="col-sm-2">
+          <select
+            class="form-control"
+            data-ng-change="vm.refreshDistanceChart()"
+            data-ng-model="vm.distanceGrouping"
+            id="kilometers"
+          >
+            <option value="year">Year</option>
+            <option value="month" selected>Month</option>
+            <option value="day">Day</option>
+          </select>
+        </div>
+        <div class="col-sm-2">
+          <span class="label label-default">kilometers</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="chartType" class="col-sm-2 control-label">chart type</label>
+        <div class="col-sm-2">
+          <select
+            class="form-control"
+            data-ng-change="refreshDistanceChart"
+            data-ng-model="vm.distributionChartType"
+            id="chartType"
+          >
+            <option value="bar">Bar</option>
+            <option value="line" selected>Line</option>
+          </select>
+        </div>
+        <div class="col-sm-2">
+          <span class="label label-default">kilometers</span>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
-<div>
-  <h2>
-    
-    <button type="button" class="btn btn-success" data-ng-click="vm.changeDistributionChartType()">Change Chart Type</button>
-  </h2>
-  <canvas class="chart chart-pie"
-    chart-data="vm.distributionData"
-    chart-labels="vm.distributionLabels"
-    chart-type="vm.distributionChartType">
-  </canvas>
+<hr>
+<div class="row">
+  <div class="col-sm-12">
+    <h2>
+      Distribution
+      <small>of <span class="label label-info">{{vm.activities.numberOfElements}}</span> activities</small>
+    </h2>
+    <canvas
+      class="chart chart-pie"
+      data-chart-data="vm.distributionData"
+      data-chart-labels="vm.distributionLabels"
+    ></canvas>
+  </div>
 </div>
-<div>
-  <h2>Kilometers per
-    <select data-ng-model="vm.distanceGrouping" data-ng-change="vm.refreshDistanceChart()">
-      <option value="year">Year</option>
-      <option value="month" selected>Month</option>
-      <option value="day">Day</option>
-    </select> for
-    <span data-ng-cloak>{{vm.runs.numberOfElements}}</span>
-    running activities
-  </h2>
-  <canvas class="chart chart-line"
-    chart-data="vm.distanceData"
-    chart-labels="vm.distanceLabels"
-    chart-series="vm.distanceSeriesLabels">
-  </canvas>
+<hr>
+<div class="row">
+  <div class="col-sm-12">
+    <h2>
+      Kilometers
+      <small>of <span class="label label-info">{{vm.runs.numberOfElements}}</span> running activities</small>
+    </h2>
+    <canvas
+      class="chart-base"
+      data-chart-data="vm.distanceData"
+      data-chart-labels="vm.distanceLabels"
+      data-chart-series="vm.distanceSeriesLabels"
+      data-chart-type="vm.distributionChartType"
+      id="bar"
+    ></canvas>
+  </div>
 </div>
