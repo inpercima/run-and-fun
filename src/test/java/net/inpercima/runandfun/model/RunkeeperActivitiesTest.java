@@ -31,23 +31,23 @@ public class RunkeeperActivitiesTest {
         final RunkeeperActivities result = new RunkeeperActivities();
         assertEquals(0, result.getItems().length);
 
-        final RunkeeperItem[] items = new RunkeeperItem[ACTIVITY_SIZE];
+        final RunkeeperActivityItem[] items = new RunkeeperActivityItem[ACTIVITY_SIZE];
         int i = 0;
-        items[i] = new RunkeeperItem();
-        items[i].setType(RunkeeperItem.TYPE_RUNNING);
-        items[i].setUri(RunkeeperItem.ID_PREFIX + i);
+        items[i] = new RunkeeperActivityItem();
+        items[i].setType(RunkeeperActivityItem.TYPE_RUNNING);
+        items[i].setUri(RunkeeperActivityItem.ID_PREFIX + i);
         items[i].setStartTime(START_DATETIME);
-        items[++i] = new RunkeeperItem();
-        items[i].setType(RunkeeperItem.TYPE_RUNNING);
-        items[i].setUri(RunkeeperItem.ID_PREFIX + i);
+        items[++i] = new RunkeeperActivityItem();
+        items[i].setType(RunkeeperActivityItem.TYPE_RUNNING);
+        items[i].setUri(RunkeeperActivityItem.ID_PREFIX + i);
         items[i].setStartTime(START_DATETIME);
-        items[++i] = new RunkeeperItem();
-        items[i].setType(RunkeeperItem.TYPE_HIKING);
-        items[i].setUri(RunkeeperItem.ID_PREFIX + i);
+        items[++i] = new RunkeeperActivityItem();
+        items[i].setType(RunkeeperActivityItem.TYPE_HIKING);
+        items[i].setUri(RunkeeperActivityItem.ID_PREFIX + i);
         items[i].setStartTime(START_DATETIME);
-        items[++i] = new RunkeeperItem();
-        items[i].setType(RunkeeperItem.TYPE_CYCLING);
-        items[i].setUri(RunkeeperItem.ID_PREFIX + i);
+        items[++i] = new RunkeeperActivityItem();
+        items[i].setType(RunkeeperActivityItem.TYPE_CYCLING);
+        items[i].setUri(RunkeeperActivityItem.ID_PREFIX + i);
         items[i].setStartTime(START_DATETIME);
         assertEquals(ACTIVITY_SIZE, i + 1);
         result.setItems(items);
@@ -58,14 +58,14 @@ public class RunkeeperActivitiesTest {
 
     @Test
     public final void getRuns() {
-        final List<RunkeeperItem> runs = activities.getRuns();
+        final List<RunkeeperActivityItem> runs = activities.getRuns();
         assertNotNull(runs);
         assertEquals(2, runs.size());
     }
 
     @Test
     public void parseRfc1123DateTime() {
-        final LocalDateTime date = RunkeeperItem.parseRfc1123DateTime(START_DATETIME + RunkeeperItem.GMT_POSTFIX);
+        final LocalDateTime date = RunkeeperActivityItem.parseRfc1123DateTime(START_DATETIME + RunkeeperActivityItem.GMT_POSTFIX);
         assertNotNull(date);
         assertEquals("2015-01-01T" + START_TIME, date.toString());
     }
@@ -77,14 +77,14 @@ public class RunkeeperActivitiesTest {
 
     @Test
     public void convertSecondToHHMMSS() {
-        final String duration = RunkeeperItem.convertSecondToHHMMSS(0);
+        final String duration = RunkeeperActivityItem.convertSecondToHHMMSS(0);
         assertNotNull(duration);
         assertEquals("00:00:00", duration);
-        assertEquals("00:00:01", RunkeeperItem.convertSecondToHHMMSS(1));
-        assertEquals("00:00:11", RunkeeperItem.convertSecondToHHMMSS(11));
-        assertEquals("00:01:00", RunkeeperItem.convertSecondToHHMMSS(60));
-        assertEquals("01:00:00", RunkeeperItem.convertSecondToHHMMSS(3600));
-        assertEquals("01:01:01", RunkeeperItem.convertSecondToHHMMSS(3661));
+        assertEquals("00:00:01", RunkeeperActivityItem.convertSecondToHHMMSS(1));
+        assertEquals("00:00:11", RunkeeperActivityItem.convertSecondToHHMMSS(11));
+        assertEquals("00:01:00", RunkeeperActivityItem.convertSecondToHHMMSS(60));
+        assertEquals("01:00:00", RunkeeperActivityItem.convertSecondToHHMMSS(3600));
+        assertEquals("01:01:01", RunkeeperActivityItem.convertSecondToHHMMSS(3661));
     }
 
 }
