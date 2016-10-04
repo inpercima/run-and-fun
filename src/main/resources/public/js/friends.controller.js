@@ -2,11 +2,11 @@
   'use strict';
   angular.module('app').controller('FriendsController', FriendsController);
 
-  FriendsController.$inject = [ '$log', 'friendsService', 'utilService' ];
+  FriendsController.$inject = ['$log', 'friendsService', 'utilService'];
 
   function FriendsController($log, friendsService, utilService) {
-    var logger = $log.getInstance('FriendsController');
-    var vm = this;
+    const logger = $log.getInstance('FriendsController');
+    const vm = this;
 
     // public methods
     vm.list = list;
@@ -18,7 +18,7 @@
       logger.debug('list');
       friendsService.state(vm);
       vm.page = utilService.getCurrentPage();
-      friendsService.list().then(function(promise) {
+      friendsService.list().then((promise) => {
         vm.friends = promise;
       });
     }

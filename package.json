@@ -12,6 +12,7 @@
     "bootstrap": "^3.3.7",
     "chart.js": "~2.3.0",
     "grunt": "^1.0.1",
+    "grunt-babel": "6.0.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -22,9 +23,9 @@
   },
   "description": "run-and-fun javascript project",
   "devDependencies": {
-    "grunt-contrib-jshint": "^1.0.0",
+    "babel-preset-es2015": "6.16.0",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-jscs": "^3.0.1"
+    "grunt-eslint": "19.0.0"
   },
   "homepage": "https://github.com/inpercima/run-and-fun",
   "license": "MIT",
