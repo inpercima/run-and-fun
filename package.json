@@ -6,11 +6,11 @@
   ],
   "dependencies": {
     "angular": "^1.5.8",
-    "angular-chart.js": "^1.0.2",
+    "angular-chart.js": "^1.0.3",
     "angular-route": "^1.5.8",
     "angular-ui-bootstrap": "^2.2.0",
     "bootstrap": "^3.3.7",
-    "chart.js": "~2.2.1",
+    "chart.js": "~2.3.0",
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",
