@@ -2,11 +2,11 @@
   'use strict';
   angular.module('app').controller('GraphsController', GraphsController);
 
-  GraphsController.$inject = [ '$log', 'activityService', 'CONST', 'loginService', 'utilService' ];
+  GraphsController.$inject = ['$log', 'activityService', 'CONST', 'loginService', 'utilService'];
 
   function GraphsController($log, activityService, CONST, loginService, utilService) {
-    var logger = $log.getInstance('GraphsController');
-    var vm = this;
+    const logger = $log.getInstance('GraphsController');
+    const vm = this;
 
     const DASH = '-';
     const DOT = '.';
@@ -25,10 +25,10 @@
 
     // public fields
     vm.activities = {
-      totalElements: 0
+      totalElements: 0,
     };
     vm.runs = {
-      totalElements: 0
+      totalElements: 0,
     };
     vm.distanceGrouping = KM_PER_MONTH;
 
@@ -44,18 +44,18 @@
       loginService.state(vm);
       vm.page = utilService.getCurrentPage();
 
-      var dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
-      var params = {
-        'size': 1000,
-        'minDate': dates.minDate,
-        'maxDate': dates.maxDate,
+      const dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
+      const params = {
+        size: 1000,
+        minDate: dates.minDate,
+        maxDate: dates.maxDate,
       };
-      activityService.list(params).then(function(data) {
+      activityService.list(params).then((data) => {
         vm.activities = data;
         renderDistributionChart(vm.activities.content);
       });
       params.type = CONST.DEFAULT_ACTIVITY_TYPE;
-      activityService.list(params).then(function(data) {
+      activityService.list(params).then((data) => {
         vm.runs = data;
         refreshDistanceChart();
       });
@@ -73,25 +73,25 @@
         return;
       }
 
-      activities = _.sortBy(activities, CONST.DATE);
+      const sortedActivities = _.sortBy(activities, CONST.DATE);
 
-      var data = {};
-      var labels = {};
+      let data = {};
+      let labels = {};
 
-      var multipleSeries = vm.filterYear.key === CONST.KEY_ALL && groupBy === KM_PER_MONTH;
+      const multipleSeries = vm.filterYear.key === CONST.KEY_ALL && groupBy === KM_PER_MONTH;
       if (multipleSeries) {
-        for (var month = 1; month <= 12; month++) {
-          vm.distanceLabels.push((month < 10 ? '0' : '') + month);
+        for (let month = 1; month <= 12; month++) {
+          vm.distanceLabels.push(`${(month < 10 ? '0' : '')}${month}`);
         }
       }
 
-      for (var i = 0, len = activities.length; i < len; i++) {
-        var readableDateLong = utilService.dateFilter(activities[i].date).split(DASH);
-        var readableDateShort = utilService.dateFilter(activities[i].date).split(DASH);
+      for (let i = 0, len = sortedActivities.length; i < len; i++) {
+        const readableDateLong = utilService.dateFilter(sortedActivities[i].date).split(DASH);
+        const readableDateShort = utilService.dateFilter(sortedActivities[i].date).split(DASH);
 
-        var label;
-        var groupByKey;
-        var year;
+        let label;
+        let groupByKey;
+        let year;
 
         if (multipleSeries) {
           label = readableDateLong[1];
@@ -109,22 +109,22 @@
             groupByKey = label + DOT + readableDateShort[0];
           }
         }
-        var distance = parseFloat(activities[i].distance.toFixed(2, 2));
+        const distance = parseFloat(sortedActivities[i].distance.toFixed(2, 2));
 
         data[groupByKey] = data[groupByKey] + distance || distance;
         labels[groupByKey] = labels[groupByKey] = label;
 
-        if (i + 1 === len || year && year !== utilService.dateFilter(activities[i + 1].date).split(DASH)[0]) {
+        if (i + 1 === len || year && year !== utilService.dateFilter(sortedActivities[i + 1].date).split(DASH)[0]) {
           logger.debug('end of series');
 
-          var series = [];
+          const series = [];
           if (multipleSeries) {
             vm.distanceSeriesLabels.push(year);
-            for (var monthKey in vm.distanceLabels) {
+            for (const monthKey in vm.distanceLabels) {
               series.push(data[vm.distanceLabels[monthKey]] || 0);
             }
           } else {
-            for (var key in labels) {
+            for (const key in labels) {
               series.push(data[key]);
               vm.distanceLabels.push(labels[key]);
             }
@@ -151,19 +151,19 @@
         return;
       }
 
-      var data = {};
-      activities.reduce(function(obj, val) {
+      const data = {};
+      activities.reduce((obj, val) => {
         obj[val.type] = obj[val.type] + 1 || 1;
         return obj;
       }, data);
 
-      for (var key in data) {
+      for (const key in data) {
         vm.distributionData.push(data[key]);
         vm.distributionLabels.push(key);
         vm.distributionOptions = {
           legend: {
-            display: true
-           }
+            display: true,
+          },
         };
       }
     }

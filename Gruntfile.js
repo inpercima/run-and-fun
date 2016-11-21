@@ -1,112 +1,115 @@
+/* globals module, require */
+
+const loadGruntTasks = require('load-grunt-tasks');
 module.exports = function(grunt) {
   'use strict';
-  require('load-grunt-tasks')(grunt);
+
+  loadGruntTasks(grunt);
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    build_app_js: 'build/resources/main/public/js/app.js',
+    buildAppJs: 'build/resources/main/public/js/app.js',
 
-    build_app_min_js: 'build/resources/main/public/js/app.min.js',
+    buildAppMinJs: 'build/resources/main/public/js/app.min.js',
 
-    build_dir_css: 'build/resources/main/public/css',
+    buildDirCss: 'build/resources/main/public/css',
 
-    build_dir_fonts: 'build/resources/main/public/fonts',
+    buildDirFonts: 'build/resources/main/public/fonts',
 
-    build_dir_js: 'build/resources/main/public/js',
+    buildDirJs: 'build/resources/main/public/js',
 
-    gruntfile_js: 'Gruntfile.js',
+    gruntfileJs: 'Gruntfile.js',
 
-    src_app_js: 'src/main/resources/public/js/app.js',
+    srcAppJs: 'src/main/resources/public/js/app.js',
 
-    src_config_json: 'src/main/resources/public/js/config.json',
+    srcConfigJson: 'src/main/resources/public/js/config.json',
 
-    src_files_js: 'src/main/resources/public/js/**/*.js',
+    srcFilesJs: 'src/main/resources/public/js/**/*.js',
 
-    jshint: {
+    babel: {
       options: {
-        boss: true,
-        browser: true,
-        curly: true,
-        esnext: true,
-        globals: {
-          angular: true,
-          '_': true,
-        },
-        immed: true,
-        newcap: true,
-        noarg: true,
-        node: true,
-        sub: true,
-        undef: true,
-        unused: true,
-        'quotmark': 'single'
+        presets: ['es2015'],
       },
       dist: {
-        src: [ '<%= gruntfile_js %>', '<%= src_files_js %>' ]
-      }
+        files: {
+          '<%= concat.core.dest %>': '<%= concat.core.dest %>',
+        },
+      },
     },
-    jscs: {
-      src: [ '<%= gruntfile_js %>', '<%= src_files_js %>' ],
+    eslint: {
       options: {
-        config: '.jscs.json'
-      }
+        configFile: '.eslintrc.json',
+      },
+      target: ['<%= gruntfileJs %>', '<%= srcFilesJs %>'],
     },
     concat: {
       options: {
-        separator: grunt.util.linefeed
+        separator: grunt.util.linefeed,
       },
       // first build without app.js
       core: {
-        src: [ '<%= src_files_js %>', '!<%= src_app_js %>', '!<%= src_config_json %>' ],
-        dest: '<%= build_app_js %>'
+        src: ['<%= srcFilesJs %>', '!<%= srcAppJs %>', '!<%= srcConfigJson %>'],
+        dest: '<%= buildAppJs %>',
       },
       // second build with prepended app.js
       dist: {
-        src: [ '<%= src_app_js %>', '<%= concat.core.dest %>', '!<%= src_config_json %>' ],
-        dest: '<%= concat.core.dest %>'
-      }
+        src: ['<%= srcAppJs %>', '<%= buildAppJs %>', '!<%= srcConfigJson %>'],
+        dest: '<%= buildAppJs %>',
+      },
     },
     uglify: {
       options: {
         // the banner is inserted at the top of the output
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
       },
       dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: '<%= build_app_min_js %>'
-      }
+        src: '<%= buildAppJs %>',
+        dest: '<%= buildAppMinJs %>',
+      },
     },
     watch: {
-      files: [ '<%= gruntfile_js %>', '<%= src_files_js %>' ],
-      tasks: [ 'jshint', 'jscs', 'concat', 'uglify', 'copy', 'clean' ]
+      files: ['<%= gruntfileJs %>', '<%= srcFilesJs %>'],
+      tasks: ['jshint', 'jscs', 'concat', 'uglify', 'copy', 'clean'],
     },
     clean: {
       dist: {
-        src: '<%= build_app_js %>'
-      }
+        src: '<%= buildAppJs %>',
+      },
     },
     copy: {
       dist: {
         files: [
           // js
-          { src: [ 'node_modules/angular/angular.min.js' ], dest: '<%= build_dir_js %>/angular.min.js' },
-          { src: [ 'node_modules/angular-chart.js/dist/angular-chart.min.js' ], dest: '<%= build_dir_js %>/angular-chart.min.js' },
-          { src: [ 'node_modules/angular-route/angular-route.min.js' ], dest: '<%= build_dir_js %>/angular-route.min.js' },
-          { src: [ 'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js'], dest: '<%= build_dir_js %>/angular-ui-bootstrap-tpls.js' },
-          { src: [ 'node_modules/chart.js/dist/Chart.min.js'], dest: '<%= build_dir_js %>/Chart.min.js' },
-          { src: [ 'node_modules/lodash/lodash.min.js'], dest: '<%= build_dir_js %>/lodash.min.js' },
+          { src: ['node_modules/angular/angular.min.js'], dest: '<%= buildDirJs %>/angular.min.js' },
+          {
+            src: ['node_modules/angular-chart.js/dist/angular-chart.min.js'],
+            dest: '<%= buildDirJs %>/angular-chart.min.js',
+          },
+          {
+            src: ['node_modules/angular-route/angular-route.min.js'],
+            dest: '<%= buildDirJs %>/angular-route.min.js',
+          },
+          {
+            src: ['node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js'],
+            dest: '<%= buildDirJs %>/angular-ui-bootstrap-tpls.js',
+          },
+          { src: ['node_modules/chart.js/dist/Chart.min.js'], dest: '<%= buildDirJs %>/Chart.min.js' },
+          { src: ['node_modules/lodash/lodash.min.js'], dest: '<%= buildDirJs %>/lodash.min.js' },
           // json
-          { src: [ 'src/main/resources/public/js/config.json' ], dest: '<%= build_dir_js %>/config.json' },
+          { src: ['src/main/resources/public/js/config.json'], dest: '<%= buildDirJs %>/config.json' },
           // css
-          { src: [ 'node_modules/bootstrap/dist/css/bootstrap.min.css'], dest: '<%= build_dir_css %>/bootstrap.min.css' },
+          {
+            src: ['node_modules/bootstrap/dist/css/bootstrap.min.css'],
+            dest: '<%= buildDirCss %>/bootstrap.min.css',
+          },
           // fonts
-          { expand: true, cwd: 'node_modules/bootstrap/dist/fonts/', src: [ '**'], dest: '<%= build_dir_fonts %>' },
-        ]
-      }
-    }
+          { expand: true, cwd: 'node_modules/bootstrap/dist/fonts/', src: ['**'], dest: '<%= buildDirFonts %>' },
+        ],
+      },
+    },
   });
 
-  grunt.registerTask('build', [ 'jshint', 'jscs', 'concat', 'uglify', 'copy', 'clean' ]);
-  grunt.registerTask('default', [ 'jshint', 'jscs' ]);
+  grunt.registerTask('build', ['eslint', 'concat', 'babel', 'uglify', 'copy', 'clean']);
+  grunt.registerTask('default', ['eslint']);
 };

@@ -9,7 +9,7 @@
       controller: 'NavbarController',
       controllerAs: 'vm',
       restrict: 'E',
-      templateUrl: '../partials/navbar.html'
+      templateUrl: '../partials/navbar.html',
     };
   }
 })();

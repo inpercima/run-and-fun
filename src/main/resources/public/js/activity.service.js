@@ -2,24 +2,24 @@
   'use strict';
   angular.module('app').service('activityService', activityService);
 
-  activityService.$inject = [ '$http', '$log', 'dateTimeUtils' ];
+  activityService.$inject = ['$http', '$log', 'dateTimeUtils'];
 
   function activityService($http, $log, dateTimeUtils) {
-    var logger = $log.getInstance('activityService');
+    const logger = $log.getInstance('activityService');
     // public methods
     this.list = list; // jshint ignore:line
     this.recalculateTotals = recalculateTotals; // jshint ignore:line
     this.indexActivities = indexActivities; // jshint ignore:line
 
     function list(params) {
-      var url = '/listActivities';
+      let url = '/listActivities';
       if (params.size === -1) {
         url += 'ByType';
       }
       url += addParams(params);
       logger.debug(url);
-      return $http.get(url).then(function(result) {
-        var activities = result.data;
+      return $http.get(url).then((result) => {
+        const activities = result.data;
         enrichWithTimePerKm(activities.content);
         enrichWithStatistics(activities.content);
         return activities;
@@ -30,19 +30,19 @@
       logger.debug('recalculateTotals');
       vm.totalActivities = vm.activities.content.length;
       vm.totalDistance = getTotalDistance(vm.activities.content);
-      var totalTime = getTotalTime(vm.activities.content);
+      const totalTime = getTotalTime(vm.activities.content);
       vm.totalDuration = dateTimeUtils.formatTime(totalTime);
       vm.totalTimePerKm = dateTimeUtils.formatTime(calcTimePerKm(totalTime, vm.totalDistance));
       vm.totalTimePer5Km = dateTimeUtils.formatTime(5 * calcTimePerKm(totalTime, vm.totalDistance));
       vm.totalTimePer10Km = dateTimeUtils.formatTime(10 * calcTimePerKm(totalTime, vm.totalDistance));
     }
 
-    var distanceHalfMarathon = 21.097;
+    const distanceHalfMarathon = 21.097;
 
     function enrichWithTimePerKm(content) {
       logger.debug('enrichWithTimePerKm');
-      angular.forEach(content, function(activity) {
-        var seconds = dateTimeUtils.formattedTimeToSeconds(activity.duration);
+      angular.forEach(content, (activity) => {
+        const seconds = dateTimeUtils.formattedTimeToSeconds(activity.duration);
         activity.timePerKmInSeconds = calcTimePerKm(seconds, activity.distance);
         activity.timePerKm = dateTimeUtils.formatTime(activity.timePerKmInSeconds);
         activity.timePer5Km = dateTimeUtils.formatTime(calcTimePerKm(5 * seconds, activity.distance));
@@ -54,7 +54,7 @@
           addTimeForKm(activity, seconds, distanceHalfMarathon);
         }
         // calculate time for every distance starting with nearest km (round ceil)
-        for (var i = Math.ceil(activity.distance); i >= 1; i--) {
+        for (let i = Math.ceil(activity.distance); i >= 1; i--) {
           if (activity.additionalInfo.length > 0) {
             activity.additionalInfo += '\n';
           }
@@ -69,30 +69,32 @@
 
     function enrichWithStatistics(activities) {
       logger.debug('enrichWithStatistics');
-      angular.forEach(activities, function(activity) {
-        var distanceRound = Math.round(activity.distance);
-        var distanceStep = Math.ceil(Math.sqrt(distanceRound));
+      angular.forEach(activities, (activity) => {
+        const distanceRound = Math.round(activity.distance);
+        const distanceStep = Math.ceil(Math.sqrt(distanceRound));
         rateByDistance(activity, activities, distanceRound - distanceStep, distanceRound + distanceStep);
       });
     }
 
     function rateByDistance(activity, activities, minDistance, maxDistance) {
-      var matches = activities.filter(function(current) {
+      const matches = activities.filter((current) => {
         return current.distance > minDistance && current.distance <= maxDistance;
-      }).sort(function(o1, o2) {
+      }).sort((o1, o2) => {
         return o1.timePerKmInSeconds - o2.timePerKmInSeconds;
       });
-      var i = 0;
+      let i = 0;
       while (i < matches.length) {
-        if (activity.timePerKmInSeconds <= matches[i++].timePerKmInSeconds) {
+        if (activity.timePerKmInSeconds <= matches[i].timePerKmInSeconds) {
           break;
         }
+        i += 1;
       }
-      activity.intervalStats = 'Platz ' + i + ' von ' + matches.length + ' zwischen ' + minDistance + ' und ' + maxDistance + 'km';
+      activity.intervalStats = `Platz ${i} von ${matches.length} zwischen ${minDistance} und ${maxDistance} km`;
     }
 
     function addTimeForKm(activity, totalSeconds, distance) {
-      activity.additionalInfo += dateTimeUtils.formatTime(calcTimePerKm(distance * totalSeconds, activity.distance)) + 'min/' + distance + 'km';
+      const calculatedTimePerKm = calcTimePerKm(distance * totalSeconds, activity.distance);
+      activity.additionalInfo += `${dateTimeUtils.formatTime(calculatedTimePerKm)}min/${distance}km`;
     }
 
     function calcTimePerKm(time, distance) {
@@ -101,8 +103,8 @@
 
     function getTotalDistance(activities) {
       logger.debug('getTotalDistance');
-      var sum = 0;
-      for (var i = 0; i < activities.length; i++) {
+      let sum = 0;
+      for (let i = 0; i < activities.length; i++) {
         sum += activities[i].distance;
       }
       return sum.toFixed(2);
@@ -110,19 +112,19 @@
 
     function getTotalTime(activities) {
       logger.debug('getTotalTime');
-      var sum = 0;
-      for (var i = 0; i < activities.length; i++) {
+      let sum = 0;
+      for (let i = 0; i < activities.length; i++) {
         sum += dateTimeUtils.formattedTimeToSeconds(activities[i].duration);
       }
       return sum;
     }
 
     function addParams(params) {
-      var url = '?';
-      for (var param in params) {
+      let url = '?';
+      for (const param in params) {
         if (params[param]) {
-          url = url === '?' ? url : url + '&';
-          url += param + '=' + params[param];
+          url = url === '?' ? url : `${url}&`;
+          url += `${param}=${params[param]}`;
         }
       }
       return url;
@@ -130,7 +132,7 @@
 
     function indexActivities() {
       $log.debug('indexActivities');
-      var promise = $http.get('/indexActivities').success(function(data) {
+      const promise = $http.get('/indexActivities').success((data) => {
         return data;
       });
       return promise;

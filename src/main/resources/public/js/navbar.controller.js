@@ -2,11 +2,11 @@
   'use strict';
   angular.module('app').controller('NavbarController', NavbarController);
 
-  NavbarController.$inject = [ '$log', '$route', '$uibModal', 'loginService' ];
+  NavbarController.$inject = ['$log', '$route', '$uibModal', 'loginService'];
 
   function NavbarController($log, $route, $uibModal, loginService) {
-    var logger = $log.getInstance('NavbarController');
-    var vm = this;
+    const logger = $log.getInstance('NavbarController');
+    const vm = this;
 
     // public methods
     vm.activeRoute = activeRoute;
@@ -29,25 +29,25 @@
     }
 
     function routes() {
-      angular.forEach($route.routes, function(route, path) {
+      angular.forEach($route.routes, (route, path) => {
         if (route.name) {
           vm.routes.push({
-            path: path,
-            name: route.name
+            path,
+            name: route.name,
           });
         }
       });
     }
 
     function open() {
-      var modalInstance = $uibModal.open({
+      const modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'partials/activities.dialog.html',
         controller: 'ActivityDialogController',
         controllerAs: 'vm',
-        size: 'sm'
+        size: 'sm',
       });
-      modalInstance.result.then(function() {}, function() {});
+      modalInstance.result.then(() => {}, () => {});
     }
   }
 })();

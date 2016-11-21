@@ -2,11 +2,11 @@
   'use strict';
   angular.module('app').controller('DashController', DashController);
 
-  DashController.$inject = [ '$log', 'loginService', 'utilService' ];
+  DashController.$inject = ['$log', 'loginService', 'utilService'];
 
   function DashController($log, loginService, utilService) {
-    var logger = $log.getInstance('DashController');
-    var vm = this;
+    const logger = $log.getInstance('DashController');
+    const vm = this;
 
     // public methods
     vm.state = state;

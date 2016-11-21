@@ -2,11 +2,11 @@
   'use strict';
   angular.module('app').controller('ActivityController', ActivityController);
 
-  ActivityController.$inject = [ '$log', 'activityService', 'CONST', 'loginService', 'utilService' ];
+  ActivityController.$inject = ['$log', 'activityService', 'CONST', 'loginService', 'utilService'];
 
   function ActivityController($log, activityService, CONST, loginService, utilService) {
-    var logger = $log.getInstance('ActivityController');
-    var vm = this;
+    const logger = $log.getInstance('ActivityController');
+    const vm = this;
 
     // public methods
     vm.list = list;
@@ -14,7 +14,7 @@
 
     // public fields
     vm.activities = {
-      totalElements: 0
+      totalElements: 0,
     };
     vm.predicate = 'date';
     vm.reverse = true;
@@ -44,25 +44,25 @@
       loginService.state(vm);
       vm.page = utilService.getCurrentPage();
 
-      var filterType = [];
+      let filterType = [];
       if (!vm.allActivityTypes) {
-        angular.forEach(vm.filterType, function(type) {
+        angular.forEach(vm.filterType, (type) => {
           filterType.push(type.key);
         });
       } else {
         filterType = '';
       }
-      var dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
-      var params = {
-        'size': vm.size,
-        'type': filterType,
-        'minDate': dates.minDate,
-        'maxDate': dates.maxDate,
-        'minDistance': vm.filterMinDistance,
-        'maxDistance': vm.filterMaxDistance,
-        'query': vm.filterFulltext
+      const dates = utilService.getMinMaxDate(vm.filterYear, vm.filterMinDate, vm.filterMaxDate);
+      const params = {
+        size: vm.size,
+        type: filterType,
+        minDate: dates.minDate,
+        maxDate: dates.maxDate,
+        minDistance: vm.filterMinDistance,
+        maxDistance: vm.filterMaxDistance,
+        query: vm.filterFulltext,
       };
-      activityService.list(params).then(function(data) {
+      activityService.list(params).then((data) => {
         vm.activities = data;
         activityService.recalculateTotals(vm);
       });
@@ -70,7 +70,7 @@
 
     function remove(activity) {
       logger.debug('ActivityController.remove');
-      var index = vm.activities.content.indexOf(activity);
+      const index = vm.activities.content.indexOf(activity);
       vm.activities.content.splice(index, 1);
       activityService.recalculateTotals(vm);
     }
