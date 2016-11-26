@@ -5,22 +5,22 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-import net.inpercima.runandfun.Application;
-import net.inpercima.runandfun.model.Activity;
-import net.inpercima.runandfun.model.RunkeeperActivityItem;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import net.inpercima.runandfun.Application;
+import net.inpercima.runandfun.model.Activity;
+import net.inpercima.runandfun.model.RunkeeperActivityItem;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringBootTest(classes = Application.class)
 public class ActivityRepositoryTest {
 
     @Autowired
