@@ -1,16 +1,16 @@
 package net.inpercima.runandfun.service;
 
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACCEPT;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACCEPT_CHARSET;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACCESS_TOKEN;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.AUTHORIZATION;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.AUTHORIZATION_CODE;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.BEARER;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.CLIENT_ID;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.CLIENT_SECRET;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.CODE;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.GRANT_TYPE;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.REDIRECT_URI;
+import static net.inpercima.runandfun.app.constants.AppConstants.ACCEPT_CHARSET;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACCEPT;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACCESS_TOKEN;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.AUTHORIZATION;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.AUTHORIZATION_CODE;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.BEARER;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.CLIENT_ID;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.CLIENT_SECRET;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.CODE;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.GRANT_TYPE;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.REDIRECT_URI;
 
 import java.nio.charset.StandardCharsets;
 
@@ -88,7 +88,8 @@ public class HelperServiceImpl implements HelperService {
     }
 
     @Override
-    public <T> HttpEntity<T> getForObject(final String url, final String applicationType, final String accessToken, final Class<T> clazz) {
+    public <T> HttpEntity<T> getForObject(final String url, final String applicationType, final String accessToken,
+            final Class<T> clazz) {
         LOGGER.debug("get {} with {} for token {}", url, applicationType, accessToken);
         return restTemplate.exchange(url, HttpMethod.GET, createHttpEntity(accessToken, applicationType), clazz,
                 createAccessParams(accessToken));

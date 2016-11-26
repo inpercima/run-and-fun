@@ -1,6 +1,6 @@
 package net.inpercima.runandfun.web;
 
-import static net.inpercima.runandfun.constants.AppConstants.SESSION_ACCESS_TOKEN;
+import static net.inpercima.runandfun.app.constants.AppConstants.SESSION_ACCESS_TOKEN;
 
 import javax.servlet.http.HttpSession;
 

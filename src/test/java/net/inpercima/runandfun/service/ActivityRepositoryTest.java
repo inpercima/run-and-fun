@@ -5,6 +5,10 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
+import net.inpercima.runandfun.Application;
+import net.inpercima.runandfun.app.model.AppActivity;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperActivityItem;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import net.inpercima.runandfun.Application;
-import net.inpercima.runandfun.model.Activity;
-import net.inpercima.runandfun.model.RunkeeperActivityItem;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
 public class ActivityRepositoryTest {
@@ -28,9 +28,9 @@ public class ActivityRepositoryTest {
 
     @Test
     public final void findAllOrderByDateDesc() {
-        final Pageable pageable = new PageRequest(0, 1, Direction.DESC, Activity.FIELD_DATE);
-        final Page<Activity> page = repository.findAll(pageable);
-        final List<Activity> content = page.getContent();
+        final Pageable pageable = new PageRequest(0, 1, Direction.DESC, AppActivity.FIELD_DATE);
+        final Page<AppActivity> page = repository.findAll(pageable);
+        final List<AppActivity> content = page.getContent();
         assertEquals(1, content.size());
     }
 
@@ -38,9 +38,10 @@ public class ActivityRepositoryTest {
     public void countAndfindAllByType() {
         final int count = repository.countByType(RunkeeperActivityItem.TYPE_RUNNING);
         final Pageable pageable = new PageRequest(0, count);
-        final Page<Activity> page = repository.findAllByTypeOrderByDateDesc(RunkeeperActivityItem.TYPE_RUNNING, pageable);
+        final Page<AppActivity> page = repository.findAllByTypeOrderByDateDesc(RunkeeperActivityItem.TYPE_RUNNING,
+                pageable);
         assertNotNull(page);
-        final List<Activity> content = page.getContent();
+        final List<AppActivity> content = page.getContent();
         assertEquals(count, content.size());
         content.stream().forEach(result -> {
             assertEquals(RunkeeperActivityItem.TYPE_RUNNING, result.getType());
@@ -51,9 +52,9 @@ public class ActivityRepositoryTest {
     public void countAndfindAllByTypeNull() {
         final long count = repository.count();
         final Pageable pageable = new PageRequest(0, (int) count);
-        final Page<Activity> page = repository.findAllByTypeOrderByDateDesc(null, pageable);
+        final Page<AppActivity> page = repository.findAllByTypeOrderByDateDesc(null, pageable);
         assertNotNull(page);
-        final List<Activity> content = page.getContent();
+        final List<AppActivity> content = page.getContent();
         assertEquals(count, content.size());
     }
 }

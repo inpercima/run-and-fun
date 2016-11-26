@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import net.inpercima.runandfun.model.Activity;
-import net.inpercima.runandfun.model.AppState;
-import net.inpercima.runandfun.model.RunkeeperFriendItem;
-import net.inpercima.runandfun.model.RunkeeperProfile;
-import net.inpercima.runandfun.model.RunkeeperUser;
+import net.inpercima.runandfun.app.model.AppActivity;
+import net.inpercima.runandfun.app.model.AppState;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperFriendItem;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperProfile;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperUser;
 
 /**
  * @author Marcel Jänicke
@@ -28,9 +28,9 @@ public interface RunAndFunService {
 
     int indexActivities(String accessToken);
 
-    Page<Activity> listAllActivitiesByType(String type);
+    Page<AppActivity> listAllActivitiesByType(String type);
 
-    Page<Activity> listActivities(Pageable pageable, String type, LocalDate minDate, LocalDate maxDate, Float minDistance,
+    Page<AppActivity> listActivities(Pageable pageable, String type, LocalDate minDate, LocalDate maxDate, Float minDistance,
             Float maxDistance, String query);
 
     AppState getAppState(String accessToken);

@@ -1,4 +1,4 @@
-package net.inpercima.runandfun;
+package net.inpercima.runandfun.service;
 
 import static org.junit.Assert.assertNull;
 

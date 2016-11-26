@@ -1,4 +1,4 @@
-package net.inpercima.runandfun.model;
+package net.inpercima.runandfun.runkeeper.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;

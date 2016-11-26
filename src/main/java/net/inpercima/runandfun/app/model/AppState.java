@@ -1,4 +1,4 @@
-package net.inpercima.runandfun.model;
+package net.inpercima.runandfun.app.model;
 
 public class AppState {
 

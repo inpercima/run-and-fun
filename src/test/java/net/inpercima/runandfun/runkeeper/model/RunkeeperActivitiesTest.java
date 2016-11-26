@@ -1,4 +1,4 @@
-package net.inpercima.runandfun.model;
+package net.inpercima.runandfun.runkeeper.model;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertArrayEquals;
@@ -35,19 +35,19 @@ public class RunkeeperActivitiesTest {
         int i = 0;
         items[i] = new RunkeeperActivityItem();
         items[i].setType(RunkeeperActivityItem.TYPE_RUNNING);
-        items[i].setUri(RunkeeperActivityItem.ID_PREFIX + i);
+        items[i].setUri(RunkeeperActivityItem.SEPARATOR_ID + i);
         items[i].setStartTime(START_DATETIME);
         items[++i] = new RunkeeperActivityItem();
         items[i].setType(RunkeeperActivityItem.TYPE_RUNNING);
-        items[i].setUri(RunkeeperActivityItem.ID_PREFIX + i);
+        items[i].setUri(RunkeeperActivityItem.SEPARATOR_ID + i);
         items[i].setStartTime(START_DATETIME);
         items[++i] = new RunkeeperActivityItem();
         items[i].setType(RunkeeperActivityItem.TYPE_HIKING);
-        items[i].setUri(RunkeeperActivityItem.ID_PREFIX + i);
+        items[i].setUri(RunkeeperActivityItem.SEPARATOR_ID + i);
         items[i].setStartTime(START_DATETIME);
         items[++i] = new RunkeeperActivityItem();
         items[i].setType(RunkeeperActivityItem.TYPE_CYCLING);
-        items[i].setUri(RunkeeperActivityItem.ID_PREFIX + i);
+        items[i].setUri(RunkeeperActivityItem.SEPARATOR_ID + i);
         items[i].setStartTime(START_DATETIME);
         assertEquals(ACTIVITY_SIZE, i + 1);
         result.setItems(items);
@@ -65,7 +65,8 @@ public class RunkeeperActivitiesTest {
 
     @Test
     public void parseRfc1123DateTime() {
-        final LocalDateTime date = RunkeeperActivityItem.parseRfc1123DateTime(START_DATETIME + RunkeeperActivityItem.GMT_POSTFIX);
+        final LocalDateTime date = RunkeeperActivityItem
+                .parseRfc1123DateTime(START_DATETIME + RunkeeperActivityItem.GMT_POSTFIX);
         assertNotNull(date);
         assertEquals("2015-01-01T" + START_TIME, date.toString());
     }

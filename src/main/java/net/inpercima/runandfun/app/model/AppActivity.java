@@ -1,4 +1,4 @@
-package net.inpercima.runandfun.model;
+package net.inpercima.runandfun.app.model;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Document(indexName = "activity", type = "activity")
 @Mapping(mappingPath = "mapping.json")
-public class Activity {
+public class AppActivity {
 
     public static final String FIELD_ID = "id";
 
@@ -43,7 +43,7 @@ public class Activity {
     private final String duration;
 
     @JsonCreator
-    public Activity(@JsonProperty(value = FIELD_ID) final String id, @JsonProperty(value = FIELD_USERNAME) final String username,
+    public AppActivity(@JsonProperty(value = FIELD_ID) final String id, @JsonProperty(value = FIELD_USERNAME) final String username,
             @JsonProperty(value = FIELD_TYPE) final String type, @JsonProperty(value = FIELD_DATE) final Date date,
             @JsonProperty(value = FIELD_DISTANCE) final double distance, @JsonProperty(value = FIELD_DURATION) final String duration) {
         this.id = id;

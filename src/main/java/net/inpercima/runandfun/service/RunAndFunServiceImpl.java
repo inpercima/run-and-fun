@@ -1,17 +1,17 @@
 package net.inpercima.runandfun.service;
 
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_APP;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL_NO_EARLIER_THAN;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.ACTIVITIES_URL_WITH_PAGE_SIZE_ONE;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.DE_AUTHORIZATION_URL;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.FRIENDS_APP;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.FRIENDS_URL_WITH_PAGE_SIZE_ONE;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.FRIENDS_URL_WITH_SPECIFIED_SIZE;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_APP;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.PROFILE_URL;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.TOKEN_URL;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_APP;
-import static net.inpercima.runandfun.constants.RunkeeperApiConstants.USER_URL;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_MEDIA;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_PAGE_SIZE_ONE;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_SPECIFIED_PAGE_SIZE;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.DE_AUTHORIZATION_URL;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_MEDIA;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_URL_PAGE_SIZE_ONE;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_URL_SPECIFIED_PAGE_SIZE;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.PROFILE_MEDIA;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.PROFILE_URL;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.TOKEN_URL;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.USER_MEDIA;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.USER_URL;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -40,16 +40,16 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 
-import net.inpercima.runandfun.constants.RunkeeperApiConstants;
-import net.inpercima.runandfun.model.Activity;
-import net.inpercima.runandfun.model.AppState;
-import net.inpercima.runandfun.model.RunkeeperActivities;
-import net.inpercima.runandfun.model.RunkeeperActivityItem;
-import net.inpercima.runandfun.model.RunkeeperFriendItem;
-import net.inpercima.runandfun.model.RunkeeperFriends;
-import net.inpercima.runandfun.model.RunkeeperProfile;
-import net.inpercima.runandfun.model.RunkeeperToken;
-import net.inpercima.runandfun.model.RunkeeperUser;
+import net.inpercima.runandfun.app.constants.AppConstants;
+import net.inpercima.runandfun.app.model.AppActivity;
+import net.inpercima.runandfun.app.model.AppState;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperActivities;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperActivityItem;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperFriendItem;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperFriends;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperProfile;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperToken;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperUser;
 
 /**
  * @author Marcel Jänicke
@@ -95,50 +95,50 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
     @Override
     public RunkeeperUser getUser(final String accessToken) {
-        return helperService.getForObject(USER_URL, USER_APP, accessToken, RunkeeperUser.class).getBody();
+        return helperService.getForObject(USER_URL, USER_MEDIA, accessToken, RunkeeperUser.class).getBody();
     }
 
     @Override
     public RunkeeperProfile getProfile(final String accessToken) {
         LOGGER.debug("get profile for token {}", accessToken);
-        return helperService.getForObject(PROFILE_URL, PROFILE_APP, accessToken, RunkeeperProfile.class).getBody();
+        return helperService.getForObject(PROFILE_URL, PROFILE_MEDIA, accessToken, RunkeeperProfile.class).getBody();
     }
 
     private RunkeeperActivities getActivities(final String accessToken, final LocalDate from) {
         LOGGER.debug("getActivities until {}", from);
 
-        int pageSize = RunkeeperApiConstants.DEFAULT_PAGE_SIZE;
+        int pageSize = AppConstants.DEFAULT_PAGE_SIZE;
         if (from.until(LocalDate.now(), ChronoUnit.DAYS) > pageSize) {
             // get one item only to get full size
             final HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(
-                    ACTIVITIES_URL_WITH_PAGE_SIZE_ONE, ACTIVITIES_APP, accessToken, RunkeeperActivities.class);
+                    ACTIVITIES_URL_PAGE_SIZE_ONE, ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class);
             pageSize = activitiesForSize.getBody().getSize();
         }
 
         // get new activities
         return helperService.getForObject(
-                String.format(ACTIVITIES_URL_NO_EARLIER_THAN, from.format(DateTimeFormatter.ISO_LOCAL_DATE), pageSize),
-                ACTIVITIES_APP, accessToken, RunkeeperActivities.class).getBody();
+                String.format(ACTIVITIES_URL_SPECIFIED_PAGE_SIZE, from.format(DateTimeFormatter.ISO_LOCAL_DATE), pageSize),
+                ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class).getBody();
     }
 
     @Override
     public List<RunkeeperFriendItem> getFriends(String accessToken) {
         LOGGER.debug("get friends for token {}", accessToken);
-        final HttpEntity<RunkeeperFriends> friendsForSize = helperService.getForObject(FRIENDS_URL_WITH_PAGE_SIZE_ONE,
-                FRIENDS_APP, accessToken, RunkeeperFriends.class);
+        final HttpEntity<RunkeeperFriends> friendsForSize = helperService.getForObject(FRIENDS_URL_PAGE_SIZE_ONE,
+                FRIENDS_MEDIA, accessToken, RunkeeperFriends.class);
         final int pageSize = friendsForSize.getBody().getSize();
 
-        return helperService.getForObject(String.format(FRIENDS_URL_WITH_SPECIFIED_SIZE, pageSize), FRIENDS_APP,
+        return helperService.getForObject(String.format(FRIENDS_URL_SPECIFIED_PAGE_SIZE, pageSize), FRIENDS_MEDIA,
                 accessToken, RunkeeperFriends.class).getBody().getItemsAsList();
     }
 
     @Override
     public int indexActivities(final String accessToken) {
-        final Collection<Activity> activities = new ArrayList<>();
+        final Collection<AppActivity> activities = new ArrayList<>();
 
         final String username = getAppState(accessToken).getUsername();
         for (final RunkeeperActivityItem item : getActivities(accessToken, calculateFetchDate()).getItemsAsList()) {
-            final Activity activity = new Activity(item.getId(), username, item.getType(), item.getDate(),
+            final AppActivity activity = new AppActivity(item.getId(), username, item.getType(), item.getDate(),
                     item.getDistance(), item.getFormattedDuration());
             LOGGER.debug("prepare {}", activity);
             activities.add(activity);
@@ -151,28 +151,28 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     private LocalDate calculateFetchDate() {
-        final Pageable pageable = new PageRequest(0, 1, Direction.DESC, Activity.FIELD_DATE);
-        final Iterator<Activity> lastFetchedActivity = repository.findAll(pageable).getContent().iterator();
+        final Pageable pageable = new PageRequest(0, 1, Direction.DESC, AppActivity.FIELD_DATE);
+        final Iterator<AppActivity> lastFetchedActivity = repository.findAll(pageable).getContent().iterator();
         return lastFetchedActivity.hasNext()
                 ? lastFetchedActivity.next().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                 : INITIAL_RELEASE_OF_RUNKEEPER;
     }
 
     @Override
-    public Page<Activity> listAllActivitiesByType(String type) {
+    public Page<AppActivity> listAllActivitiesByType(String type) {
         final int count = type != null ? repository.countByType(type) : (int) repository.count();
         final Pageable pageable = new PageRequest(0, count);
         return repository.findAllByTypeOrderByDateDesc(type, pageable);
     }
 
     @Override
-    public Page<Activity> listActivities(final Pageable pageable, final String types, final LocalDate minDate,
+    public Page<AppActivity> listActivities(final Pageable pageable, final String types, final LocalDate minDate,
             final LocalDate maxDate, final Float minDistance, final Float maxDistance, final String query) {
         final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         if (!Strings.isNullOrEmpty(types)) {
             final BoolQueryBuilder typesQuery = QueryBuilders.boolQuery();
             for (final String type : Splitter.on(',').split(types.toLowerCase())) {
-                typesQuery.should(QueryBuilders.termQuery(Activity.FIELD_TYPE, type));
+                typesQuery.should(QueryBuilders.termQuery(AppActivity.FIELD_TYPE, type));
             }
             queryBuilder.must(typesQuery);
         }
@@ -190,7 +190,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         }
         LOGGER.info("{}", queryBuilder);
         return elasticsearchTemplate.queryForPage(
-                new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(), Activity.class);
+                new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(), AppActivity.class);
     }
 
     private static void addFulltextQuery(final BoolQueryBuilder queryBuilder, final String query) {
@@ -199,7 +199,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
     private static void addDateQuery(final BoolQueryBuilder queryBuilder, final LocalDate minDate,
             final LocalDate maxDate) {
-        final RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery(Activity.FIELD_DATE);
+        final RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery(AppActivity.FIELD_DATE);
         if (minDate != null) {
             rangeQuery.gte(minDate);
         }
@@ -211,7 +211,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
     private static void addDistanceQuery(final BoolQueryBuilder queryBuilder, final Float minDistance,
             final Float maxDistance) {
-        final RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery(Activity.FIELD_DISTANCE);
+        final RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery(AppActivity.FIELD_DISTANCE);
         if (minDistance != null) {
             rangeQuery.gte(minDistance);
         }

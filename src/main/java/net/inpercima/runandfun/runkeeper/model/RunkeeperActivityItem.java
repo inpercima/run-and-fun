@@ -1,4 +1,4 @@
-package net.inpercima.runandfun.model;
+package net.inpercima.runandfun.runkeeper.model;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -7,13 +7,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RunkeeperActivityItem {
 
-    public static final String ID_PREFIX = "/fitnessActivities/";
+    public static final String SEPARATOR_ID = "fitnessActivities/";
 
-    protected static final String GMT_POSTFIX = " GMT";
+    public static final String GMT_POSTFIX = " GMT";
 
     public static final String TYPE_RUNNING = "Running";
 
@@ -60,7 +62,7 @@ public class RunkeeperActivityItem {
     }
 
     public String getId() {
-        return getUri() != null ? getUri().substring(ID_PREFIX.length()) : null;
+        return getUri() != null ? StringUtils.substringAfter(getUri(), SEPARATOR_ID) : null;
     }
 
     public LocalDateTime getLocalDateTime() {
