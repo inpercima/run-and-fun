@@ -3,6 +3,11 @@ buildscript {
     dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE") }
 }
 
+plugins {
+  id "com.moowork.grunt" version "0.13"
+  id "com.moowork.node" version "0.13"
+}
+
 apply plugin: "java"
 apply plugin: "eclipse-wtp"
 apply plugin: "org.springframework.boot"
@@ -60,6 +65,10 @@ eclipse{
 
 task wrapper(type: Wrapper) { gradleVersion = "3.2" }
 
+// heroku
 task stage {
     dependsOn build
 }
+
+// findMainClass will be run after :processResources and before :jar, so it can be used in :build an :bootRun
+findMainClass.dependsOn(grunt_build)

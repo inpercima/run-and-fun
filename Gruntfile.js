@@ -18,6 +18,8 @@ module.exports = function(grunt) {
     buildDirFonts: 'build/resources/main/public/fonts',
 
     buildDirJs: 'build/resources/main/public/js',
+    
+    buildFilesJs: 'build/resources/main/public/js/*.js*',
 
     gruntfileJs: 'Gruntfile.js',
 
@@ -73,6 +75,9 @@ module.exports = function(grunt) {
       tasks: ['jshint', 'jscs', 'concat', 'uglify', 'copy', 'clean'],
     },
     clean: {
+      build: {
+        src: '<%= buildFilesJs %>',
+      },
       dist: {
         src: '<%= buildAppJs %>',
       },
@@ -110,6 +115,6 @@ module.exports = function(grunt) {
     },
   });
 
-  grunt.registerTask('build', ['eslint', 'concat', 'babel', 'uglify', 'copy', 'clean']);
+  grunt.registerTask('build', ['clean:build', 'eslint', 'concat', 'babel', 'uglify', 'copy', 'clean:dist']);
   grunt.registerTask('default', ['eslint']);
 };
