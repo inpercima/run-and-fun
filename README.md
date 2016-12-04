@@ -21,9 +21,6 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     # install tools and frontend dependencies
     npm install
 
-    # check, concat and minify javascript
-    grunt build
-
     # run project within gradle
     ./gradlew bootRun
 
