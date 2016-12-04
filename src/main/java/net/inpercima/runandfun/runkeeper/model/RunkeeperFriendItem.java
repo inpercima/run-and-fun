@@ -1,14 +1,16 @@
-package net.inpercima.runandfun.model;
+package net.inpercima.runandfun.runkeeper.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RunkeeperFriendItem {
+    
+    private String reply;
 
     private String name;
 
     private String profile;
 
-    private String url;
+    private String uri;
 
     @JsonProperty(value = "userID")
     private String userId;
@@ -24,8 +26,8 @@ public class RunkeeperFriendItem {
         sb.append(getName());
         sb.append("\", \"profile\" : \"");
         sb.append(getProfile());
-        sb.append("\", \"url\" : \"");
-        sb.append(getUrl());
+        sb.append("\", \"uri\" : \"");
+        sb.append(getUri());
         sb.append("\", \"userID\" : \"");
         sb.append(getUserId());
         sb.append("\" }");
@@ -48,12 +50,12 @@ public class RunkeeperFriendItem {
         this.profile = profile;
     }
 
-    public String getUrl() {
-        return url;
+    public String getUri() {
+        return uri;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getUserId() {
@@ -62,6 +64,14 @@ public class RunkeeperFriendItem {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
     }
 
 }

@@ -1,6 +1,6 @@
 package net.inpercima.runandfun.web;
 
-import static net.inpercima.runandfun.constants.AppConstants.SESSION_ACCESS_TOKEN;
+import static net.inpercima.runandfun.app.constants.AppConstants.SESSION_ACCESS_TOKEN;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.inpercima.runandfun.constants.AppConstants;
-import net.inpercima.runandfun.model.Activity;
-import net.inpercima.runandfun.model.AppState;
-import net.inpercima.runandfun.model.RunkeeperFriendItem;
+import net.inpercima.runandfun.app.constants.AppConstants;
+import net.inpercima.runandfun.app.model.AppActivity;
+import net.inpercima.runandfun.app.model.AppState;
+import net.inpercima.runandfun.runkeeper.model.RunkeeperFriendItem;
 import net.inpercima.runandfun.service.RunAndFunService;
 
 /**
@@ -51,7 +51,7 @@ public class RestApiController {
     }
 
     @RequestMapping(value = "/listActivitiesByType", method = RequestMethod.GET)
-    public Page<Activity> listActivitiesByType(@RequestParam(required = false) final String type) {
+    public Page<AppActivity> listActivitiesByType(@RequestParam(required = false) final String type) {
         LOGGER.debug("listActivitiesByType '{}'", type);
         return runAndFunService.listAllActivitiesByType(type);
     }
@@ -63,7 +63,7 @@ public class RestApiController {
     }
 
     @RequestMapping(value = "/listActivities", method = RequestMethod.GET)
-    public Page<Activity> listActivities(
+    public Page<AppActivity> listActivities(
             @PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable,
             @RequestParam(required = false) final String type,
             @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate minDate,

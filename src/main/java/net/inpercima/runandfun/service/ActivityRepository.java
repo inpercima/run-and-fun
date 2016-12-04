@@ -1,16 +1,16 @@
 package net.inpercima.runandfun.service;
 
-import net.inpercima.runandfun.model.Activity;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ActivityRepository extends ElasticsearchRepository<Activity, String> {
+import net.inpercima.runandfun.app.model.AppActivity;
 
-    Page<Activity> findAllByTypeOrderByDateDesc(String type, Pageable pageable);
+@Repository
+public interface ActivityRepository extends ElasticsearchRepository<AppActivity, String> {
+
+    Page<AppActivity> findAllByTypeOrderByDateDesc(String type, Pageable pageable);
 
     int countByType(String type);
 
