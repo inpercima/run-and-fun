@@ -2,7 +2,7 @@ package net.inpercima.runandfun.service;
 
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_MEDIA;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_PAGE_SIZE_ONE;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_SPECIFIED_PAGE_SIZE;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_SPECIFIED;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.DE_AUTHORIZATION_URL;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_MEDIA;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_URL_PAGE_SIZE_ONE;
@@ -117,7 +117,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
         // get new activities
         return helperService.getForObject(
-                String.format(ACTIVITIES_URL_SPECIFIED_PAGE_SIZE, from.format(DateTimeFormatter.ISO_LOCAL_DATE), pageSize),
+                String.format(ACTIVITIES_URL_SPECIFIED, pageSize, from.format(DateTimeFormatter.ISO_LOCAL_DATE)),
                 ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class).getBody();
     }
 
