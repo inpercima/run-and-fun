@@ -32,8 +32,8 @@
 
     service.listYears = function(firstEntry) {
       const result = [firstEntry];
-      for (let i = 2010; i <= new Date().getFullYear(); i++) {
-        result.push(service.simpleKeyYear(i));
+      for (let year = 2010; year <= new Date().getFullYear(); year++) {
+        result.push(service.simpleKeyYear(year));
       }
       return result;
     };

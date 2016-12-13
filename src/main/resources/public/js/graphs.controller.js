@@ -85,9 +85,9 @@
         }
       }
 
-      for (let i = 0, len = sortedActivities.length; i < len; i++) {
-        const readableDateLong = utilService.dateFilter(sortedActivities[i].date).split(DASH);
-        const readableDateShort = utilService.dateFilter(sortedActivities[i].date).split(DASH);
+      for (let item = 0, len = sortedActivities.length; item < len; item++) {
+        const readableDateLong = utilService.dateFilter(sortedActivities[item].date).split(DASH);
+        const readableDateShort = utilService.dateFilter(sortedActivities[item].date).split(DASH);
 
         let label;
         let groupByKey;
@@ -109,12 +109,13 @@
             groupByKey = label + DOT + readableDateShort[0];
           }
         }
-        const distance = parseFloat(sortedActivities[i].distance.toFixed(2, 2));
+        const distance = parseFloat(sortedActivities[item].distance.toFixed(2, 2));
 
         data[groupByKey] = data[groupByKey] + distance || distance;
         labels[groupByKey] = labels[groupByKey] = label;
 
-        if (i + 1 === len || year && year !== utilService.dateFilter(sortedActivities[i + 1].date).split(DASH)[0]) {
+        if (item + 1 === len || year && year !== utilService.dateFilter(sortedActivities[item + 1].date)
+            .split(DASH)[0]) {
           logger.debug('end of series');
 
           const series = [];

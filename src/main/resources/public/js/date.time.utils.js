@@ -28,6 +28,8 @@
     }
 
     function getTimePart(part) {
+      // it is better readable with nested-ternary so it will be disabled from check
+      // eslint-disable-next-line no-nested-ternary
       return part < 1 ? '00' : (part < 10 ? `0${part}` : part);
     }
   }
