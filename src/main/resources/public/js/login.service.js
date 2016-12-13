@@ -7,7 +7,7 @@
   function loginService($http, $log, $rootScope) {
     const logger = $log.getInstance('loginService');
     // public methods
-    this.state = state; // jshint ignore:line
+    this.state = state;
 
     function state(vm) {
       logger.debug('state');

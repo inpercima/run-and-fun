@@ -7,9 +7,9 @@
   function activityService($http, $log, dateTimeUtils) {
     const logger = $log.getInstance('activityService');
     // public methods
-    this.list = list; // jshint ignore:line
-    this.recalculateTotals = recalculateTotals; // jshint ignore:line
-    this.indexActivities = indexActivities; // jshint ignore:line
+    this.list = list;
+    this.recalculateTotals = recalculateTotals;
+    this.indexActivities = indexActivities;
 
     function list(params) {
       let url = '/listActivities';
@@ -131,9 +131,9 @@
     }
 
     function indexActivities() {
-      logger.debug('indexActivities');
-      return $http.get('/indexActivities').then((promise) => {
-        return promise;
+      $log.debug('indexActivities');
+      return $http.get('/indexActivities').then((response) => {
+        return response.data;
       });
     }
   }

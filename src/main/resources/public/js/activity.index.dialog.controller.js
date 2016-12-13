@@ -19,9 +19,9 @@
 
     function indexActivities() {
       logger.debug('indexActivities');
-      activityService.indexActivities().then((promise) => {
-        vm.activities = promise.data || 0;
-        vm.activities += promise.data < 2 ? ' new activity' : ' new activities';
+      activityService.indexActivities().then((response) => {
+        vm.activities = response || 0;
+        vm.activities += response < 2 ? ' new activity' : ' new activities';
       });
     }
 

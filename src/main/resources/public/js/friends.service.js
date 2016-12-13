@@ -7,8 +7,8 @@
   function friendsService($http, $log, $rootScope) {
     const logger = $log.getInstance('friendsService');
     // public methods
-    this.list = list; // jshint ignore:line
-    this.state = state; // jshint ignore:line
+    this.list = list;
+    this.state = state;
 
     function list() {
       const url = '/listFriends';
