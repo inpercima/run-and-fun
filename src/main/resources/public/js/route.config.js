@@ -2,9 +2,11 @@
   'use strict';
   angular.module('app').config(routeConfig);
 
-  routeConfig.$inject = ['$routeProvider'];
+  routeConfig.$inject = ['$locationProvider', '$routeProvider'];
 
-  function routeConfig($routeProvider) {
+  function routeConfig($locationProvider, $routeProvider) {
+    // use html5Mode to use navigation without hash (#)
+    $locationProvider.html5Mode(true);
     // all with attribute 'name' will be shown in navigation
     $routeProvider
     .when('/dash', {

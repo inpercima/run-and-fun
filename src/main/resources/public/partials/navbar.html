@@ -10,7 +10,7 @@
   <div class="collapse navbar-collapse" data-ng-class="{in: showMobileNav}">
     <ul class="nav navbar-nav">
       <li data-ng-repeat="route in vm.routes" data-ng-class="{active: vm.activeRoute(route)}">
-        <a href="#{{route.path}}">{{route.name}}</a>
+        <a href="{{route.path}}">{{route.name}}</a>
       </li>
     </ul>
     <ul class="nav navbar-nav navbar-right" data-ng-show="vm.appState.username">
@@ -21,7 +21,7 @@
         <ul data-uib-dropdown-menu>
           <li><a href="" data-ng-click="vm.open()">Index activities</a></li>
           <li role="separator" class="divider"></li>
-          <li><a href="logout">Logout</a></li>
+          <li><a href="logout" target="_self">Logout</a></li>
         </ul>
       </li>
     </ul>
