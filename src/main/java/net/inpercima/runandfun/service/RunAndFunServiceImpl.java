@@ -135,19 +135,23 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Override
     public int indexActivities(final String accessToken) {
         final Collection<AppActivity> activities = new ArrayList<>();
-
         final String username = getAppState(accessToken).getUsername();
-        for (final RunkeeperActivityItem item : getActivities(accessToken, calculateFetchDate()).getItemsAsList()) {
-            final AppActivity activity = new AppActivity(item.getId(), username, item.getType(), item.getDate(),
-                    item.getDistance(), item.getFormattedDuration());
-            LOGGER.debug("prepare {}", activity);
-            activities.add(activity);
-        }
+        getActivities(accessToken, calculateFetchDate()).getItemsAsList().stream()
+                .filter(item -> !repository.exists(item.getId()))
+                .forEach(item -> addActivity(item, username, activities));
         LOGGER.info("new activities: {}", activities.size());
         if (!activities.isEmpty()) {
             repository.save(activities);
         }
         return activities.size();
+    }
+
+    private void addActivity(final RunkeeperActivityItem item, final String username,
+            final Collection<AppActivity> activities) {
+        final AppActivity activity = new AppActivity(item.getId(), username, item.getType(), item.getDate(),
+                item.getDistance(), item.getFormattedDuration());
+        LOGGER.debug("prepare {}", activity);
+        activities.add(activity);
     }
 
     private LocalDate calculateFetchDate() {
