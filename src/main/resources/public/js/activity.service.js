@@ -131,11 +131,10 @@
     }
 
     function indexActivities() {
-      $log.debug('indexActivities');
-      const promise = $http.get('/indexActivities').success((data) => {
-        return data;
+      logger.debug('indexActivities');
+      return $http.get('/indexActivities').then((promise) => {
+        return promise;
       });
-      return promise;
     }
   }
 })();

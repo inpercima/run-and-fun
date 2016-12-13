@@ -20,7 +20,7 @@
     function indexActivities() {
       logger.debug('indexActivities');
       activityService.indexActivities().then((promise) => {
-        vm.activities = promise.data ? promise.data : 0;
+        vm.activities = promise.data || 0;
         vm.activities += promise.data < 2 ? ' new activity' : ' new activities';
       });
     }
