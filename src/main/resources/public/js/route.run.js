@@ -2,22 +2,22 @@
   'use strict';
   angular.module('app').run(routeRun);
 
-  routeRun.$inject = ['$log', '$location', '$rootScope'];
+  routeRun.$inject = ['$log', '$location', '$rootScope', 'loginService'];
 
-  function routeRun($log, $location, $rootScope) {
+  function routeRun($log, $location, $rootScope, loginService) {
     $rootScope.$on('$routeChangeStart', routeChangeStart);
 
     routeChangeStart.$inject = ['event', 'next'];
 
-    function routeChangeStart(event, next) {
+    function routeChangeStart(event, next, current) {
       const logger = $log.getInstance('routeRun');
-      logger.debug('loggedIn:', $rootScope.loggedIn);
-      // not logged in, call login
-      if (!$rootScope.loggedIn) {
-        if (next.templateUrl !== 'partials/login.html') {
-          $location.path('/login');
+      loginService.state().then((response) => {
+        if (!response.username) {
+          if (next.templateUrl !== 'partials/login.html') {
+            $location.path('/login');
+          }
         }
-      }
+      });
     }
   }
 })();

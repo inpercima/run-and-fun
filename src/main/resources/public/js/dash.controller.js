@@ -15,8 +15,6 @@
     state();
 
     function state() {
-      logger.debug('state');
-      loginService.state(vm);
       vm.page = utilService.getCurrentPage();
     }
   }

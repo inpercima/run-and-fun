@@ -21,14 +21,18 @@
 
     function state() {
       logger.debug('state');
-      loginService.state(vm);
+      loginService.state().then((response) => {
+        vm.appState = response;
+      });
     }
 
     function activeRoute(route) {
+      logger.debug('activeRoute');
       return route.name === $route.current.name;
     }
 
     function routes() {
+      logger.debug('routes');
       angular.forEach($route.routes, (route, path) => {
         if (route.name) {
           vm.routes.push({
