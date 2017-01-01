@@ -54,15 +54,15 @@
           addTimeForKm(activity, seconds, distanceHalfMarathon);
         }
         // calculate time for every distance starting with nearest km (round ceil)
-        for (let i = Math.ceil(activity.distance); i >= 1; i--) {
+        for (let km = Math.ceil(activity.distance); km >= 1; km--) {
           if (activity.additionalInfo.length > 0) {
             activity.additionalInfo += '\n';
           }
-          if (i === 21) {
+          if (km === 21) {
             addTimeForKm(activity, seconds, distanceHalfMarathon);
             activity.additionalInfo += '\n';
           }
-          addTimeForKm(activity, seconds, i);
+          addTimeForKm(activity, seconds, km);
         }
       });
     }
@@ -82,14 +82,14 @@
       }).sort((o1, o2) => {
         return o1.timePerKmInSeconds - o2.timePerKmInSeconds;
       });
-      let i = 0;
-      while (i < matches.length) {
-        if (activity.timePerKmInSeconds <= matches[i].timePerKmInSeconds) {
+      let item = 0;
+      while (item < matches.length) {
+        if (activity.timePerKmInSeconds <= matches[item].timePerKmInSeconds) {
           break;
         }
-        i += 1;
+        item += 1;
       }
-      activity.intervalStats = `Platz ${i} von ${matches.length} zwischen ${minDistance} und ${maxDistance} km`;
+      activity.intervalStats = `Platz ${item} von ${matches.length} zwischen ${minDistance} und ${maxDistance} km`;
     }
 
     function addTimeForKm(activity, totalSeconds, distance) {
@@ -104,8 +104,8 @@
     function getTotalDistance(activities) {
       logger.debug('getTotalDistance');
       let sum = 0;
-      for (let i = 0; i < activities.length; i++) {
-        sum += activities[i].distance;
+      for (let item = 0; item < activities.length; item++) {
+        sum += activities[item].distance;
       }
       return sum.toFixed(2);
     }
@@ -113,8 +113,8 @@
     function getTotalTime(activities) {
       logger.debug('getTotalTime');
       let sum = 0;
-      for (let i = 0; i < activities.length; i++) {
-        sum += dateTimeUtils.formattedTimeToSeconds(activities[i].duration);
+      for (let item = 0; item < activities.length; item++) {
+        sum += dateTimeUtils.formattedTimeToSeconds(activities[item].duration);
       }
       return sum;
     }
