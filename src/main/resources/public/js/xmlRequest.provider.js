@@ -25,7 +25,7 @@
       return config;
     }
 
-    this.$get = function() { // jshint ignore:line
+    this.$get = function() {
       return {
         synchronousRequest,
       };

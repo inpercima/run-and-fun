@@ -13,7 +13,9 @@
 
     function state() {
       logger.debug('state');
-      loginService.state(vm);
+      loginService.state().then((response) => {
+        vm.appState = response;
+      });
     }
   }
 })();

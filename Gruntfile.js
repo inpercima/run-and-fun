@@ -72,7 +72,7 @@ module.exports = function(grunt) {
     },
     watch: {
       files: ['<%= gruntfileJs %>', '<%= srcFilesJs %>'],
-      tasks: ['jshint', 'jscs', 'concat', 'uglify', 'copy', 'clean'],
+      tasks: ['build'],
     },
     clean: {
       build: {

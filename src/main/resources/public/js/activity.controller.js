@@ -41,7 +41,6 @@
 
     function list() {
       logger.debug('list');
-      loginService.state(vm);
       vm.page = utilService.getCurrentPage();
 
       let filterType = [];

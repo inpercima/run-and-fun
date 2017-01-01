@@ -16,7 +16,6 @@
 
     function list() {
       logger.debug('list');
-      friendsService.state(vm);
       vm.page = utilService.getCurrentPage();
       friendsService.list().then((promise) => {
         vm.friends = promise;

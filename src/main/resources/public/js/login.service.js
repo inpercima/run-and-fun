@@ -2,18 +2,17 @@
   'use strict';
   angular.module('app').service('loginService', loginService);
 
-  loginService.$inject = ['$http', '$log', '$rootScope'];
+  loginService.$inject = ['$http', '$log'];
 
-  function loginService($http, $log, $rootScope) {
+  function loginService($http, $log) {
     const logger = $log.getInstance('loginService');
     // public methods
-    this.state = state; // jshint ignore:line
+    this.state = state;
 
-    function state(vm) {
+    function state() {
       logger.debug('state');
-      $http.get('/state').success((data) => {
-        vm.appState = data;
-        $rootScope.loggedIn = vm.appState.username !== '';
+      return $http.get('/state').then((response) => {
+        return response.data;
       });
     }
   }

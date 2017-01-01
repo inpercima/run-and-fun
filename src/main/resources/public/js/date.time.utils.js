@@ -6,7 +6,7 @@
 
   function dateTimeUtils($log) {
     const logger = $log.getInstance('dateTimeUtils');
-    const vm = this; // jshint ignore:line
+    const vm = this;
 
     // public methods
     vm.formattedTimeToSeconds = formattedTimeToSeconds;
