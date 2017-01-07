@@ -7,9 +7,12 @@
   function activityService($http, $log, dateTimeUtils) {
     const logger = $log.getInstance('activityService');
     // public methods
+    this.addParams = addParams;
+    this.getTotalDistance = getTotalDistance;
+    this.getTotalTime = getTotalTime;
+    this.indexActivities = indexActivities;
     this.list = list;
     this.recalculateTotals = recalculateTotals;
-    this.indexActivities = indexActivities;
 
     function list(params) {
       let url = '/listActivities';
@@ -103,31 +106,16 @@
 
     function getTotalDistance(activities) {
       logger.debug('getTotalDistance');
-      let sum = 0;
-      for (let item = 0; item < activities.length; item++) {
-        sum += activities[item].distance;
-      }
-      return sum.toFixed(2);
+      return _.sum(activities.map((entry) => entry.distance)).toFixed(2);
     }
 
     function getTotalTime(activities) {
       logger.debug('getTotalTime');
-      let sum = 0;
-      for (let item = 0; item < activities.length; item++) {
-        sum += dateTimeUtils.formattedTimeToSeconds(activities[item].duration);
-      }
-      return sum;
+      return _.sum(activities.map((entry) => dateTimeUtils.formattedTimeToSeconds(entry.duration)));
     }
 
     function addParams(params) {
-      let url = '?';
-      for (const param in params) {
-        if (params[param]) {
-          url = url === '?' ? url : `${url}&`;
-          url += `${param}=${params[param]}`;
-        }
-      }
-      return url;
+      return `?${_.keys(_.mapKeys(params, (value, key) => `${key}=${value}`)).join('&')}`;
     }
 
     function indexActivities() {
