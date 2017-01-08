@@ -4,9 +4,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import net.inpercima.runandfun.service.HelperServiceImpl;
-import net.inpercima.runandfun.service.RunAndFunService;
-import net.inpercima.runandfun.service.RunAndFunServiceImpl;
+import net.inpercima.restapi.service.RestApiServiceImpl;
 
 /**
  * @author Marcel Jänicke
@@ -15,7 +13,7 @@ import net.inpercima.runandfun.service.RunAndFunServiceImpl;
  */
 public class RunAndFunServiceTest {
 
-    private final RunAndFunService runAndFun = new RunAndFunServiceImpl(new HelperServiceImpl());
+    private final RunAndFunService runAndFun = new RunAndFunServiceImpl(new RestApiServiceImpl());
 
     @Test
     public void getAccessTokenWithEmptyCodeShouldReturnNull() {
