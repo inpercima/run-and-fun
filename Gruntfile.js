@@ -101,6 +101,7 @@ module.exports = function(grunt) {
           },
           { src: ['node_modules/chart.js/dist/Chart.min.js'], dest: '<%= buildDirJs %>/Chart.min.js' },
           { src: ['node_modules/lodash/lodash.min.js'], dest: '<%= buildDirJs %>/lodash.min.js' },
+          { src: ['node_modules/ramda/dist/ramda.min.js'], dest: '<%= buildDirJs %>/ramda.min.js' },
           // json
           { src: ['src/main/resources/public/js/config.json'], dest: '<%= buildDirJs %>/config.json' },
           // css
