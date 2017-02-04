@@ -13,6 +13,12 @@ public interface RunkeeperConstants {
 
     public final static String AUTHORIZATION = "Authorization";
 
+    public final static String AUTHORIZATION_BASIC = "Basic ";
+
+    public final static String AUTHORIZATION_BEARER = "Bearer ";
+
+    public final static String AUTHORIZATION_CODE = "authorization_code";
+
     public final static String CLIENT_ID = "client_id";
 
     public final static String CLIENT_SECRET = "client_secret";
@@ -23,16 +29,14 @@ public interface RunkeeperConstants {
 
     public final static String REDIRECT_URI = "redirect_uri";
 
-    public final static String AUTHORIZATION_CODE = "authorization_code";
-
-    public final static String BEARER = "Bearer ";
-
     // media types
     public final static String ACTIVITIES_MEDIA = "application/vnd.com.runkeeper.FitnessActivityFeed+json";
 
     public final static String FRIENDS_MEDIA = "application/vnd.com.runkeeper.TeamFeed+json";
 
     public final static String PROFILE_MEDIA = "application/vnd.com.runkeeper.Profile+json";
+
+    public final static String ROOT_MEDIA = "application/vnd.com.runkeeper.Root+json";
 
     public final static String USER_MEDIA = "application/vnd.com.runkeeper.User+json";
 

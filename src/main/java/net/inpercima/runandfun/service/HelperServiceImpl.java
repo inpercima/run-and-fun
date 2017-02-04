@@ -5,14 +5,17 @@ import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACC
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACCESS_TOKEN;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.AUTHORIZATION;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.AUTHORIZATION_CODE;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.BEARER;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.AUTHORIZATION_BASIC;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.AUTHORIZATION_BEARER;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.CLIENT_ID;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.CLIENT_SECRET;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.CODE;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.GRANT_TYPE;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.REDIRECT_URI;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,10 +57,12 @@ public class HelperServiceImpl implements HelperService {
         return clientId;
     }
 
+    @Override
     public void setClientId(final String clientId) {
         this.clientId = clientId;
     }
 
+    @Override
     public void setClientSecret(final String clientSecret) {
         this.clientSecret = clientSecret;
     }
@@ -67,19 +72,10 @@ public class HelperServiceImpl implements HelperService {
         return redirectUri;
     }
 
-    public void setRedirectUri(final String redirectUri) {
-        this.redirectUri = redirectUri;
-    }
-
     public HelperServiceImpl() {
         restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
-    }
-
-    @Override
-    public <T> T postForObject(final String url, final String code, final Class<T> clazz) {
-        return restTemplate.postForObject(url, createTokenParams(code), clazz);
     }
 
     @Override
@@ -88,11 +84,26 @@ public class HelperServiceImpl implements HelperService {
     }
 
     @Override
+    public <T> T postForObject(final String url, final String code, final Class<T> clazz) {
+        return restTemplate.postForObject(url, createTokenParams(code), clazz);
+    }
+
+    public <T> HttpEntity<T> getForObject(final String url, final String applicationType, final Class<T> clazz) {
+        return restTemplate.exchange(url, HttpMethod.GET, createHttpEntity(applicationType), clazz);
+    }
+
+    @Override
     public <T> HttpEntity<T> getForObject(final String url, final String applicationType, final String accessToken,
             final Class<T> clazz) {
         LOGGER.debug("get {} with {} for token {}", url, applicationType, accessToken);
         return restTemplate.exchange(url, HttpMethod.GET, createHttpEntity(accessToken, applicationType), clazz,
                 createAccessParams(accessToken));
+    }
+
+    private static MultiValueMap<String, String> createAccessParams(final String accessToken) {
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add(ACCESS_TOKEN, accessToken);
+        return params;
     }
 
     private MultiValueMap<String, String> createTokenParams(final String code) {
@@ -105,19 +116,30 @@ public class HelperServiceImpl implements HelperService {
         return params;
     }
 
-    private static MultiValueMap<String, String> createAccessParams(final String accessToken) {
-        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add(ACCESS_TOKEN, accessToken);
-        return params;
+    private <T> HttpEntity<T> createHttpEntity(final String applicationType) {
+        final String basicCode = clientId.concat(":").concat(clientSecret);
+        String base64Code = null;
+        try {
+            base64Code = Base64.getEncoder().encodeToString(basicCode.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        final HttpHeaders headers = createHttpHeaders(applicationType);
+        headers.set(AUTHORIZATION, AUTHORIZATION_BASIC.concat(Strings.nullToEmpty(base64Code)));
+        return new HttpEntity<>(headers);
     }
 
     private static <T> HttpEntity<T> createHttpEntity(final String accessToken, final String applicationType) {
+        final HttpHeaders headers = createHttpHeaders(applicationType);
+        headers.set(AUTHORIZATION, AUTHORIZATION_BEARER.concat(Strings.nullToEmpty(accessToken)));
+        return new HttpEntity<>(headers);
+    }
+
+    private static HttpHeaders createHttpHeaders(final String applicationType) {
         final HttpHeaders headers = new HttpHeaders();
         headers.set(ACCEPT, applicationType);
-        headers.set(AUTHORIZATION, BEARER.concat(Strings.nullToEmpty(accessToken)));
         headers.set(ACCEPT_CHARSET, StandardCharsets.UTF_8.displayName());
-        final HttpEntity<T> entity = new HttpEntity<>(headers);
-        return entity;
+        return headers;
     }
 
 }
