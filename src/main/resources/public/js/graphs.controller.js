@@ -108,7 +108,7 @@
             groupByKey = label + DOT + readableDateShort[0];
           }
         }
-        const distance = parseFloat(sortedActivities[item].distance.toFixed(2, 2));
+        const distance = parseFloat(sortedActivities[item].distance.toFixed(2));
 
         data[groupByKey] = data[groupByKey] + distance || distance;
         labels[groupByKey] = labels[groupByKey] = label;
@@ -121,7 +121,9 @@
           if (multipleSeries) {
             vm.distanceSeriesLabels.push(year);
             for (const monthKey in vm.distanceLabels) {
-              series.push(data[vm.distanceLabels[monthKey]] || 0);
+              let valueForMonth = data[vm.distanceLabels[monthKey]];
+              valueForMonth = !isNaN(valueForMonth) ? parseFloat(valueForMonth).toFixed(2) : 0;
+              series.push(valueForMonth);
             }
           } else {
             for (const key in labels) {
