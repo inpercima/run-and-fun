@@ -40,6 +40,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 
+import net.inpercima.restapi.service.RestApiService;
 import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppActivity;
 import net.inpercima.runandfun.app.model.AppState;
@@ -65,7 +66,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     private static final LocalDate INITIAL_RELEASE_OF_RUNKEEPER = LocalDate.of(2008, 01, 01);
 
     @Autowired
-    private HelperService helperService;
+    private RestApiService restApiService;
 
     @Autowired
     private ActivityRepository repository;
@@ -84,24 +85,24 @@ public class RunAndFunServiceImpl implements RunAndFunService {
      *
      * @param helperService
      */
-    public RunAndFunServiceImpl(final HelperService helperService) {
-        this.helperService = helperService;
+    public RunAndFunServiceImpl(final RestApiService restApiService) {
+        this.restApiService = restApiService;
     }
 
     @Override
     public String getAccessToken(final String code) {
-        return helperService.postForObject(TOKEN_URL, code, RunkeeperToken.class).getAccessToken();
+        return restApiService.postForObject(TOKEN_URL, code, RunkeeperToken.class).getAccessToken();
     }
 
     @Override
     public RunkeeperUser getUser(final String accessToken) {
-        return helperService.getForObject(USER_URL, USER_MEDIA, accessToken, RunkeeperUser.class).getBody();
+        return restApiService.getForObject(USER_URL, USER_MEDIA, accessToken, RunkeeperUser.class).getBody();
     }
 
     @Override
     public RunkeeperProfile getProfile(final String accessToken) {
         LOGGER.debug("get profile for token {}", accessToken);
-        return helperService.getForObject(PROFILE_URL, PROFILE_MEDIA, accessToken, RunkeeperProfile.class).getBody();
+        return restApiService.getForObject(PROFILE_URL, PROFILE_MEDIA, accessToken, RunkeeperProfile.class).getBody();
     }
 
     private RunkeeperActivities getActivities(final String accessToken, final LocalDate from) {
@@ -110,13 +111,13 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         int pageSize = AppConstants.DEFAULT_PAGE_SIZE;
         if (from.until(LocalDate.now(), ChronoUnit.DAYS) > pageSize) {
             // get one item only to get full size
-            final HttpEntity<RunkeeperActivities> activitiesForSize = helperService.getForObject(
+            final HttpEntity<RunkeeperActivities> activitiesForSize = restApiService.getForObject(
                     ACTIVITIES_URL_PAGE_SIZE_ONE, ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class);
             pageSize = activitiesForSize.getBody().getSize();
         }
 
         // get new activities
-        return helperService.getForObject(
+        return restApiService.getForObject(
                 String.format(ACTIVITIES_URL_SPECIFIED, pageSize, from.format(DateTimeFormatter.ISO_LOCAL_DATE)),
                 ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class).getBody();
     }
@@ -124,11 +125,11 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Override
     public List<RunkeeperFriendItem> getFriends(String accessToken) {
         LOGGER.debug("get friends for token {}", accessToken);
-        final HttpEntity<RunkeeperFriends> friendsForSize = helperService.getForObject(FRIENDS_URL_PAGE_SIZE_ONE,
+        final HttpEntity<RunkeeperFriends> friendsForSize = restApiService.getForObject(FRIENDS_URL_PAGE_SIZE_ONE,
                 FRIENDS_MEDIA, accessToken, RunkeeperFriends.class);
         final int pageSize = friendsForSize.getBody().getSize();
 
-        return helperService.getForObject(String.format(FRIENDS_URL_SPECIFIED_PAGE_SIZE, pageSize), FRIENDS_MEDIA,
+        return restApiService.getForObject(String.format(FRIENDS_URL_SPECIFIED_PAGE_SIZE, pageSize), FRIENDS_MEDIA,
                 accessToken, RunkeeperFriends.class).getBody().getItemsAsList();
     }
 
@@ -194,7 +195,8 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         }
         LOGGER.info("{}", queryBuilder);
         return elasticsearchTemplate.queryForPage(
-                new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(), AppActivity.class);
+                new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(),
+                AppActivity.class);
     }
 
     private static void addFulltextQuery(final BoolQueryBuilder queryBuilder, final String query) {
@@ -229,8 +231,8 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     public AppState getAppState(final String accessToken) {
         final AppState state = new AppState();
         state.setAccessToken(accessToken);
-        state.setClientId(helperService.getClientId());
-        state.setRedirectUri(helperService.getRedirectUri());
+        state.setClientId(restApiService.getClientId());
+        state.setRedirectUri(restApiService.getRedirectUri());
         if (state.getAccessToken() != null) {
             final RunkeeperProfile profile = getProfile(state.getAccessToken());
             state.setFullName(profile.getName());
@@ -241,7 +243,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
     @Override
     public void deAuthorize(final String accessToken) {
-        helperService.postForObject(DE_AUTHORIZATION_URL, accessToken);
+        restApiService.postForObject(DE_AUTHORIZATION_URL, accessToken);
     }
 
 }
