@@ -1,10 +1,12 @@
 package net.inpercima.runandfun;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -12,7 +14,10 @@ import org.springframework.http.HttpStatus;
  * @author Marcel Jänicke
  * @since 30.01.2015
  */
-@SpringBootApplication // same as @Configuration @EnableAutoConfiguration @ComponentScan
+// @SpringBootApplication // same as @Configuration @EnableAutoConfiguration @ComponentScan
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan({ "net.inpercima" })
 public class Application {
 
     public static void main(String[] args) {
