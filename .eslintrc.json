@@ -11,12 +11,12 @@
   },
   "rules": {
     "array-bracket-spacing": ["error", "never"],
-    "arrow-body-style": ["error", "always"],
+    "arrow-body-style": ["error", "as-needed"],
     "array-callback-return": ["error"],
     "arrow-parens": ["error", "always"],
     "arrow-spacing": ["error", {
       "after": true,
-      "before": true 
+      "before": true
     }],
     "brace-style": ["error", "1tbs"],
     "camelcase": ["error", {

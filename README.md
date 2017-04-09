@@ -30,3 +30,8 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
 
     # open site with browser
     http://localhost:8080/
+
+# Test
+
+    # run karma tests with jasmine
+    npm test

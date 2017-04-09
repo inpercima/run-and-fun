@@ -18,7 +18,7 @@ module.exports = function(grunt) {
     buildDirFonts: 'build/resources/main/public/fonts',
 
     buildDirJs: 'build/resources/main/public/js',
-    
+
     buildFilesJs: 'build/resources/main/public/js/*.js*',
 
     gruntfileJs: 'Gruntfile.js',
