@@ -77,11 +77,9 @@
     }
 
     function rateByDistance(activity, activities, minDistance, maxDistance) {
-      const matches = activities.filter((current) => {
-        return current.distance > minDistance && current.distance <= maxDistance;
-      }).sort((o1, o2) => {
-        return o1.timePerKmInSeconds - o2.timePerKmInSeconds;
-      });
+      const matches = activities.filter((current) => 
+        current.distance > minDistance && current.distance <= maxDistance)
+          .sort((o1, o2) => o1.timePerKmInSeconds - o2.timePerKmInSeconds);
       let item = 0;
       while (item < matches.length) {
         if (activity.timePerKmInSeconds <= matches[item].timePerKmInSeconds) {
@@ -132,9 +130,7 @@
 
     function indexActivities() {
       $log.debug('indexActivities');
-      return $http.get('/indexActivities').then((response) => {
-        return response.data;
-      });
+      return $http.get('/indexActivities').then((response) => response.data);
     }
   }
 })();
