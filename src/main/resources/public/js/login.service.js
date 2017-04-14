@@ -11,9 +11,7 @@
 
     function state() {
       logger.debug('state');
-      return $http.get('/state').then((response) => {
-        return response.data;
-      });
+      return $http.get('/state').then((response) => response.data);
     }
   }
 })();

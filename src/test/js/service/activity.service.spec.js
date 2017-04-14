@@ -1,70 +1,44 @@
-describe('activityService', function () {
+describe('activityService', () => {
 
-  var activityService;
+  let activityService;
+  let $httpBackend;
 
   beforeEach(module('app'));
-  beforeEach(inject(function (_activityService_) {
+  beforeEach(inject(function(_activityService_, $injector) {
     activityService = _activityService_;
+    $httpBackend = $injector.get('$httpBackend');
+    $httpBackend.whenGET('/state').respond(200, '');
   }));
 
-  describe('addParams', function () {
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
 
-    let addParams1 = {
+  describe('list', () => {
+    let params = {
       foo: 'foo',
       bar: 'bar',
     };
 
-    let addParams2 = {
-      foo: 'long',
-      bar: 'other',
-      woo: 'woo',
-    };
-
-    it('should addParams', function () {
-      expect(activityService.addParams(addParams1)).toEqual('?foo=foo&bar=bar');
-      expect(activityService.addParams(addParams2)).toEqual('?foo=long&bar=other&woo=woo');
+    it('should list', () => {
+      $httpBackend.whenGET('/listActivities?foo=foo&bar=bar').respond(200, '');
+      $httpBackend.expectGET('/listActivities?foo=foo&bar=bar');
+      expect(activityService.list(params)).not.toBe(null);
+      $httpBackend.flush();
     });
-
   });
 
-  describe('getTotalTime', function () {
+  describe('indexActivities', () => {
+    let count = 12;
 
-    let getTotalTime1 = [
-      { duration: '00:01:11' },
-    ];
-
-    let getTotalTime2 = [
-      { duration: '00:01:11' },
-      { duration: '00:01:11' },
-    ];
-
-    it('should getTotalTime', function () {
-      expect(activityService.getTotalTime(getTotalTime1)).toEqual(71);
-      expect(activityService.getTotalTime(getTotalTime2)).toEqual(142);
+    it('should indexActivities', () => {
+      $httpBackend.whenGET('/indexActivities').respond(200, count);
+      $httpBackend.expectGET('/indexActivities');
+      activityService.indexActivities().then(function(data) {
+        expect(data).toEqual(12);
+      });
+      $httpBackend.flush();
     });
-
   });
-
-  describe('getTotalDistance', function () {
-
-    let getTotalDistance1 = [
-      { distance: 1 },
-      { distance: 2 },
-      { distance: 3 },
-    ];
-
-    let getTotalDistance2 = [
-      { distance: 0 },
-      { distance: 1 },
-      { distance: 2 },
-    ];
-
-    it('should getTotalDistance', function () {
-      expect(activityService.getTotalDistance(getTotalDistance1)).toEqual('6.00');
-      expect(activityService.getTotalDistance(getTotalDistance2)).toEqual('3.00');
-    });
-
-  });
-
 });
-
