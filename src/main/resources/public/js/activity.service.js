@@ -7,9 +7,6 @@
   function activityService($http, $log, dateTimeUtils) {
     const logger = $log.getInstance('activityService');
     // public methods
-    this.addParams = addParams;
-    this.getTotalDistance = getTotalDistance;
-    this.getTotalTime = getTotalTime;
     this.indexActivities = indexActivities;
     this.list = list;
     this.recalculateTotals = recalculateTotals;
