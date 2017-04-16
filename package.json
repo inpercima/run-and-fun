@@ -1,8 +1,14 @@
 {
   "author": "Sebastian Peters",
   "contributors": [
-    { "name": "Marcel Jänicke", "email": "inpercima@gmail.com" },
-    { "name": "Sebastian Peters", "email": "Sebastian.Peters@gmail.com" }
+    {
+      "name": "Marcel Jänicke",
+      "email": "inpercima@gmail.com"
+    },
+    {
+      "name": "Sebastian Peters",
+      "email": "Sebastian.Peters@gmail.com"
+    }
   ],
   "dependencies": {
     "angular": "^1.6.4",
