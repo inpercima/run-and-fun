@@ -19,6 +19,7 @@ describe('activityService', () => {
     let params = {
       foo: 'foo',
       bar: 'bar',
+      undef: undefined,
     };
 
     it('should list', () => {

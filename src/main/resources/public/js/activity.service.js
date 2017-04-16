@@ -110,7 +110,10 @@
     }
 
     function addParams(params) {
-      return `?${_.keys(_.mapKeys(params, (value, key) => `${key}=${value}`)).join('&')}`;
+      logger.debug(params);
+      // undefined have to be filtered
+      const keys = Object.keys(params).filter((key) => typeof params[key] !== 'undefined');
+      return `?${keys.map((key) => `${key}=${params[key]}`).join('&')}`;
     }
 
     function indexActivities() {
