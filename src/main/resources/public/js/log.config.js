@@ -21,13 +21,16 @@
         };
       };
 
-      function enhanceLogging(logger, className, logText) {
+      function enhanceLogging(logger, className, logType) {
         return function() {
-          // the next line cannot be simply refactored so it will be disabled from check
           // eslint-disable-next-line prefer-rest-params
-          const args = [].slice.call(arguments);
-          const logging = `${new Date().toString()} [${logText}] ${className}: ${args[0]}`;
-          // add new message to the original debug method
+          let log = arguments[0];
+          if (typeof log === 'object') {
+            log = Object.keys(log).map((key) => `${key}=${log[key]}`)
+            .join(';');
+          }
+          const logging = `${new Date().toString()} [${logType}] ${className}: ${log}`;
+          // add new message to the original method
           logger(logging);
         };
       }
