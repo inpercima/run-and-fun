@@ -25,7 +25,8 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^2.3.0",
     "load-grunt-tasks": "^3.5.2",
-    "lodash": "^4.17.4"
+    "lodash": "^4.16.4",
+    "ramda": "^0.23.0"
   },
   "description": "run-and-fun javascript project",
   "devDependencies": {

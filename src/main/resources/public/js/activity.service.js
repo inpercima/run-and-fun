@@ -7,9 +7,16 @@
   function activityService($http, $log, dateTimeUtils) {
     const logger = $log.getInstance('activityService');
     // public methods
+    this.addParams = addParams;
+    this.getTotalDistance = getTotalDistance;
+    this.getTotalTime = getTotalTime;
     this.indexActivities = indexActivities;
     this.list = list;
     this.recalculateTotals = recalculateTotals;
+
+    const betweenByProp = _.curry((prop, min, max, value) => value[prop] > min && value[prop] <= max);
+    const smallerByProp = _.curry((prop, activity, o1) => activity[prop] <= o1[prop]);
+    const sortByProp = _.curry((prop, o1, o2) => o1[prop] - o2[prop]);
 
     function list(params) {
       let url = '/listActivities';
@@ -77,16 +84,12 @@
     }
 
     function rateByDistance(activity, activities, minDistance, maxDistance) {
-      const matches = activities.filter((current) => 
-        current.distance > minDistance && current.distance <= maxDistance)
-          .sort((o1, o2) => o1.timePerKmInSeconds - o2.timePerKmInSeconds);
-      let item = 0;
-      while (item < matches.length) {
-        if (activity.timePerKmInSeconds <= matches[item].timePerKmInSeconds) {
-          break;
-        }
-        item += 1;
-      }
+      const matches = activities
+        .filter(betweenByProp('distance', minDistance, maxDistance))
+        .sort(sortByProp('timePerKmInSeconds'));
+
+      // +1 because index 0 equals place 1
+      const item = _.findIndex(matches, smallerByProp('timePerKmInSeconds', activity)) + 1;
       activity.intervalStats = `Platz ${item} von ${matches.length} zwischen ${minDistance} und ${maxDistance} km`;
     }
 
@@ -110,15 +113,13 @@
     }
 
     function addParams(params) {
-      logger.debug(params);
-      // undefined have to be filtered
-      const keys = Object.keys(params).filter((key) => typeof params[key] !== 'undefined');
-      return `?${keys.map((key) => `${key}=${params[key]}`).join('&')}`;
+      // R.pickBy(R.identity, params) -> filter falsy properties
+      return `?${_.keys(_.mapKeys(R.pickBy(R.identity, params), (value, key) => `${key}=${value}`)).join('&')}`;
     }
 
     function indexActivities() {
       $log.debug('indexActivities');
-      return $http.get('/indexActivities').then((response) => response.data);
+      return $http.get('/indexActivities').then((response) =>  response.data);
     }
   }
 })();
