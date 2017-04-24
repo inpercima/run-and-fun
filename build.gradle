@@ -1,6 +1,6 @@
 buildscript {
     repositories { mavenCentral() }
-    dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.4.RELEASE") }
+    dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.6.RELEASE") }
 }
 
 plugins {
@@ -71,7 +71,7 @@ eclipse{
     }
 }
 
-task wrapper(type: Wrapper) { gradleVersion = "3.3" }
+task wrapper(type: Wrapper) { gradleVersion = "3.5" }
 
 // heroku
 task stage {
