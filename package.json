@@ -42,6 +42,7 @@
   "homepage": "https://github.com/inpercima/run-and-fun",
   "license": "MIT",
   "name": "run-and-fun",
+  "repository": "https://github.com/inpercima/run-and-fun.git",
   "private": true,
   "scripts": {
     "postinstall": "grunt build",
