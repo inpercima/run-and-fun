@@ -19,7 +19,11 @@ Provide searching, statistics and visualization for activities from [runkeeper.c
     # define app.clientId, app.clientSecret and app.redirectUri within application-default.properties and remove all unchanged properties
 
     # install tools and frontend dependencies
+    # via npm
     npm install
+
+    # via yarn
+    yarn
 
     # run project within gradle
     ./gradlew bootRun
