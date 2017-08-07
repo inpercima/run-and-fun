@@ -70,8 +70,6 @@ eclipse{
     }
 }
 
-task wrapper(type: Wrapper) { gradleVersion = "3.5" }
-
 // heroku
 task stage {
     dependsOn build
