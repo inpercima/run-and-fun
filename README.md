@@ -1,5 +1,4 @@
-# run-and-fun
-
+# About this - run-and-fun
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 [![dependencies Status](https://david-dm.org/inpercima/run-and-fun/status.svg)](https://david-dm.org/inpercima/run-and-fun)
 [![devDependencies Status](https://david-dm.org/inpercima/run-and-fun/dev-status.svg)](https://david-dm.org/inpercima/run-and-fun?type=dev)
@@ -7,35 +6,48 @@
 
 Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).
 
+# Prerequisites
+## Node, npm or yarn
+* `node 8.10.0` or higher in combination with
+  * `npm 5.7.1` or higher or
+  * `yarn 1.5.1` or higher, used in this repository
+
+# Getting started
+
+```
+# clone project
+git clone https://github.com/inpercima/run-and-fun
+cd run-and-fun
+```
+
 # Usage
 
-    git clone https://github.com/inpercima/run-and-fun
-    cd run-and-fun
+```
+# copy application.properties to application-default.properties
+cp src/main/resources/application.properties src/main/resources/application-default.properties
 
-    # copy application.properties to application-default.properties
-    cp src/main/resources/application.properties src/main/resources/application-default.properties
+# use existing runkeeper app or register new app at http://runkeeper.com/partner/applications
+# define app.clientId, app.clientSecret and app.redirectUri within application-default.properties and remove all unchanged properties
 
-    # use existing runkeeper app or register new app at http://runkeeper.com/partner/applications
-    # define app.clientId, app.clientSecret and app.redirectUri within application-default.properties and remove all unchanged properties
+# install tools and frontend dependencies
+yarn
+# or
+npm install
 
-    # install tools and frontend dependencies
-    # via npm
-    npm install
+# run project within gradle
+./gradlew bootRun
 
-    # via yarn
-    yarn
+# alternatively build and run project as jar
+./gradlew build
+java -jar build/libs/run-and-fun-*.jar
 
-    # run project within gradle
-    ./gradlew bootRun
-
-    # alternatively build and run project as jar
-    ./gradlew build
-    java -jar build/libs/run-and-fun-*.jar
-
-    # open site with browser
-    http://localhost:8080/
+# open site with browser
+http://localhost:8080/
+```
 
 # Test
 
-    # run karma tests with jasmine
-    npm test
+```
+# run karma tests with jasmine
+npm test
+```
