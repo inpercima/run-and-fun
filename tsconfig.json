@@ -1,0 +1,29 @@
+{
+  "angularCompilerOptions": {
+    "preserveWhitespaces": false
+  },
+  "compileOnSave": false,
+  "compilerOptions": {
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "module": "commonjs",
+    "outDir": "./dist/out-tsc",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "target": "es5",
+    "types": [
+      "node",
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  }
+}

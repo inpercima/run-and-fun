@@ -1,0 +1,17 @@
+{
+  "appname": "run and fun",
+  "routes": {
+    "default": "dash",
+    "features": {
+      "show": true
+    },
+    "login": {
+      "activate": true,
+      "show": false
+    },
+    "notFound": {
+      "redirect": true
+    }
+  },
+  "theme": "indigo-pink"
+}
