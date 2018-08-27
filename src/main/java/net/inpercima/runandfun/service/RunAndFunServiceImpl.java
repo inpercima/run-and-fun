@@ -22,6 +22,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
@@ -36,9 +39,6 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
-
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
 
 import net.inpercima.restapi.service.RestApiService;
 import net.inpercima.runandfun.app.constants.AppConstants;
@@ -138,11 +138,11 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         final Collection<AppActivity> activities = new ArrayList<>();
         final String username = getAppState(accessToken).getUsername();
         getActivities(accessToken, calculateFetchDate()).getItemsAsList().stream()
-                .filter(item -> !repository.exists(item.getId()))
+                .filter(item -> !repository.existsById(item.getId()))
                 .forEach(item -> addActivity(item, username, activities));
         LOGGER.info("new activities: {}", activities.size());
         if (!activities.isEmpty()) {
-            repository.save(activities);
+            repository.saveAll(activities);
         }
         return activities.size();
     }
@@ -156,7 +156,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     private LocalDate calculateFetchDate() {
-        final Pageable pageable = new PageRequest(0, 1, Direction.DESC, AppActivity.FIELD_DATE);
+        final Pageable pageable = PageRequest.of(0, 1, Direction.DESC, AppActivity.FIELD_DATE);
         final Iterator<AppActivity> lastFetchedActivity = repository.findAll(pageable).getContent().iterator();
         return lastFetchedActivity.hasNext()
                 ? lastFetchedActivity.next().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
@@ -166,7 +166,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Override
     public Page<AppActivity> listAllActivitiesByType(String type) {
         final int count = type != null ? repository.countByType(type) : (int) repository.count();
-        final Pageable pageable = new PageRequest(0, count);
+        final Pageable pageable = PageRequest.of(0, count);
         return repository.findAllByTypeOrderByDateDesc(type, pageable);
     }
 

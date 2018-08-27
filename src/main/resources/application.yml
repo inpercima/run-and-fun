@@ -2,14 +2,25 @@
 # APPLICATION CONFIG
 #
 
-# DAO (PersistenceExceptionTranslationAutoConfiguration)
-# needed as a workaround for spring-boot 1.2+
-spring:
-  dao:
-    exceptiontranslation:
-      enabled: false
-
 # enable gz compression
 server:
   compression:
     enabled: true
+
+app:
+  # this value is the OAuth 2.0 client ID for your application
+  clientId: id
+  # this value is the OAuth 2.0 shared secret for your application
+  clientSecret: secret
+  # redirectUri must end with /verify
+  redirectUri: http://localhost:8080/verify
+
+# ELASTICSEARCH (ElasticsearchProperties})
+spring:
+  data:
+    elasticsearch:
+      cluster-name: run-and-fun
+      cluster-nodes: localhost:9300
+      #local: true
+      #repositories:
+      #  enabled: true
