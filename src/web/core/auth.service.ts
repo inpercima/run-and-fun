@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FormGroup } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { FormService } from './form.service';
+import { AppState } from './appState';
 
 @Injectable()
 export class AuthService {
@@ -14,32 +12,18 @@ export class AuthService {
   // store the URL so we can redirect after logging in
   public redirectUrl: string;
 
-  constructor(private formService: FormService, private http: HttpClient, private jwtHelper: JwtHelperService) { }
+  constructor(private http: HttpClient) { }
 
-  public login(formGroup: FormGroup): Observable<boolean> {
-    const body = this.formService.createBody(formGroup);
-    const header = this.formService.createHeader();
-    return this.http.post<string>('/api/authenticate', body, header).pipe(map(response => {
-      if (response !== null) {
-        // set the token property for validate token in the app
-        localStorage.setItem('access_token', response);
-        return true;
-      } else {
-        return false;
-      }
+  public appState(): Observable<AppState> {
+    return this.http.get<AppState>('/state').pipe(response => {
+      return response;
+    });
+  }
+
+  public isAuthenticated(): Observable<boolean> {
+    return this.appState().pipe(map(response => {
+      return response != null && response.accessToken !== null;
     }));
-  }
-
-  public logout(): void {
-    localStorage.removeItem('access_token');
-  }
-
-  public isAuthenticated(): boolean {
-    try {
-      return !this.jwtHelper.isTokenExpired();
-    } catch (e) {
-      return false;
-    }
   }
 
 }

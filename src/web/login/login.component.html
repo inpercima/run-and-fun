@@ -1,25 +1,21 @@
 <div fxLayout="row">
   <div fxFlex="20%"></div>
-  <div fxFlex>
-    <mat-card *ngIf="!authService.isAuthenticated()">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-        <mat-error *ngIf="wrongLogin">Username or password is incorrect!</mat-error>
-        <mat-form-field class="full-width">
-          <input matInput placeholder="username" formControlName="username" required>
-          <mat-error>Please enter a valid username</mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <input matInput placeholder="password" formControlName="password" [type]="hide ? 'password' : 'text'" required>
-          <mat-icon matSuffix (click)="hide = !hide">{{ hide ? 'visibility' : 'visibility_off' }}</mat-icon>
-          <mat-error>Please enter a valid password</mat-error>
-        </mat-form-field>
-        <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Login</button>
-      </form>
-    </mat-card>
-    <mat-card *ngIf="authService.isAuthenticated()">
-      You are logged in. You can
-      <a href="#" (click)="logout($event)">logout</a>.
-    </mat-card>
-  </div>
+  <mat-card class="gradient" fxFlex *ngIf="!isAuthenticated && appState !== null">
+    <mat-card-content fxLayout="row" fxLayout.lt-lg="column">
+      <div fxFlex="70%" fxFlexOrder="2" fxFlexOrder.lt-lg="1">
+        <h1 class="mat-h1">Hello, run and funner!</h1>
+        <p class="mat-body-1">Please login to get full access to your activities, graphs and other nice stuff.</p>
+      </div>
+      <div fxFlex="30%" fxLayoutAlign="center center" fxLayoutAlign.lt-lg="start" fxFlexOrder="1" fxFlexOrder.lt-lg="2">
+        <a href="https://runkeeper.com/apps/authorize?client_id={{appState.clientId}}&amp;redirect_uri={{appState.redirectUri}}&amp;response_type=code">
+          <img src="http://static1.runkeeper.com/images/assets/login-blue-black-200x38.png" />
+        </a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card fxFlex *ngIf="isAuthenticated">
+    You are logged in. You can
+    <a href="/logout">logout</a>.
+  </mat-card>
   <div fxFlex="20%"></div>
 </div>

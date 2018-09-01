@@ -2,10 +2,15 @@ body {
   font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
   margin: 0;
   overflow-y: scroll;
+  background: #EEE;
 }
 
 .mat-card {
   margin-top: 20px;
+}
+
+.gradient {
+  background: linear-gradient(120deg, #CCC 10%, #3ca4d5 65%, #2998cc 100%);
 }
 
 .full-width {

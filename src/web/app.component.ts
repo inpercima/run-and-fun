@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Routes } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AppState } from './core/appState';
+import { AuthService } from './core/auth.service';
 import { ConfigService } from './core/config.service';
 import { FeaturesRoutingModule } from './features/features-routing.module';
 import { LoginRoutingModule } from './login/login-routing.module';
@@ -14,23 +16,39 @@ import { LoginRoutingModule } from './login/login-routing.module';
   // require('./app.component.css').toString() to avoid Error: Expected 'styles' to be an array of strings.
   styles: [require('./app.component.css').toString()],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  public routes: Routes;
+  private routes: Routes;
 
-  public appname: string;
+  private appname: string;
 
-  public constructor(private configService: ConfigService, private titleService: Title) {
-    this.appname = configService.getAppname();
+  private isAuthenticated: boolean;
+
+  private appState: AppState = null;
+
+  public constructor(private authService: AuthService, private configService: ConfigService, private titleService: Title) { }
+
+  ngOnInit() {
+    this.appname = this.configService.getAppname();
     this.routes = AppRoutingModule.ROUTES;
-    if (configService.isShowFeatures()) {
+    if (this.configService.isShowFeatures()) {
       this.routes = this.routes.concat(FeaturesRoutingModule.ROUTES);
     }
     // should a login will be used the login route could be added
-    if (configService.isActivateLogin() && configService.isShowLogin()) {
+    if (this.configService.isActivateLogin() && this.configService.isShowLogin()) {
       this.routes = this.routes.concat(LoginRoutingModule.ROUTES);
     }
     this.titleService.setTitle(this.appname);
+    this.authService.isAuthenticated().subscribe(response => this.isAuthenticated = response);
+    this.authService.appState().subscribe(response => this.appState = response);
+  }
+
+  public indexActivities() {
+    // TODO: next
+  }
+
+  public logout() {
+    window.location.href = '/logout';
   }
 
 }
