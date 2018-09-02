@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Index activities</h2>
+<mat-dialog-content>
+  <mat-progress-bar *ngIf="!finished" mode="indeterminate"></mat-progress-bar>
+  <span *ngIf="finished">{{activities}} new {{activitiesSuffix}} indexed.</span>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button *ngIf="finished" mat-dialog-close>Close</button>
+</mat-dialog-actions>

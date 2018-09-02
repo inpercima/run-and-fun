@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Routes } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
@@ -7,6 +8,7 @@ import { AppState } from './core/appState';
 import { AuthService } from './core/auth.service';
 import { ConfigService } from './core/config.service';
 import { FeaturesRoutingModule } from './features/features-routing.module';
+import { IndexActivitiesDialogComponent } from './app-index-activities-dialog.component';
 import { LoginRoutingModule } from './login/login-routing.module';
 
 @Component({
@@ -26,7 +28,7 @@ export class AppComponent implements OnInit {
 
   private appState: AppState = null;
 
-  public constructor(private authService: AuthService, private configService: ConfigService, private titleService: Title) { }
+  public constructor(private authService: AuthService, private configService: ConfigService, private titleService: Title, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.appname = this.configService.getAppname();
@@ -44,7 +46,13 @@ export class AppComponent implements OnInit {
   }
 
   public indexActivities() {
-    // TODO: next
+    const dialogRef = this.dialog.open(IndexActivitiesDialogComponent, {
+      width: '250px',
+    });
+    dialogRef.updatePosition({ top: '200px' });
+    dialogRef.afterClosed().subscribe(result => {
+      // TODO: refresh page
+    });
   }
 
   public logout() {

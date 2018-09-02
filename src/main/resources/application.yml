@@ -19,8 +19,5 @@ app:
 spring:
   data:
     elasticsearch:
-      cluster-name: run-and-fun
+      cluster-name: elasticsearch
       cluster-nodes: localhost:9300
-      #local: true
-      #repositories:
-      #  enabled: true
