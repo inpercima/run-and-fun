@@ -1,7 +1,7 @@
 <div fxLayout="row">
   <div fxFlex="20%"></div>
   <div fxFlex>
-    <mat-form-field id="filter" class="full-width">
+    <mat-form-field class="full-width filter">
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2 full-width">

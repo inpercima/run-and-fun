@@ -5,7 +5,7 @@ body {
   background: #EEE;
 }
 
-.mat-card {
+.mat-card, .filter {
   margin-top: 20px;
 }
 
