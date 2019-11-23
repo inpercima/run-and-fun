@@ -1,6 +1,9 @@
 # Spring Boot local environment
 application-default.properties
 
+# VisualStudioCode
+.vscode/
+
 # Elasticsearch
 data/
 
