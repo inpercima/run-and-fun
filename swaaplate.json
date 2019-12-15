@@ -1,0 +1,53 @@
+{
+  "general": {
+    "author": "Marcel Jänicke",
+    "github": {
+      "use": true,
+      "username": "inpercima"
+    },
+    "description": "Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).",
+    "name": "run-and-fun",
+    "title": "run and fun",
+    "useDocker": true
+  },
+  "client": {
+    "buildDir": "dist",
+    "installDependencies": true,
+    "packageJson": {
+      "contributors": [{
+        "name": "Marcel Jänicke",
+        "email": "inpercima@gmail.com"
+      }, {
+        "name": "Sebastian Peters",
+        "email": "Sebastian.Peters@gmail.com"
+      }],
+      "homepage": "https://github.com/inpercima/run-and-fun",
+      "repository": "https://github.com/inpercima/run-and-fun"
+    },
+    "route": {
+      "features": {
+        "default": "overview",
+        "show": true
+      },
+      "login": {
+        "activate": true,
+        "name": "login",
+        "show": false
+      },
+      "notFound": {
+        "name": "not-found",
+        "redirect": true
+      }
+    },
+    "selectorPrefix": "randf",
+    "theme": "indigo-pink",
+    "useYarn": true
+  },
+  "server": {
+    "backend": "java",
+    "htaccess": false,
+    "management": "maven",
+    "packagePath": "net.inpercima.runandfun",
+    "serverAsApi": false
+  }
+}
