@@ -51,6 +51,8 @@ cd run-and-fun
 
 ### Modules
 
-For the client check [run-and-fun - client](https://github.com/inpercima/run-and-fun/tree/master/client).
+For the client check [run-and-fun - client](./client).
 
-For the server check [run-and-fun - server](https://github.com/inpercima/run-and-fun/tree/master/server).
+For the server check [run-and-fun - server](./server).
+
+For the docker check [run-and-fun - docker](./README_docker.md).
