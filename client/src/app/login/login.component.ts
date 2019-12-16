@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../core/auth.service';
-import { environment } from '../../environments/environment';
+import { AppState } from '../core/appState.model';
 
 @Component({
   selector: 'randf-login',
@@ -11,35 +10,13 @@ import { environment } from '../../environments/environment';
 })
 export class LoginComponent implements OnInit {
 
-  public loginForm: FormGroup;
+  constructor(private authService: AuthService, private router: Router) { }
 
-  public hide = true;
-
-  public wrongLogin = false;
-
-  public message: string;
-
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+  public appState: AppState;
 
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-  }
-
-  onSubmit() {
-    this.authService.login(this.loginForm).subscribe(() => {
-      if (this.isAuthenticated()) {
-        this.wrongLogin = false;
-        this.message = '';
-        // get the redirect URL from auth service
-        // if no redirect has been set, use default
-        this.router.navigate([this.authService.redirectUrl ? this.authService.redirectUrl : environment.defaultRoute]);
-      }
-    }, error => {
-      this.wrongLogin = true;
-      this.message = error.error.message;
+    this.authService.state().subscribe(appState => {
+      this.appState = appState;
     });
   }
 

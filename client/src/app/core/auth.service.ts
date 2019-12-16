@@ -6,6 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/operators';
 
 import { RequestService } from './request.service';
+import { AppState } from './appState.model';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,14 @@ export class AuthService {
   public redirectUrl: string;
 
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private requestService: RequestService) { }
+
+  public state() {
+    return this.http.get<AppState>(this.requestService.url('state')).pipe(map(response => {
+      if (response !== null) {
+        return response;
+      }
+    }));
+  }
 
   /**
    * This is a very simple authentication you should change for production use!
