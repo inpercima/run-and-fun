@@ -11,7 +11,7 @@ This project was generated with [swaaplate](https://github.com/inpercima/swaapla
 
 ### Angular CLI
 
-* `angular-cli 8.3.20` or higher
+* `angular-cli 8.3.23` or higher
 
 ### Java
 
@@ -35,9 +35,9 @@ Some libraries could not be updated b/c of peer dependencies or knowing issues.
 | library    | current version | wanted version | reason |
 | ---------- | --------------- | -------------- | ------ |
 | zone.js    | 0.9.1           | 0.10.2         | @angular/core@8.2.14" has incorrect peer dependency "zone.js@~0.9.1" |
-| typescript | 3.5.3           | 3.7.4          | @angular-devkit/build-angular@0.803.21" has incorrect peer dependency "typescript@>=3.1 < 3.6 |
-| typescript | 3.5.3           | 3.7.4          | @angular-devkit/build-angular > @ngtools/webpack@8.3.21" has incorrect peer dependency "typescript@>=3.4 < 3.6 |
-| typescript | 3.5.3           | 3.7.4          | @angular/compiler-cli@8.2.14" has incorrect peer dependency "typescript@>=3.4 <3.6 |
+| typescript | 3.5.3           | 3.7.5          | @angular-devkit/build-angular@0.803.23" has incorrect peer dependency "typescript@>=3.1 < 3.6 |
+| typescript | 3.5.3           | 3.7.5          | @angular-devkit/build-angular > @ngtools/webpack@8.3.23" has incorrect peer dependency "typescript@>=3.4 < 3.6 |
+| typescript | 3.5.3           | 3.7.5          | @angular/compiler-cli@8.2.14" has incorrect peer dependency "typescript@>=3.4 <3.6 |
 
 ## Getting started
 
