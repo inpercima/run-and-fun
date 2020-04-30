@@ -5,10 +5,12 @@ import { FormGroup } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/operators';
 
-import { RequestService } from './request.service';
 import { AppState } from './appState.model';
+import { RequestService } from './request.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
 
   // store the URL so we can redirect after logging in

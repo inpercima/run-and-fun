@@ -51,5 +51,4 @@ public class ViewController {
     public String index() {
         return REDIRECT_TO_BASE;
     }
-
 }

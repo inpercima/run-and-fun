@@ -81,5 +81,4 @@ public class RestApiController {
         final String accessToken = (String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN);
         return runAndFunService.getFriends(accessToken);
     }
-
 }

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../core/auth.service';
 import { AppState } from '../core/appState.model';
+import { AuthService } from '../core/auth.service';
 
 @Component({
-  selector: 'randf-login',
+  selector: 'raf-login',
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {

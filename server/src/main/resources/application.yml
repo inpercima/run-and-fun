@@ -20,5 +20,3 @@ spring:
   elasticsearch:
     rest:
       uris: localhost:9200
-  profiles:
-    active: dev

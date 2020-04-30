@@ -9,7 +9,7 @@ import { LoginRoutingModule } from './login/login-routing.module';
 import { environment } from '../environments/environment';
 
 @Component({
-  selector: 'randf-root',
+  selector: 'raf-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

@@ -1,18 +1,9 @@
 {
-  "general": {
-    "author": "Marcel Jänicke",
-    "github": {
-      "use": true,
-      "username": "inpercima"
-    },
-    "description": "Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).",
-    "name": "run-and-fun",
-    "title": "run and fun",
-    "useDocker": true
-  },
   "client": {
     "buildDir": "dist",
+    "ghUser": "inpercima",
     "installDependencies": true,
+    "language": "en",
     "packageJson": {
       "contributors": [{
         "name": "Marcel Jänicke",
@@ -24,24 +15,38 @@
       "homepage": "https://github.com/inpercima/run-and-fun",
       "repository": "https://github.com/inpercima/run-and-fun"
     },
-    "route": {
+    "prefix": "raf",
+    "routing": {
+      "enabled": true,
       "features": {
         "default": "overview",
+        "name": "features",
         "show": true
       },
       "login": {
         "activate": true,
+        "enabled": true,
         "name": "login",
         "show": false
       },
       "notFound": {
+        "enabled": true,
         "name": "not-found",
         "redirect": true
       }
     },
-    "selectorPrefix": "randf",
     "theme": "indigo-pink",
+    "useGoogleFonts": true,
     "useYarn": true
+  },
+  "general": {
+    "author": "Marcel Jänicke",
+    "description": "Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).",
+    "name": "run-and-fun",
+    "title": "run and fun",
+    "useDocker": true,
+    "useMITLicense": true,
+    "useMock": false
   },
   "server": {
     "backend": "java",

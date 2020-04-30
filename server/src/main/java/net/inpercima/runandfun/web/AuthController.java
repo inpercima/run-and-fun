@@ -16,5 +16,4 @@ public class AuthController {
     public String auth(@RequestBody final String body) throws IOException {
         return "";
     }
-
 }

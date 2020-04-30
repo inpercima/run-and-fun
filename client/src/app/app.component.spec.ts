@@ -1,45 +1,42 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { AppComponent } from './app.component';
 import { AppRoutingPipe } from './app-routing.pipe';
 
 describe('AppComponent', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        AppRoutingPipe,
-      ],
       imports: [
         MatTabsModule,
         MatToolbarModule,
-        RouterTestingModule,
+        RouterTestingModule
+      ],
+      declarations: [
+        AppComponent,
+        AppRoutingPipe
       ],
     }).compileComponents();
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
   it('should create the app', () => {
-    expect(component).toBeTruthy();
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'run and fun'`, () => {
-    expect(component.appname).toEqual('run and fun');
+  it(`should have as appname 'run and fun'`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.appname).toEqual('run and fun');
   });
 
-  it('should render title in a mat-toolbar tag', () => {
-    const compiled = fixture.debugElement.nativeElement;
+  it('should render toolbar', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement;
     expect(compiled.querySelector('mat-toolbar').textContent).toContain('run and fun');
   });
 });

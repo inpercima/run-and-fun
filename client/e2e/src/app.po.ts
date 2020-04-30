@@ -6,6 +6,6 @@ export class AppPage {
   }
 
   getTitleText(): Promise<string> {
-    return element(by.css('randf-root mat-toolbar')).getText() as Promise<string>;
+    return element(by.css('raf-root mat-toolbar')).getText() as Promise<string>;
   }
 }

@@ -1,7 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'randf-overview',
+  selector: 'raf-overview',
   templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.css']
 })
-export class OverviewComponent { }
+export class OverviewComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

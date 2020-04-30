@@ -1,6 +1,9 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "yarn"
+  },
   "newProjectRoot": "projects",
   "projects": {
     "run-and-fun": {
@@ -8,7 +11,7 @@
       "schematics": {},
       "root": "",
       "sourceRoot": "src",
-      "prefix": "randf",
+      "prefix": "raf",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -30,34 +33,6 @@
             "scripts": []
           },
           "configurations": {
-            "dev": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
-                }
-              ]
-            },
-            "mock": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.mock.ts"
-                }
-              ]
-            },
             "production": {
               "fileReplacements": [
                 {
@@ -70,7 +45,7 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": true,
-              "extractLicenses": false,
+              "extractLicenses": true,
               "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
@@ -85,6 +60,20 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ]
             }
           }
         },
@@ -94,14 +83,11 @@
             "browserTarget": "run-and-fun:build"
           },
           "configurations": {
-            "dev": {
-              "browserTarget": "run-and-fun:build:dev"
-            },
-            "mock": {
-              "browserTarget": "run-and-fun:build:mock"
-            },
             "production": {
               "browserTarget": "run-and-fun:build:production"
+            },
+            "dev": {
+              "browserTarget": "run-and-fun:build:dev"
             }
           }
         },
@@ -156,8 +142,5 @@
       }
     }
   },
-  "defaultProject": "run-and-fun",
-  "cli": {
-    "packageManager": "yarn"
-  }
+  "defaultProject": "run-and-fun"
 }

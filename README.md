@@ -1,32 +1,32 @@
-# run-and-fun
+# run and fun
 
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2f2a5b3cb41e46328678cfc7c6d79f73)](https://www.codacy.com/app/inpercima/run-and-fun?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=inpercima/run-and-fun&amp;utm_campaign=Badge_Grade)
 
 Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).
 
-This project was generated with [swaaplate](https://github.com/inpercima/swaaplate) version 1.1.0.
+This project was generated with [swaaplate](https://github.com/inpercima/swaaplate) version 2.0.0-SNAPSHOT.
 
 ## Prerequisites
 
 ### Angular CLI
 
-* `angular-cli 9.0.2` or higher
-
-### Java
-
-* `jdk 13` or higher
+* `angular-cli 9.1.6` or higher
 
 ### Docker
 
 * `docker 19.03.5` or higher
 * `docker-compose 1.25.0` or higher
 
+### Java
+
+* `jdk 11` or higher
+
 ### Node, npm or yarn
 
-* `node 12.14.1` or higher in combination with
+* `node 12.16.1` or higher in combination with
   * `npm 6.13.4` or higher or
-  * `yarn 1.22.0` or higher, used in this repository
+  * `yarn 1.22.4` or higher, used in this repository
 
 ## Dependency check
 
@@ -34,7 +34,8 @@ Some libraries could not be updated b/c of peer dependencies or knowing issues.
 
 | library    | current version | wanted version | reason |
 | ---------- | --------------- | -------------- | ------ |
-| tslint     | 5.20.1          | 6.0.0          | "codelyzer@5.2.1" has incorrect peer dependency "tslint@^5.0.0" |
+| tslib      | 1.11.2          | 2.0.0          | "@angular/core@9.1.7" has incorrect peer dependency "tslib@^1.10.0" |
+| typescript | 3.8.3           | 3.9.2          | "@angular/compiler-cli@9.1.7" has incorrect peer dependency "typescript@>=3.6 <3.9" |
 
 ## Getting started
 

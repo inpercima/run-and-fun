@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../core/auth-guard.service';
 import { OverviewComponent } from './overview/overview.component';
-import { environment } from '../../environments/environment';
 import { ActivitiesComponent } from './activities/activities.component';
 import { GraphsComponent } from './graphs/graphs.component';
 import { FriendsComponent } from './friends/friends.component';
+import { environment } from 'src/environments/environment';
 
 const routes: Routes = [{
   canActivate: [AuthGuard],
@@ -27,12 +27,8 @@ const routes: Routes = [{
 }];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [ RouterModule.forChild(routes) ],
+  exports: [ RouterModule ]
 })
 export class FeaturesRoutingModule {
 
