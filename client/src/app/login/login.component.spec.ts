@@ -8,9 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { JwtModule } from '@auth0/angular-jwt';
-
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
@@ -22,13 +19,6 @@ describe('LoginComponent', () => {
       declarations: [ LoginComponent ],
       imports: [
         HttpClientModule,
-        JwtModule.forRoot({
-          config: {
-            tokenGetter: () => {
-              return '';
-            },
-          },
-        }),
         BrowserAnimationsModule,
         MatCardModule,
         MatFormFieldModule,
@@ -37,7 +27,6 @@ describe('LoginComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
       ],
-      providers: [ JwtHelperService ]
     })
     .compileComponents();
   }));

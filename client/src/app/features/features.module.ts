@@ -7,6 +7,7 @@ import { FeaturesRoutingModule } from './features-routing.module';
 import { FriendsComponent } from './friends/friends.component';
 import { GraphsComponent } from './graphs/graphs.component';
 import { OverviewComponent } from './overview/overview.component';
+import { VerifyComponent } from './verify/verify.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { OverviewComponent } from './overview/overview.component';
     FriendsComponent,
     GraphsComponent,
     OverviewComponent,
+    VerifyComponent
   ],
   imports: [
     CommonModule,

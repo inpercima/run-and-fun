@@ -4,7 +4,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,10 +11,8 @@ import { AppRoutingPipe } from './app-routing.pipe';
 import { FeaturesModule } from './features/features.module';
 import { LoginModule } from './login/login.module';
 import { NotFoundModule } from './not-found/not-found.module';
-
-export function getToken() {
-  return localStorage.getItem('access_token');
-}
+import { AuthInterceptor } from './core/auth.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,18 +25,14 @@ export function getToken() {
     MatTabsModule,
     MatToolbarModule,
     OverlayModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: getToken,
-        whitelistedDomains: ['localhost'],
-      }
-    }),
     AppRoutingModule,
     FeaturesModule,
     LoginModule,
-    NotFoundModule
+    NotFoundModule,
   ],
-  providers: [],
-  bootstrap: [ AppComponent ]
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

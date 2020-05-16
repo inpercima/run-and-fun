@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormGroup } from '@angular/forms';
 
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AppState } from './appState.model';
-import { RequestService } from './request.service';
+import { StorageService } from './storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,42 +14,31 @@ import { RequestService } from './request.service';
 export class AuthService {
 
   // store the URL so we can redirect after logging in
-  public redirectUrl: string;
+  redirectUrl: string;
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private requestService: RequestService) { }
+  constructor(private http: HttpClient, private storageService: StorageService) { }
 
-  public state() {
-    return this.http.get<AppState>(this.requestService.url('state')).pipe(map(response => {
-      if (response !== null) {
-        return response;
-      }
+  state(): Observable<AppState> {
+    return this.http.get<AppState>(environment.api + 'state').pipe(map(response => response));
+  }
+
+  verify(code: string, error: string) {
+    return this.http.get<any>(environment.api + 'verify', {
+      params: { code, error },
+      // to get x-headers
+      observe: 'response',
+    }).pipe(map(response => {
+      const accessToken = response.headers.get('x-accessToken');
+      this.storageService.save(accessToken);
     }));
   }
 
-  /**
-   * This is a very simple authentication you should change for production use!
-   *
-   * @param formGroup loginForm
-   */
-  public login(formGroup: FormGroup) {
-    return this.http.post<any>(this.requestService.url('auth'), formGroup.value).pipe(map(response => {
-      if (response !== null) {
-        // set the token property for validate token in the app
-        localStorage.setItem('access_token', response.token);
-      }
-    }));
+  logout(): void {
+    this.http.get(environment.api + 'logout').subscribe();
+    this.storageService.remove();
   }
 
-  public logout(): void {
-    localStorage.removeItem('access_token');
+  isAuthenticated(): Observable<boolean> {
+    return this.state().pipe(map(response => response.accessToken !== null && response.accessToken !== ''));
   }
-
-  public isAuthenticated(): boolean {
-    try {
-      return !this.jwtHelper.isTokenExpired();
-    } catch (e) {
-      return false;
-    }
-  }
-
 }
