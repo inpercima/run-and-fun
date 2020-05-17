@@ -10,9 +10,6 @@ insert_final_newline = true
 max_line_length = 140
 trim_trailing_whitespace = true
 
-[logback.xml]
-indent_size = 4
-
 [*.bat]
 end_of_line = crlf
 
