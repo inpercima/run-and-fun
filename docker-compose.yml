@@ -1,0 +1,7 @@
+version: '2'
+services:
+  run-and-fun:
+    build: .
+    image: run-and-fun:latest
+    mem_limit: 256mb
+    restart: unless-stopped
