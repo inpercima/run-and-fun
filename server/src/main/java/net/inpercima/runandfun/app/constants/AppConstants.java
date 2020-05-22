@@ -6,8 +6,6 @@ package net.inpercima.runandfun.app.constants;
  */
 public interface AppConstants {
 
-    public final static String ACCEPT_CHARSET = "Accept-Charset";
-
     public final static int DEFAULT_PAGE_SIZE = 25;
 
     public final static String SESSION_ACCESS_TOKEN = "accessToken";

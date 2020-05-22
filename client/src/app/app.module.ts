@@ -1,33 +1,33 @@
 import { OverlayModule } from '@angular/cdk/overlay';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppRoutingPipe } from './app-routing.pipe';
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { AuthModule } from './auth/auth.module';
 import { FeaturesModule } from './features/features.module';
-import { LoginModule } from './login/login.module';
 import { NotFoundModule } from './not-found/not-found.module';
-import { AuthInterceptor } from './core/auth.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MaterialModule } from './shared/material/material.module';
+import { ErrorDialogComponent } from './shared/error-dialog/error-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AppRoutingPipe
+    ErrorDialogComponent,
+    AppRoutingPipe,
   ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
-    MatTabsModule,
-    MatToolbarModule,
     OverlayModule,
     AppRoutingModule,
+    AuthModule,
     FeaturesModule,
-    LoginModule,
+    MaterialModule,
     NotFoundModule,
   ],
   providers: [

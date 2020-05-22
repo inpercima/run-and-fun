@@ -7,6 +7,6 @@ import { Routes } from '@angular/router';
 export class AppRoutingPipe implements PipeTransform {
 
   transform(items: Routes): Routes {
-    return items.filter(item => item.path !== '' && item.path !== '**' && item.path !== 'verify');
+    return items.filter(item => item.path !== '' && item.path !== '**');
   }
 }

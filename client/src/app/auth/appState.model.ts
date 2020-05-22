@@ -5,4 +5,8 @@ export interface AppState {
   redirectUri: string;
 
   accessToken: string;
+
+  username: string;
+
+  fullName: string;
 }

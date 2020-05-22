@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 
-import { AppState } from 'src/app/core/appState.model';
-import { AuthService } from 'src/app/core/auth.service';
 import { Subscription, interval, Observable } from 'rxjs';
+
+import { AppState } from '../appState.model';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'raf-login',
@@ -11,7 +11,7 @@ import { Subscription, interval, Observable } from 'rxjs';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService) { }
 
   appState: AppState;
 
@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  authenticated: boolean;
+  isAuthenticated$: Observable<boolean>;
 
   ngOnInit() {
     this.subscription = interval(500).subscribe(() => {
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.state = redirectUrl ? `&state=${redirectUrl.substr(1)}` : '';
     });
     this.authService.state().subscribe(appState => this.appState = appState);
-    this.authService.isAuthenticated().subscribe(authenticated => this.authenticated = authenticated);
+    this.isAuthenticated$ = this.authService.isAuthenticated;
   }
 
   ngOnDestroy() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { AuthService } from 'src/app/core/auth.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'raf-verify',

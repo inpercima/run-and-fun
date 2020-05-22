@@ -1,14 +1,10 @@
 package net.inpercima.runandfun.web;
 
-import static net.inpercima.runandfun.app.constants.AppConstants.SESSION_ACCESS_TOKEN;
-
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +14,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppActivity;
-import net.inpercima.runandfun.app.model.AppState;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperFriendItem;
 import net.inpercima.runandfun.service.RunAndFunService;
 
@@ -41,40 +35,8 @@ public class RestApiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestApiController.class);
 
-    private static final String ACCESS_DENIED = "access_denied";
-
     @Autowired
     private RunAndFunService runAndFunService;
-
-    @GetMapping(value = "/verify")
-    public String verify(final HttpServletResponse response, final HttpSession session,
-            @RequestParam(required = false) final String code, @RequestParam(required = false) final String error) {
-        String token = null;
-        if (!ACCESS_DENIED.equals(error)) {
-            token = runAndFunService.getAccessToken(code);
-            session.setAttribute(SESSION_ACCESS_TOKEN, token);
-        } else {
-            LOGGER.warn(error);
-        }
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "x-accessToken");
-        response.setHeader("x-accessToken", token);
-        return StringUtils.EMPTY;
-    }
-
-    @GetMapping(value = "/state")
-    public AppState state(final HttpSession session) {
-        AppState appState = (AppState) session.getAttribute(AppConstants.SESSION_APP_STATE);
-        if (appState == null || appState.getUsername() == null) {
-            appState = runAndFunService.getAppState((String) session.getAttribute(SESSION_ACCESS_TOKEN));
-            session.setAttribute(AppConstants.SESSION_APP_STATE, appState);
-        }
-        return appState;
-    }
-
-    @GetMapping(value = "/logout")
-    public void logout(final HttpSession session) {
-        session.invalidate();
-    }
 
     @RequestMapping(value = "/listActivitiesByType", method = RequestMethod.GET)
     public Page<AppActivity> listActivitiesByType(@RequestParam(required = false) final String type) {
