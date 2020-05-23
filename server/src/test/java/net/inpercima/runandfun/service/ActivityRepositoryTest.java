@@ -28,7 +28,7 @@ public class ActivityRepositoryTest {
 
     @Test
     public final void findAllOrderByDateDesc() {
-        final Pageable pageable = new PageRequest(0, 1, Direction.DESC, AppActivity.FIELD_DATE);
+        final Pageable pageable = PageRequest.of(0, 1, Direction.DESC, AppActivity.FIELD_DATE);
         final Page<AppActivity> page = repository.findAll(pageable);
         final List<AppActivity> content = page.getContent();
         assertEquals(1, content.size());
@@ -37,7 +37,7 @@ public class ActivityRepositoryTest {
     @Test
     public void countAndfindAllByType() {
         final int count = repository.countByType(RunkeeperActivityItem.TYPE_RUNNING);
-        final Pageable pageable = new PageRequest(0, count);
+        final Pageable pageable = PageRequest.of(0, count);
         final Page<AppActivity> page = repository.findAllByTypeOrderByDateDesc(RunkeeperActivityItem.TYPE_RUNNING,
                 pageable);
         assertNotNull(page);
@@ -51,7 +51,7 @@ public class ActivityRepositoryTest {
     @Test
     public void countAndfindAllByTypeNull() {
         final long count = repository.count();
-        final Pageable pageable = new PageRequest(0, (int) count);
+        final Pageable pageable = PageRequest.of(0, (int) count);
         final Page<AppActivity> page = repository.findAllByTypeOrderByDateDesc(null, pageable);
         assertNotNull(page);
         final List<AppActivity> content = page.getContent();

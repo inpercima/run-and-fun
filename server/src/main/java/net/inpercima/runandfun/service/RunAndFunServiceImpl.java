@@ -32,7 +32,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
@@ -72,7 +72,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     private ActivityRepository repository;
 
     @Autowired
-    private ElasticsearchTemplate elasticsearchTemplate;
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     /**
      * Default constructor
@@ -138,11 +138,11 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         final Collection<AppActivity> activities = new ArrayList<>();
         final String username = getAppState(accessToken).getUsername();
         getActivities(accessToken, calculateFetchDate()).getItemsAsList().stream()
-                .filter(item -> !repository.exists(item.getId()))
+                .filter(item -> !repository.existsById(item.getId()))
                 .forEach(item -> addActivity(item, username, activities));
         LOGGER.info("new activities: {}", activities.size());
         if (!activities.isEmpty()) {
-            repository.save(activities);
+            repository.saveAll(activities);
         }
         return activities.size();
     }
@@ -156,7 +156,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     private LocalDate calculateFetchDate() {
-        final Pageable pageable = new PageRequest(0, 1, Direction.DESC, AppActivity.FIELD_DATE);
+        final Pageable pageable = PageRequest.of(0, 1, Direction.DESC, AppActivity.FIELD_DATE);
         final Iterator<AppActivity> lastFetchedActivity = repository.findAll(pageable).getContent().iterator();
         return lastFetchedActivity.hasNext()
                 ? lastFetchedActivity.next().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
@@ -166,7 +166,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     @Override
     public Page<AppActivity> listAllActivitiesByType(String type) {
         final int count = type != null ? repository.countByType(type) : (int) repository.count();
-        final Pageable pageable = new PageRequest(0, count);
+        final Pageable pageable = PageRequest.of(0, count);
         return repository.findAllByTypeOrderByDateDesc(type, pageable);
     }
 
@@ -194,7 +194,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
             queryBuilder.must(QueryBuilders.matchAllQuery());
         }
         LOGGER.info("{}", queryBuilder);
-        return elasticsearchTemplate.queryForPage(
+        return elasticsearchRestTemplate.queryForPage(
                 new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(),
                 AppActivity.class);
     }

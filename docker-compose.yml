@@ -1,7 +1,23 @@
-version: '2'
+version: '2.1'
+
 services:
-  run-and-fun:
-    build: .
-    image: run-and-fun:latest
-    mem_limit: 256mb
+  elasticsearch:
+    container_name: elasticsearch
+    environment:
+      - cluster.name=run-and-fun
+      - node.name=run-and-fun-1
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - discovery.type=single-node
+    healthcheck:
+      test: wget --spider --quiet --tries=1 http://localhost:9200 || exit 0
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.5
+    mem_limit: 2g
+    ports:
+      - 9200:9200
     restart: unless-stopped
+    volumes:
+      - esdata-dev:/usr/share/elasticsearch/data
+volumes:
+  esdata-dev:
+    driver: local
