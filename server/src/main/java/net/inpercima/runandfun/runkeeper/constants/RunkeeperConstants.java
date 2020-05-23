@@ -72,5 +72,4 @@ public interface RunkeeperConstants {
     public final static String FRIENDS_URL_PAGE_SIZE_ONE = FRIENDS_URL + PAGE_SIZE_ONE;
 
     public final static String FRIENDS_URL_SPECIFIED_PAGE_SIZE = FRIENDS_URL + SPECIFIED_PAGE_SIZE;
-
 }

@@ -86,5 +86,4 @@ public class RunkeeperProfile {
     public String getUsername() {
         return StringUtils.substringAfter(getProfile(), SEPARATOR_USER);
     }
-
 }

@@ -13,5 +13,4 @@ public interface ActivityRepository extends ElasticsearchRepository<AppActivity,
     Page<AppActivity> findAllByTypeOrderByDateDesc(String type, Pageable pageable);
 
     int countByType(String type);
-
 }

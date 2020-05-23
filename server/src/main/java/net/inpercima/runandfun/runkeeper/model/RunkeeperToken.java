@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @since 11.02.2015
  */
 public class RunkeeperToken {
-    
+
     @JsonProperty(value = "access_token")
     private String accessToken;
 
@@ -18,5 +18,4 @@ public class RunkeeperToken {
     public void setAccess_token(String accessToken) {
         this.accessToken = accessToken;
     }
-
 }

@@ -1,7 +1,5 @@
 package net.inpercima.runandfun.web;
 
-import static net.inpercima.runandfun.app.constants.AppConstants.SESSION_ACCESS_TOKEN;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,14 +14,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppActivity;
-import net.inpercima.runandfun.app.model.AppState;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperFriendItem;
 import net.inpercima.runandfun.service.RunAndFunService;
 
@@ -40,29 +36,19 @@ public class RestApiController {
     @Inject
     private RunAndFunService runAndFunService;
 
-    @RequestMapping(value = "/state", method = RequestMethod.GET)
-    public AppState state(final HttpSession session) {
-        AppState appState = (AppState) session.getAttribute(AppConstants.SESSION_APP_STATE);
-        if (appState == null || appState.getUsername() == null) {
-            appState = runAndFunService.getAppState((String) session.getAttribute(SESSION_ACCESS_TOKEN));
-            session.setAttribute(AppConstants.SESSION_APP_STATE, appState);
-        }
-        return appState;
-    }
-
-    @RequestMapping(value = "/listActivitiesByType", method = RequestMethod.GET)
+    @GetMapping(value = "/listActivitiesByType")
     public Page<AppActivity> listActivitiesByType(@RequestParam(required = false) final String type) {
         LOGGER.debug("listActivitiesByType '{}'", type);
         return runAndFunService.listAllActivitiesByType(type);
     }
 
-    @RequestMapping(value = "/indexActivities")
+    @GetMapping(value = "/indexActivities")
     public String indexActivities(final HttpSession session) {
         final String accessToken = (String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN);
         return String.valueOf(runAndFunService.indexActivities(accessToken));
     }
 
-    @RequestMapping(value = "/listActivities", method = RequestMethod.GET)
+    @GetMapping(value = "/listActivities")
     public Page<AppActivity> listActivities(
             @PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable,
             @RequestParam(required = false) final String type,
@@ -76,10 +62,9 @@ public class RestApiController {
         return runAndFunService.listActivities(pageable, type, minDate, maxDate, minDistance, maxDistance, query);
     }
 
-    @RequestMapping(value = "/listFriends", method = RequestMethod.GET)
+    @GetMapping(value = "/listFriends")
     public List<RunkeeperFriendItem> listFriends(final HttpSession session) {
         final String accessToken = (String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN);
         return runAndFunService.getFriends(accessToken);
     }
-
 }

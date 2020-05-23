@@ -24,11 +24,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,9 +39,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-
+import lombok.extern.slf4j.Slf4j;
 import net.inpercima.restapi.service.RestApiService;
 import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppActivity;
@@ -59,9 +58,8 @@ import net.inpercima.runandfun.runkeeper.model.RunkeeperUser;
  * @since 26.01.2015
  */
 @Service
+@Slf4j
 public class RunAndFunServiceImpl implements RunAndFunService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RunAndFunServiceImpl.class);
 
     // initial release in 2008 according to http://en.wikipedia.org/wiki/RunKeeper
     private static final LocalDate INITIAL_RELEASE_OF_RUNKEEPER = LocalDate.of(2008, 01, 01);
@@ -102,12 +100,12 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
     @Override
     public RunkeeperProfile getProfile(final String accessToken) {
-        LOGGER.debug("get profile for token {}", accessToken);
+        log.debug("get profile for token {}", accessToken);
         return restApiService.getForObject(PROFILE_URL, PROFILE_MEDIA, accessToken, RunkeeperProfile.class).getBody();
     }
 
     private RunkeeperActivities getActivities(final String accessToken, final LocalDate from) {
-        LOGGER.debug("getActivities until {}", from);
+        log.debug("getActivities until {}", from);
 
         int pageSize = AppConstants.DEFAULT_PAGE_SIZE;
         if (from.until(LocalDate.now(), ChronoUnit.DAYS) > pageSize) {
@@ -125,7 +123,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
 
     @Override
     public List<RunkeeperFriendItem> getFriends(String accessToken) {
-        LOGGER.debug("get friends for token {}", accessToken);
+        log.debug("get friends for token {}", accessToken);
         final HttpEntity<RunkeeperFriends> friendsForSize = restApiService.getForObject(FRIENDS_URL_PAGE_SIZE_ONE,
                 FRIENDS_MEDIA, accessToken, RunkeeperFriends.class);
         final int pageSize = friendsForSize.getBody().getSize();
@@ -141,7 +139,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         getActivities(accessToken, calculateFetchDate()).getItemsAsList().stream()
                 .filter(item -> !repository.existsById(item.getId()))
                 .forEach(item -> addActivity(item, username, activities));
-        LOGGER.info("new activities: {}", activities.size());
+        log.info("new activities: {}", activities.size());
         if (!activities.isEmpty()) {
             repository.saveAll(activities);
         }
@@ -152,7 +150,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
             final Collection<AppActivity> activities) {
         final AppActivity activity = new AppActivity(item.getId(), username, item.getType(), item.getDate(),
                 item.getDistance(), item.getFormattedDuration());
-        LOGGER.debug("prepare {}", activity);
+        log.debug("prepare {}", activity);
         activities.add(activity);
     }
 
@@ -194,7 +192,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
         if (!queryBuilder.hasClauses()) {
             queryBuilder.must(QueryBuilders.matchAllQuery());
         }
-        LOGGER.info("{}", queryBuilder);
+        log.info("{}", queryBuilder);
         return elasticsearchRestTemplate.queryForPage(
                 new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(),
                 AppActivity.class);
@@ -246,5 +244,4 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     public void deAuthorize(final String accessToken) {
         restApiService.postForObject(DE_AUTHORIZATION_URL, accessToken);
     }
-
 }

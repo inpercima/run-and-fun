@@ -82,5 +82,4 @@ public class AppActivity {
     public String getDuration() {
         return duration;
     }
-
 }

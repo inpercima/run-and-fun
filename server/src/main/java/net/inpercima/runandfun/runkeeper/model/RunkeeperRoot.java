@@ -18,5 +18,4 @@ public class RunkeeperRoot {
     public void setChangeLogs(String[] changeLogs) {
         this.changeLogs = changeLogs;
     }
-
 }

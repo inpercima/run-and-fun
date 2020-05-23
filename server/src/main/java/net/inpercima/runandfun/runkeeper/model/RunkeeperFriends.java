@@ -39,5 +39,4 @@ public class RunkeeperFriends {
     public void setNext(final String next) {
         this.next = next;
     }
-
 }

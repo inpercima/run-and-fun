@@ -3,7 +3,7 @@ package net.inpercima.runandfun.runkeeper.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RunkeeperFriendItem {
-    
+
     private String reply;
 
     private String name;
@@ -73,5 +73,4 @@ public class RunkeeperFriendItem {
     public void setReply(String reply) {
         this.reply = reply;
     }
-
 }

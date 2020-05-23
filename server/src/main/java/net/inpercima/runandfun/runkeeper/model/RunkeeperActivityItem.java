@@ -144,5 +144,4 @@ public class RunkeeperActivityItem {
     public void setTotalCalories(final Double totalCalories) {
         this.totalCalories = totalCalories;
     }
-
 }

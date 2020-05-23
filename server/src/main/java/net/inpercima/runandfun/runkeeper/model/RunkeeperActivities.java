@@ -55,5 +55,4 @@ public class RunkeeperActivities {
     public void setNext(final String next) {
         this.next = next;
     }
-
 }
