@@ -22,12 +22,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -65,13 +66,13 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     // initial release in 2008 according to http://en.wikipedia.org/wiki/RunKeeper
     private static final LocalDate INITIAL_RELEASE_OF_RUNKEEPER = LocalDate.of(2008, 01, 01);
 
-    @Autowired
+    @Inject
     private RestApiService restApiService;
 
-    @Autowired
+    @Inject
     private ActivityRepository repository;
 
-    @Autowired
+    @Inject
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     /**

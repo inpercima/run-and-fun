@@ -5,13 +5,14 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import net.inpercima.runandfun.Application;
 import net.inpercima.runandfun.app.model.AppActivity;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperActivityItem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringBootTest(classes = Application.class)
 public class ActivityRepositoryTest {
 
-    @Autowired
+    @Inject
     ActivityRepository repository;
 
     @Test

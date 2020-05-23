@@ -2,11 +2,11 @@ package net.inpercima.runandfun.web;
 
 import static net.inpercima.runandfun.app.constants.AppConstants.SESSION_ACCESS_TOKEN;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +26,7 @@ public class ViewController {
 
     private static final String ACCESS_DENIED = "access_denied";
 
-    @Autowired
+    @Inject
     private RunAndFunService runAndFunService;
 
     @GetMapping(value = "/verify")

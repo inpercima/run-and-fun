@@ -5,11 +5,11 @@ import static net.inpercima.runandfun.app.constants.AppConstants.SESSION_ACCESS_
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -37,7 +37,7 @@ public class RestApiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestApiController.class);
 
-    @Autowired
+    @Inject
     private RunAndFunService runAndFunService;
 
     @RequestMapping(value = "/state", method = RequestMethod.GET)

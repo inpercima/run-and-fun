@@ -52,6 +52,11 @@
       <version>3.10</version>
     </dependency>
     <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
+    <dependency>
       <groupId>com.github.inpercima</groupId>
       <artifactId>rest-api</artifactId>
       <version>v0.0.1</version>
