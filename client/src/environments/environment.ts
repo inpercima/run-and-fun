@@ -3,15 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  activateLogin: true,
   api: 'http://localhost:8080/',
-  apiSuffix: '',
   appname: 'run and fun',
   defaultRoute: 'overview',
   production: false,
   redirectNotFound: true,
-  showFeatures: true,
-  showLogin: false,
   theme: 'indigo-pink',
 };
 

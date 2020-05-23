@@ -18,6 +18,5 @@ const routes: Routes = [environment.redirectNotFound ? {
 })
 export class NotFoundRoutingModule {
 
-  public static ROUTES = routes;
-
+  static ROUTES = routes;
 }

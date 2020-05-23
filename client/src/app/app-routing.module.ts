@@ -15,6 +15,5 @@ const routes: Routes = [{
 })
 export class AppRoutingModule {
 
-  public static ROUTES: Routes = routes;
-
+  static ROUTES: Routes = routes;
 }

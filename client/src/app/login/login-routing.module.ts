@@ -14,6 +14,5 @@ const routes: Routes = [{
 })
 export class LoginRoutingModule {
 
-  public static ROUTES = routes;
-
+  static ROUTES = routes;
 }
