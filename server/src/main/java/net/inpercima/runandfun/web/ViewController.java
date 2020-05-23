@@ -45,11 +45,4 @@ public class ViewController {
         session.invalidate();
         return REDIRECT_TO_BASE;
     }
-
-    // if the page is refreshed like F5, redirect to the base
-    @GetMapping({ "/dash", "/activities", "/graphs", "/friends", "/login" })
-    public String index() {
-        return REDIRECT_TO_BASE;
-    }
-
 }
