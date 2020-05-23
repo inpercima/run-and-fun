@@ -62,7 +62,7 @@ public class RestApiController {
         return runAndFunService.listActivities(pageable, type, minDate, maxDate, minDistance, maxDistance, query);
     }
 
-    @GetMapping(value = "/listFriends")
+    @GetMapping(value = "/friends")
     public List<RunkeeperFriendItem> listFriends(final HttpSession session) {
         final String accessToken = (String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN);
         return runAndFunService.getFriends(accessToken);

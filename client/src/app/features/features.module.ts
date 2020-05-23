@@ -10,10 +10,10 @@ import { OverviewComponent } from './overview/overview.component';
 
 @NgModule({
   declarations: [
-    OverviewComponent,
-    FriendsComponent,
     ActivitiesComponent,
-    GraphsComponent
+    FriendsComponent,
+    GraphsComponent,
+    OverviewComponent
   ],
   imports: [
     CommonModule,

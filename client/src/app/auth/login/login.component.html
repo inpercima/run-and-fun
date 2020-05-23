@@ -1,0 +1,15 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <div fxFlex="60">
+    <mat-card *ngIf="!(isAuthenticated$ | async) && appState">
+      <h1>Hello, run and funner!</h1>
+      <p>Please login to get full access to your activities, graphs and other nice stuff.</p>
+      <a href="https://runkeeper.com/apps/authorize?client_id={{ appState.clientId }}&amp;redirect_uri={{ appState.redirectUri }}&amp;response_type=code{{ state }}">
+        <img src="http://static1.runkeeper.com/images/assets/login-blue-black-200x38.png" />
+      </a>
+    </mat-card>
+    <mat-card *ngIf="isAuthenticated$ | async">
+      You are logged in. You can
+      <a routerLink="" (click)="logout()">logout</a>.
+    </mat-card>
+  </div>
+</div>

@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 
+import { FriendsService } from './friends.service';
+
 @Component({
   selector: 'raf-friends',
   templateUrl: './friends.component.html',
-  styleUrls: ['./friends.component.css']
 })
 export class FriendsComponent implements OnInit {
 
-  constructor() { }
+  friends: any;
 
-  ngOnInit(): void {
+  constructor(private friendsService: FriendsService) { }
+
+  ngOnInit() {
+    this.friendsService.list().subscribe(friends => this.friends = friends);
   }
-
 }
