@@ -1,20 +1,35 @@
-<div>
-  <mat-toolbar color="primary" class="mat-elevation-z4">
-    {{ appname }}
-  <div *ngIf="isAuthenticated$ | async">
-    <div *ngIf="appState$ | async as appState">
-      {{ appState.fullName }}
-    </div>
-  </div>
-  </mat-toolbar>
-  <nav mat-tab-nav-bar>
-    <a mat-tab-link
-       *ngFor="let routeLink of routes | appRouting"
-       [routerLink]="routeLink.path"
-       routerLinkActive #rla="routerLinkActive"
-       [active]="rla.isActive">
-      {{ routeLink.path }}
-    </a>
-  </nav>
-  <router-outlet></router-outlet>
-</div>
+<mat-toolbar fxFlexLayout="row" fxLayoutAlign="space-between center" color="primary" class="mat-elevation-z4">
+  <span>{{ appname }}</span>
+  <span *ngIf="isAuthenticated$ | async">
+    <span *ngIf="appState$ | async as appState">
+      Hey {{ appState.fullName }} ({{ appState.username }})
+    </span>
+    <button mat-icon-button aria-hidden="false" aria-label="Menu" [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="profile()">
+        <mat-icon>account_circle</mat-icon>
+        <span>Account information</span>
+      </button>
+      <button mat-menu-item (click)="indexActivities()">
+        <mat-icon>sync</mat-icon>
+        <span>Index activities</span>
+      </button>
+      <button mat-menu-item routerLink="" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </span>
+</mat-toolbar>
+<nav mat-tab-nav-bar>
+  <a mat-tab-link
+    *ngFor="let routeLink of routes | appRouting"
+    [routerLink]="routeLink.path"
+    routerLinkActive #rla="routerLinkActive"
+    [active]="rla.isActive">
+    {{ routeLink.path }}
+  </a>
+</nav>
+<router-outlet></router-outlet>

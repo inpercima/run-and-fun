@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, HostBinding, OnInit } from '@angular/core';
-import { Routes } from '@angular/router';
+import { Routes, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './auth/auth.service';
 import { AppState } from './auth/app-state.model';
+import { ActivitiesService } from './features/activities/activities.service';
 import { FeaturesRoutingModule } from './features/features-routing.module';
 
 @Component({
@@ -36,7 +37,8 @@ export class AppComponent implements OnInit {
    */
   @HostBinding('class') class = `${environment.theme}-theme`;
 
-  public constructor(private titleService: Title, public overlayContainer: OverlayContainer, private authService: AuthService) {
+  public constructor(private router: Router, private titleService: Title, public overlayContainer: OverlayContainer,
+                     private activitiesService: ActivitiesService, private authService: AuthService) {
     this.appname = environment.appname;
     this.routes = AppRoutingModule.ROUTES.concat(FeaturesRoutingModule.ROUTES);
     this.titleService.setTitle(this.appname);
@@ -47,5 +49,17 @@ export class AppComponent implements OnInit {
     this.authService.verifyAuthentication().subscribe();
     this.isAuthenticated$ = this.authService.isAuthenticated;
     this.appState$ = this.authService.state();
+  }
+
+  profile() {
+    this.router.navigate(['profile']);
+  }
+
+  indexActivities() {
+    this.activitiesService.openDialog();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
