@@ -77,7 +77,7 @@
     }
 
     function rateByDistance(activity, activities, minDistance, maxDistance) {
-      const matches = activities.filter((current) => 
+      const matches = activities.filter((current) =>
         current.distance > minDistance && current.distance <= maxDistance)
           .sort((o1, o2) => o1.timePerKmInSeconds - o2.timePerKmInSeconds);
       let item = 0;
@@ -114,11 +114,6 @@
       // undefined have to be filtered
       const keys = Object.keys(params).filter((key) => typeof params[key] !== 'undefined');
       return `?${keys.map((key) => `${key}=${params[key]}`).join('&')}`;
-    }
-
-    function indexActivities() {
-      $log.debug('indexActivities');
-      return $http.get('/indexActivities').then((response) => response.data);
     }
   }
 })();

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { IndexDialogComponent } from 'src/app/shared/index-dialog/index-dialog.component';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,18 +11,13 @@ import { environment } from 'src/environments/environment';
 })
 export class ActivitiesService {
 
-  isDialogOpen = false;
+  constructor(private http: HttpClient) { }
 
-  constructor(public dialog: MatDialog) { }
+  index(): Observable<string> {
+    return this.http.get<string>(environment.api + 'activities/index').pipe(map(response => response));
+  }
 
-  openDialog(): void {
-    if (!this.isDialogOpen) {
-      this.isDialogOpen = true;
-      const dialogRef = this.dialog.open(IndexDialogComponent, {
-        width: '300px',
-        panelClass: `${environment.theme}-theme`
-      });
-      dialogRef.afterClosed().subscribe(() => this.isDialogOpen = false);
-    }
+  list(): Observable<any> {
+    return this.http.get<string>(environment.api + 'activities').pipe(map(response => response));
   }
 }

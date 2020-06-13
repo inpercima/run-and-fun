@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './auth/auth.service';
 import { AppState } from './auth/app-state.model';
-import { ActivitiesService } from './features/activities/activities.service';
+import { IndexDialogService } from './core/index-dialog.service';
 import { FeaturesRoutingModule } from './features/features-routing.module';
 
 @Component({
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
   @HostBinding('class') class = `${environment.theme}-theme`;
 
   public constructor(private router: Router, private titleService: Title, public overlayContainer: OverlayContainer,
-                     private activitiesService: ActivitiesService, private authService: AuthService) {
+                     private indexDialogService: IndexDialogService, private authService: AuthService) {
     this.appname = environment.appname;
     this.routes = AppRoutingModule.ROUTES.concat(FeaturesRoutingModule.ROUTES);
     this.titleService.setTitle(this.appname);
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
   }
 
   indexActivities() {
-    this.activitiesService.openDialog();
+    this.indexDialogService.openDialog();
   }
 
   logout() {

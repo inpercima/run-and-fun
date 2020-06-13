@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivitiesService } from './activities.service';
 
 @Component({
   selector: 'raf-activities',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActivitiesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private activitiesService: ActivitiesService) { }
 
   ngOnInit(): void {
+    this.activitiesService.list().subscribe();
   }
 
 }
