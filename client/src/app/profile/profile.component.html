@@ -1,1 +1,34 @@
-<p>profile works!</p>
+<div fxLayout="row" fxLayoutAlign="center">
+  <div fxFlex="60" fxLayout="row">
+    <mat-card fxFlex *ngIf="profileForm">
+      <mat-card-header>
+        <div mat-card-avatar class="header-image" [style.background-image]="headerImage()"></div>
+        <mat-card-title>{{ profileForm.get('name').value }}</mat-card-title>
+        <mat-card-subtitle>{{ profileForm.get('username').value }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="profileForm" novalidate>
+          <div fxLayout="row wrap" fxLayoutGap="20px">
+            <mat-form-field fxFlex>
+              <input matInput placeholder="username" formControlName="username">
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <input matInput placeholder="name" formControlName="name">
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <input matInput placeholder="location" formControlName="location">
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px">
+            <mat-form-field fxFlex>
+              <input matInput placeholder="gender" formControlName="gender">
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <input matInput placeholder="elite" formControlName="elite">
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
