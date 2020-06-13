@@ -10,8 +10,7 @@ services:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - discovery.type=single-node
     healthcheck:
-      test: wget --spider --quiet --tries=1 http://localhost:9200 || exit 0
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.5
+      test: wget --spider --quiet --tries=1 http://localhost:9200 || exit 1
     mem_limit: 2g
     ports:
       - 9200:9200
