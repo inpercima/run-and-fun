@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="center">
   <div fxFlex="60" fxLayout="row wrap">
     <mat-card fxFlex="50" *ngFor="let friend of friends">
-      <a href="{{ friend.profile }}">{{ friend.name }}</a>
+      <a href="{{ friend.profile }}/profile" target="_blank">{{ friend.name }}</a>
     </mat-card>
   </div>
 </div>

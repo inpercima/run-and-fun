@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class RunkeeperFriends {
 
     private int size = 0;
@@ -14,29 +19,5 @@ public class RunkeeperFriends {
 
     public List<RunkeeperFriendItem> getItemsAsList() {
         return items != null ? Arrays.asList(items) : new ArrayList<>();
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(final int size) {
-        this.size = size;
-    }
-
-    public RunkeeperFriendItem[] getItems() {
-        return items;
-    }
-
-    public void setItems(final RunkeeperFriendItem[] items) {
-        this.items = items;
-    }
-
-    public String getNext() {
-        return next;
-    }
-
-    public void setNext(final String next) {
-        this.next = next;
     }
 }

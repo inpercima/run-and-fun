@@ -14,8 +14,6 @@ export class FriendsService {
   constructor(private http: HttpClient) { }
 
   list(): Observable<any> {
-    return this.http.get<any>(environment.api + 'friends').pipe(map(response => {
-      return response;
-    }));
+    return this.http.get<any>(environment.api + 'friends').pipe(map(response => response));
   }
 }
