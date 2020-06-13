@@ -2,19 +2,22 @@ package net.inpercima.runandfun.app.model;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Mapping;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import lombok.Data;
 
 /**
  * @author Sebastian Peters
  */
-@Document(indexName = "activity", type = "activity")
-@Mapping(mappingPath = "mapping.json")
+@Data
+@Document(indexName = "activity")
 public class AppActivity {
 
     public static final String FIELD_ID = "id";
@@ -34,12 +37,16 @@ public class AppActivity {
 
     private final String username;
 
+    @Field(type = FieldType.Text)
     private final String type;
 
+    @Field(type = FieldType.Date, format = DateFormat.basic_date)
     private final Date date;
 
+    @Field(type = FieldType.Float)
     private final double distance;
 
+    @Field(type = FieldType.Text)
     private final String duration;
 
     @JsonCreator
@@ -52,34 +59,5 @@ public class AppActivity {
         this.date = date;
         this.distance = distance;
         this.duration = duration;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public String getDuration() {
-        return duration;
     }
 }

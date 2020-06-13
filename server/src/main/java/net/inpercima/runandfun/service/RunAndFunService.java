@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.SearchHits;
 
 import net.inpercima.runandfun.app.model.AppActivity;
 import net.inpercima.runandfun.app.model.AppState;
@@ -23,15 +24,15 @@ public interface RunAndFunService {
     RunkeeperUser getUser(String accessToken);
 
     RunkeeperProfile getProfile(String accessToken);
-    
+
     List<RunkeeperFriendItem> getFriends(String accessToken);
 
     int indexActivities(String accessToken);
 
     Page<AppActivity> listAllActivitiesByType(String type);
 
-    Page<AppActivity> listActivities(Pageable pageable, String type, LocalDate minDate, LocalDate maxDate, Float minDistance,
-            Float maxDistance, String query);
+    SearchHits<AppActivity> listActivities(Pageable pageable, String type, LocalDate minDate, LocalDate maxDate,
+            Float minDistance, Float maxDistance, String query);
 
     AppState getAppState(String accessToken);
 

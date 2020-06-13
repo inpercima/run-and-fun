@@ -35,6 +35,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
@@ -170,7 +172,7 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
-    public Page<AppActivity> listActivities(final Pageable pageable, final String types, final LocalDate minDate,
+    public SearchHits<AppActivity> listActivities(final Pageable pageable, final String types, final LocalDate minDate,
             final LocalDate maxDate, final Float minDistance, final Float maxDistance, final String query) {
         final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         if (!Strings.isNullOrEmpty(types)) {
@@ -193,9 +195,9 @@ public class RunAndFunServiceImpl implements RunAndFunService {
             queryBuilder.must(QueryBuilders.matchAllQuery());
         }
         log.info("{}", queryBuilder);
-        return elasticsearchRestTemplate.queryForPage(
+        return elasticsearchRestTemplate.search(
                 new NativeSearchQueryBuilder().withPageable(pageable).withQuery(queryBuilder).build(),
-                AppActivity.class);
+                AppActivity.class, IndexCoordinates.of("activity"));
     }
 
     private static void addFulltextQuery(final BoolQueryBuilder queryBuilder, final String query) {
