@@ -1,1 +1,16 @@
-<p>overview works!</p>
+<div fxLayout="row" fxLayoutAlign="center">
+  <div fxFlex="60" fxLayout="row">
+    <mat-card fxFlex>
+      <mat-card-header>
+        <div mat-card-avatar class="header-image">
+          <mat-icon>{{ activityType() }}</mat-icon>
+        </div>
+        <mat-card-title>Your last activity</mat-card-title>
+        <mat-card-subtitle>{{ activity.date | date: 'full' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        {{ activity.duration }}
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

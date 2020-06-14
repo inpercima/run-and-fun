@@ -40,7 +40,7 @@ public class AppActivity {
     @Field(type = FieldType.Text)
     private final String type;
 
-    @Field(type = FieldType.Date, format = DateFormat.basic_date)
+    @Field(type = FieldType.Date, format = DateFormat.basic_date_time_no_millis)
     private final Date date;
 
     @Field(type = FieldType.Float)

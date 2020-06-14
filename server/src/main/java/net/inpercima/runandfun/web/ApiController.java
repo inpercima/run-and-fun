@@ -36,6 +36,11 @@ public class ApiController {
     @Inject
     private RunAndFunService runAndFunService;
 
+    @GetMapping(value = "/activities/last")
+    public AppActivity getLastActivity() {
+        return runAndFunService.getLastActivity();
+    }
+
     @GetMapping(value = "/activities")
     public SearchHits<AppActivity> listActivities(
             @PageableDefault(direction = Direction.DESC, sort = "date") final Pageable pageable,

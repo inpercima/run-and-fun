@@ -29,6 +29,8 @@ public interface RunAndFunService {
 
     int indexActivities(String accessToken);
 
+    AppActivity getLastActivity();
+
     Page<AppActivity> listAllActivitiesByType(String type);
 
     SearchHits<AppActivity> listActivities(Pageable pageable, String type, LocalDate minDate, LocalDate maxDate,

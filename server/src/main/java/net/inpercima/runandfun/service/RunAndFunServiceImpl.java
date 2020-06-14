@@ -172,6 +172,11 @@ public class RunAndFunServiceImpl implements RunAndFunService {
     }
 
     @Override
+    public AppActivity getLastActivity() {
+        return repository.findTopByOrderByDateDesc();
+    }
+
+    @Override
     public SearchHits<AppActivity> listActivities(final Pageable pageable, final String types, final LocalDate minDate,
             final LocalDate maxDate, final Float minDistance, final Float maxDistance, final String query) {
         final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();

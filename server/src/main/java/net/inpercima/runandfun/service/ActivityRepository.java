@@ -10,6 +10,8 @@ import net.inpercima.runandfun.app.model.AppActivity;
 @Repository
 public interface ActivityRepository extends ElasticsearchRepository<AppActivity, String> {
 
+    AppActivity findTopByOrderByDateDesc();
+
     Page<AppActivity> findAllByTypeOrderByDateDesc(String type, Pageable pageable);
 
     int countByType(String type);
