@@ -13,8 +13,6 @@ export class ProfileService {
   constructor(private http: HttpClient) { }
 
   get(): Observable<any> {
-    return this.http.get<any>(environment.api + 'profile').pipe(map(response => {
-      return response;
-    }));
+    return this.http.get<any>(environment.api + 'profile').pipe(map(response => response));
   }
 }

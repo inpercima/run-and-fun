@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.profileService.get().subscribe(profile => {
-      this.profileImage =profile.small_picture;
+      this.profileImage = profile.small_picture;
       this.profileForm = this.formBuilder.group({
         // to avoid 'changed after checked' errors, it is recommend using disabled here and not in html
         username: [{ value: profile.username, disabled: true }],
