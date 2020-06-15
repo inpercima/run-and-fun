@@ -18,8 +18,14 @@ export class ActivitiesService {
     return this.http.get<string>(environment.api + 'activities/index').pipe(map(response => response));
   }
 
-  list(): Observable<any> {
-    return this.http.get<string>(environment.api + 'activities').pipe(map(response => response));
+  list(): Observable<Activity[]> {
+    const activities: Activity[] = [];
+    return this.http.get<any>(environment.api + 'activities').pipe(map(response => {
+      response.searchHits.forEach((element: any) => {
+        activities.push(element.content);
+      });
+      return activities;
+    }));
   }
 
   last(): Observable<Activity> {
