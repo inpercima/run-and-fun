@@ -3,13 +3,11 @@ package net.inpercima.runandfun.service;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_MEDIA;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_PAGE_SIZE_ONE;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_SPECIFIED;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.DE_AUTHORIZATION_URL;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_MEDIA;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_URL_PAGE_SIZE_ONE;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_URL_SPECIFIED_PAGE_SIZE;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.PROFILE_MEDIA;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.PROFILE_URL;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.TOKEN_URL;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -44,13 +42,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.inpercima.restapi.service.RestApiService;
 import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppActivity;
-import net.inpercima.runandfun.app.model.AppState;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperActivities;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperActivityItem;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperFriendItem;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperFriends;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperProfile;
-import net.inpercima.runandfun.runkeeper.model.RunkeeperToken;
 
 /**
  * @author Marcel Jänicke
@@ -60,10 +56,13 @@ import net.inpercima.runandfun.runkeeper.model.RunkeeperToken;
 @NoArgsConstructor
 @Service
 @Slf4j
-public class RunAndFunService {
+public class FeatureService {
 
     // initial release in 2008 according to http://en.wikipedia.org/wiki/RunKeeper
     private static final LocalDate INITIAL_RELEASE_OF_RUNKEEPER = LocalDate.of(2008, 01, 01);
+
+    @Inject
+    private AuthService authService;
 
     @Inject
     private RestApiService restApiService;
@@ -74,17 +73,25 @@ public class RunAndFunService {
     @Inject
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
-    public String getAccessToken(final String code) {
-        return restApiService.postForObject(TOKEN_URL, code, RunkeeperToken.class).getAccessToken();
+    public List<RunkeeperFriendItem> listFriends(String accessToken) {
+        log.debug("list friends for token {}", accessToken);
+
+        final HttpEntity<RunkeeperFriends> friendsForSize = restApiService.getForObject(FRIENDS_URL_PAGE_SIZE_ONE,
+                FRIENDS_MEDIA, accessToken, RunkeeperFriends.class);
+        final int pageSize = friendsForSize.getBody().getSize();
+
+        return restApiService.getForObject(String.format(FRIENDS_URL_SPECIFIED_PAGE_SIZE, pageSize), FRIENDS_MEDIA,
+                accessToken, RunkeeperFriends.class).getBody().getItemsAsList();
     }
 
     public RunkeeperProfile getProfile(final String accessToken) {
         log.debug("get profile for token {}", accessToken);
+
         return restApiService.getForObject(PROFILE_URL, PROFILE_MEDIA, accessToken, RunkeeperProfile.class).getBody();
     }
 
-    private RunkeeperActivities getActivities(final String accessToken, final LocalDate from) {
-        log.debug("getActivities until {}", from);
+    private List<RunkeeperActivityItem> listActivities(final String accessToken, final LocalDate from) {
+        log.debug("list activities for token {} until {}", accessToken, from);
 
         int pageSize = AppConstants.DEFAULT_PAGE_SIZE;
         if (from.until(LocalDate.now(), ChronoUnit.DAYS) > pageSize) {
@@ -94,27 +101,16 @@ public class RunAndFunService {
             pageSize = activitiesForSize.getBody().getSize();
         }
 
-        // get new activities
+        // list new activities
         return restApiService.getForObject(
                 String.format(ACTIVITIES_URL_SPECIFIED, pageSize, from.format(DateTimeFormatter.ISO_LOCAL_DATE)),
-                ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class).getBody();
-    }
-
-    public List<RunkeeperFriendItem> getFriends(String accessToken) {
-        log.debug("get friends for token {}", accessToken);
-        final HttpEntity<RunkeeperFriends> friendsForSize = restApiService.getForObject(FRIENDS_URL_PAGE_SIZE_ONE,
-                FRIENDS_MEDIA, accessToken, RunkeeperFriends.class);
-        final int pageSize = friendsForSize.getBody().getSize();
-
-        return restApiService.getForObject(String.format(FRIENDS_URL_SPECIFIED_PAGE_SIZE, pageSize), FRIENDS_MEDIA,
-                accessToken, RunkeeperFriends.class).getBody().getItemsAsList();
+                ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class).getBody().getItemsAsList();
     }
 
     public int indexActivities(final String accessToken) {
         final Collection<AppActivity> activities = new ArrayList<>();
-        final String username = getAppState(accessToken).getUsername();
-        getActivities(accessToken, calculateFetchDate()).getItemsAsList().stream()
-                .filter(item -> !repository.existsById(item.getId()))
+        final String username = authService.getAppState(accessToken).getUsername();
+        listActivities(accessToken, calculateFetchDate()).stream().filter(item -> !repository.existsById(item.getId()))
                 .forEach(item -> addActivity(item, username, activities));
         log.info("new activities: {}", activities.size());
         if (!activities.isEmpty()) {
@@ -203,22 +199,5 @@ public class RunAndFunService {
             rangeQuery.lte(maxDistance);
         }
         queryBuilder.must(rangeQuery);
-    }
-
-    public AppState getAppState(final String accessToken) {
-        final AppState state = new AppState();
-        state.setAccessToken(accessToken);
-        state.setClientId(restApiService.getClientId());
-        state.setRedirectUri(restApiService.getRedirectUri());
-        if (state.getAccessToken() != null) {
-            final RunkeeperProfile profile = getProfile(state.getAccessToken());
-            state.setFullName(profile.getName());
-            state.setUsername(profile.getUsername());
-        }
-        return state;
-    }
-
-    public void deAuthorize(final String accessToken) {
-        restApiService.postForObject(DE_AUTHORIZATION_URL, accessToken);
     }
 }

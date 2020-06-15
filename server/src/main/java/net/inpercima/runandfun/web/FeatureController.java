@@ -22,7 +22,7 @@ import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppActivity;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperFriendItem;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperProfile;
-import net.inpercima.runandfun.service.RunAndFunService;
+import net.inpercima.runandfun.service.FeatureService;
 
 /**
  * @author Marcel Jänicke
@@ -31,15 +31,10 @@ import net.inpercima.runandfun.service.RunAndFunService;
  */
 @RestController
 @Slf4j
-public class ApiController {
+public class FeatureController {
 
     @Inject
-    private RunAndFunService runAndFunService;
-
-    @GetMapping(value = "/activities/last")
-    public AppActivity getLastActivity() {
-        return runAndFunService.getLastActivity();
-    }
+    private FeatureService featureService;
 
     @GetMapping(value = "/activities")
     public SearchHits<AppActivity> listActivities(
@@ -52,28 +47,33 @@ public class ApiController {
             @RequestParam(required = false) final String query) {
         log.debug("listActivities of type '{}' for date between {} - {}, distance between {} - {}, {}", type, minDate,
                 maxDate, minDistance, maxDistance, pageable);
-        return runAndFunService.listActivities(pageable, type, minDate, maxDate, minDistance, maxDistance, query);
+        return featureService.listActivities(pageable, type, minDate, maxDate, minDistance, maxDistance, query);
     }
 
     @GetMapping(value = "/activities/index")
     public String indexActivities(final HttpSession session) {
         return String.valueOf(
-                runAndFunService.indexActivities((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN)));
+                featureService.indexActivities((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN)));
+    }
+
+    @GetMapping(value = "/activities/last")
+    public AppActivity getLastActivity() {
+        return featureService.getLastActivity();
     }
 
     @GetMapping(value = "/listActivitiesByType")
     public Page<AppActivity> listActivitiesByType(@RequestParam(required = false) final String type) {
         log.debug("listActivitiesByType '{}'", type);
-        return runAndFunService.listAllActivitiesByType(type);
+        return featureService.listAllActivitiesByType(type);
     }
 
     @GetMapping(value = "/friends")
     public List<RunkeeperFriendItem> listFriends(final HttpSession session) {
-        return runAndFunService.getFriends((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN));
+        return featureService.listFriends((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN));
     }
 
     @GetMapping(value = "/profile")
     public RunkeeperProfile profile(final HttpSession session) {
-        return runAndFunService.getProfile((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN));
+        return featureService.getProfile((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN));
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
 import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppState;
-import net.inpercima.runandfun.service.RunAndFunService;
+import net.inpercima.runandfun.service.AuthService;
 
 /**
  * @author Marcel Jänicke
@@ -26,14 +26,14 @@ public class AuthController {
     private static final String HEADER_ACCESS_TOKEN = "x-accessToken";
 
     @Inject
-    private RunAndFunService runAndFunService;
+    private AuthService authService;
 
     @GetMapping(value = "/verify")
     public String verify(final HttpServletResponse response, final HttpSession session,
             @RequestParam(required = false) final String code, @RequestParam(required = false) final String error) {
         String accessToken = null;
         if (!"access_denied".equals(error)) {
-            accessToken = runAndFunService.getAccessToken(code);
+            accessToken = authService.getAccessToken(code);
             session.setAttribute(AppConstants.SESSION_ACCESS_TOKEN, accessToken);
         } else {
             log.warn(error);
@@ -49,7 +49,7 @@ public class AuthController {
     public AppState state(final HttpSession session) {
         AppState appState = (AppState) session.getAttribute(AppConstants.SESSION_APP_STATE);
         if (appState == null || appState.getUsername() == null) {
-            appState = runAndFunService.getAppState((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN));
+            appState = authService.getAppState((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN));
             session.setAttribute(AppConstants.SESSION_APP_STATE, appState);
         }
         return appState;

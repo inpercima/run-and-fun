@@ -23,10 +23,10 @@ import net.inpercima.runandfun.runkeeper.model.RunkeeperToken;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RunAndFunServiceTest {
+public class AuthServiceTest {
 
     @Inject
-    private RunAndFunService runAndFunService;
+    private AuthService authService;
 
     @MockBean
     private RestApiService restApiService;
@@ -37,8 +37,8 @@ public class RunAndFunServiceTest {
         runkeeperToken.setAccessToken(null);
         Mockito.when(restApiService.postForObject(anyString(), any(), any())).thenReturn(runkeeperToken);
 
-        assertThat(runAndFunService.getAccessToken("")).isNull();
-        assertThat(runAndFunService.getAccessToken(null)).isNull();
-        assertThat(runAndFunService.getAccessToken("invalid")).isNull();
+        assertThat(authService.getAccessToken("")).isNull();
+        assertThat(authService.getAccessToken(null)).isNull();
+        assertThat(authService.getAccessToken("invalid")).isNull();
     }
 }
