@@ -22,6 +22,7 @@ export class OverviewComponent implements OnInit {
     switch (this.activity.type) {
       case 'Running': return 'directions_run';
       case 'Walking': case 'Hiking': return 'directions_walk';
+      case 'Cycling': return 'directions_bike';
       default: return 'help';
     }
   }
