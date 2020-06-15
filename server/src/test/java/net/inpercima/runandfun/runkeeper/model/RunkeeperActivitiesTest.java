@@ -1,10 +1,6 @@
 package net.inpercima.runandfun.runkeeper.model;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +25,7 @@ public class RunkeeperActivitiesTest {
 
     public static RunkeeperActivities createActivities() {
         final RunkeeperActivities result = new RunkeeperActivities();
-        assertEquals(0, result.getItems().length);
+        assertThat(result.getItems().length).isZero();
 
         final RunkeeperActivityItem[] items = new RunkeeperActivityItem[ACTIVITY_SIZE];
         int i = 0;
@@ -49,43 +45,43 @@ public class RunkeeperActivitiesTest {
         items[i].setType(RunkeeperActivityItem.TYPE_CYCLING);
         items[i].setUri(RunkeeperActivityItem.SEPARATOR_ID + i);
         items[i].setStartTime(START_DATETIME);
-        assertEquals(ACTIVITY_SIZE, i + 1);
+        assertThat(i + 1).isEqualTo(ACTIVITY_SIZE);
         result.setItems(items);
-        assertArrayEquals(items, result.getItems());
-        assertEquals(ACTIVITY_SIZE, result.getItems().length);
+        assertThat(result.getItems()).isEqualTo(items);
+        assertThat(result.getItems().length).isEqualTo(ACTIVITY_SIZE);
         return result;
     }
 
     @Test
     public final void getRuns() {
         final List<RunkeeperActivityItem> runs = activities.getRuns();
-        assertNotNull(runs);
-        assertEquals(2, runs.size());
+        assertThat(runs).isNotNull();
+        assertThat(runs.size()).isEqualTo(2);
     }
 
     @Test
     public void parseRfc1123DateTime() {
         final LocalDateTime date = RunkeeperActivityItem
                 .parseRfc1123DateTime(START_DATETIME + RunkeeperActivityItem.GMT_POSTFIX);
-        assertNotNull(date);
-        assertEquals("2015-01-01T" + START_TIME, date.toString());
+        assertThat(date).isNotNull();
+        assertThat(date.toString()).isEqualTo("2015-01-01T" + START_TIME);
     }
 
     @Test
     public void getDate() {
-        assertThat(activities.getItems()[0].getDate().toString(), containsString(START_TIME));
+        assertThat(activities.getItems()[0].getDate().toString()).contains(START_TIME);
     }
 
     @Test
     public void convertSecondToHHMMSS() {
         final String duration = RunkeeperActivityItem.convertSecondToHHMMSS(0);
-        assertNotNull(duration);
-        assertEquals("00:00:00", duration);
-        assertEquals("00:00:01", RunkeeperActivityItem.convertSecondToHHMMSS(1));
-        assertEquals("00:00:11", RunkeeperActivityItem.convertSecondToHHMMSS(11));
-        assertEquals("00:01:00", RunkeeperActivityItem.convertSecondToHHMMSS(60));
-        assertEquals("01:00:00", RunkeeperActivityItem.convertSecondToHHMMSS(3600));
-        assertEquals("01:01:01", RunkeeperActivityItem.convertSecondToHHMMSS(3661));
+        assertThat(duration).isNotNull();
+        assertThat(duration).isEqualTo("00:00:00");
+        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(1)).isEqualTo("00:00:01");
+        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(11)).isEqualTo("00:00:11");
+        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(60)).isEqualTo("00:01:00");
+        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(3600)).isEqualTo("01:00:00");
+        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(3661)).isEqualTo("01:01:01");
     }
 
 }
