@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="center">
   <div fxFlex="60" fxLayout="row">
-    <mat-card fxFlex>
+    <mat-card fxFlex *ngIf="activity">
       <mat-card-header>
         <div mat-card-avatar>
           <mat-icon>{{ activityType() }}</mat-icon>

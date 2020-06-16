@@ -1,1 +1,12 @@
-<p>graphs works!</p>
+<div fxLayout="row" fxLayoutAlign="center">
+  <div fxFlex="60">
+    <mat-card>
+      <mat-card-content>
+        <canvas *ngIf="chartData; else loading" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions" legend="true" chartType="pie"></canvas>
+        <ng-template #loading>
+          Loading...
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
