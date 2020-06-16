@@ -12,18 +12,30 @@ const routes: Routes = [{
   canActivate: [AuthGuard],
   component: OverviewComponent,
   path: environment.defaultRoute,
+  data: {
+    description: 'overview of all your stuff',
+  },
 }, {
   canActivate: [AuthGuard],
   component: ActivitiesComponent,
   path: 'activities',
+  data: {
+    description: 'check and search your activities',
+  },
 }, {
   canActivate: [AuthGuard],
   component: GraphsComponent,
   path: 'graphs',
+  data: {
+    description: 'control your activities with graphs',
+  },
 }, {
   canActivate: [AuthGuard],
   component: FriendsComponent,
   path: 'friends',
+  data: {
+    description: 'see what friends do',
+  },
 }];
 
 @NgModule({
