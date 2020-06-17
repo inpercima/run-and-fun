@@ -1,5 +1,5 @@
 <div fxLayout="row" fxLayoutAlign="center">
-  <div fxFlex="60">
+  <div fxFlex="80">
     <mat-card>
       <mat-card-content>
         <canvas *ngIf="chartData; else loading" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions" legend="true" chartType="pie"></canvas>

@@ -1,7 +1,20 @@
 <div fxLayout="row" fxLayoutAlign="center">
-  <div fxFlex="60" fxLayout="row wrap">
-    <mat-card fxFlex="50" *ngFor="let friend of friends">
-      <a href="{{ friend.profile }}/profile" target="_blank">{{ friend.name }}</a>
-    </mat-card>
-  </div>
+  <mat-card fxFlex="60">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>face</mat-icon>
+      </div>
+      <mat-card-title>Your friends</mat-card-title>
+      <mat-card-subtitle>...</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let friend of friends; let lastItem = last;">
+          <mat-icon matListIcon>face</mat-icon>
+          <a href="{{ friend.profile }}/profile" target="_blank">{{ friend.name }}</a>
+          <mat-divider *ngIf="!lastItem"></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
 </div>
