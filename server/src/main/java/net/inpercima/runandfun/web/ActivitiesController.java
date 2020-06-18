@@ -1,7 +1,6 @@
 package net.inpercima.runandfun.web;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -20,9 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
 import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppActivity;
-import net.inpercima.runandfun.runkeeper.model.RunkeeperFriendItem;
-import net.inpercima.runandfun.runkeeper.model.RunkeeperProfile;
-import net.inpercima.runandfun.service.FeatureService;
+import net.inpercima.runandfun.service.ActivitiesService;
 
 /**
  * @author Marcel Jänicke
@@ -31,10 +28,10 @@ import net.inpercima.runandfun.service.FeatureService;
  */
 @RestController
 @Slf4j
-public class FeatureController {
+public class ActivitiesController {
 
     @Inject
-    private FeatureService featureService;
+    private ActivitiesService activitiesService;
 
     @GetMapping(value = "/activities")
     public SearchHits<AppActivity> listActivities(
@@ -47,33 +44,23 @@ public class FeatureController {
             @RequestParam(required = false) final String query) {
         log.debug("listActivities of type '{}' for date between {} - {}, distance between {} - {}, {}", type, minDate,
                 maxDate, minDistance, maxDistance, pageable);
-        return featureService.listActivities(pageable, type, minDate, maxDate, minDistance, maxDistance, query);
+        return activitiesService.listActivities(pageable, type, minDate, maxDate, minDistance, maxDistance, query);
     }
 
     @GetMapping(value = "/activities/index")
     public String indexActivities(final HttpSession session) {
         return String.valueOf(
-                featureService.indexActivities((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN)));
+                activitiesService.indexActivities((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN)));
     }
 
     @GetMapping(value = "/activities/last")
     public AppActivity getLastActivity() {
-        return featureService.getLastActivity();
+        return activitiesService.getLastActivity();
     }
 
     @GetMapping(value = "/listActivitiesByType")
     public Page<AppActivity> listActivitiesByType(@RequestParam(required = false) final String type) {
         log.debug("listActivitiesByType '{}'", type);
-        return featureService.listAllActivitiesByType(type);
-    }
-
-    @GetMapping(value = "/friends")
-    public List<RunkeeperFriendItem> listFriends(final HttpSession session) {
-        return featureService.listFriends((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN));
-    }
-
-    @GetMapping(value = "/profile")
-    public RunkeeperProfile getProfile(final HttpSession session) {
-        return featureService.getProfile((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN));
+        return activitiesService.listAllActivitiesByType(type);
     }
 }

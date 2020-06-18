@@ -3,11 +3,6 @@ package net.inpercima.runandfun.service;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_MEDIA;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_PAGE_SIZE_ONE;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_SPECIFIED;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_MEDIA;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_URL_PAGE_SIZE_ONE;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.FRIENDS_URL_SPECIFIED_PAGE_SIZE;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.PROFILE_MEDIA;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.PROFILE_URL;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -44,9 +39,6 @@ import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppActivity;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperActivities;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperActivityItem;
-import net.inpercima.runandfun.runkeeper.model.RunkeeperFriendItem;
-import net.inpercima.runandfun.runkeeper.model.RunkeeperFriends;
-import net.inpercima.runandfun.runkeeper.model.RunkeeperProfile;
 
 /**
  * @author Marcel Jänicke
@@ -56,7 +48,7 @@ import net.inpercima.runandfun.runkeeper.model.RunkeeperProfile;
 @NoArgsConstructor
 @Service
 @Slf4j
-public class FeatureService {
+public class ActivitiesService {
 
     // initial release in 2008 according to http://en.wikipedia.org/wiki/RunKeeper
     private static final LocalDate INITIAL_RELEASE_OF_RUNKEEPER = LocalDate.of(2008, 01, 01);
@@ -72,23 +64,6 @@ public class FeatureService {
 
     @Inject
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
-
-    public List<RunkeeperFriendItem> listFriends(String accessToken) {
-        log.debug("list friends for token {}", accessToken);
-
-        final HttpEntity<RunkeeperFriends> friendsForSize = restApiService.getForObject(FRIENDS_URL_PAGE_SIZE_ONE,
-                FRIENDS_MEDIA, accessToken, RunkeeperFriends.class);
-        final int pageSize = friendsForSize.getBody().getSize();
-
-        return restApiService.getForObject(String.format(FRIENDS_URL_SPECIFIED_PAGE_SIZE, pageSize), FRIENDS_MEDIA,
-                accessToken, RunkeeperFriends.class).getBody().getItemsAsList();
-    }
-
-    public RunkeeperProfile getProfile(final String accessToken) {
-        log.debug("get profile for token {}", accessToken);
-
-        return restApiService.getForObject(PROFILE_URL, PROFILE_MEDIA, accessToken, RunkeeperProfile.class).getBody();
-    }
 
     private List<RunkeeperActivityItem> listActivities(final String accessToken, final LocalDate from) {
         log.debug("list activities for token {} until {}", accessToken, from);

@@ -23,7 +23,7 @@ import net.inpercima.runandfun.runkeeper.model.RunkeeperToken;
 public class AuthService {
 
     @Inject
-    private FeatureService featureService;
+    private FeaturesService featuresService;
 
     @Inject
     private RestApiService restApiService;
@@ -38,7 +38,7 @@ public class AuthService {
         state.setClientId(restApiService.getClientId());
         state.setRedirectUri(restApiService.getRedirectUri());
         if (state.getAccessToken() != null) {
-            final RunkeeperProfile profile = featureService.getProfile(state.getAccessToken());
+            final RunkeeperProfile profile = featuresService.getProfile(state.getAccessToken());
             state.setFullName(profile.getName());
             state.setUsername(profile.getUsername());
         }
