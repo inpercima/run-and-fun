@@ -73,7 +73,7 @@ public class FeatureController {
     }
 
     @GetMapping(value = "/profile")
-    public RunkeeperProfile profile(final HttpSession session) {
+    public RunkeeperProfile getProfile(final HttpSession session) {
         return featureService.getProfile((String) session.getAttribute(AppConstants.SESSION_ACCESS_TOKEN));
     }
 }

@@ -7,6 +7,7 @@ import { ActivitiesComponent } from './activities/activities.component';
 import { FriendsComponent } from './friends/friends.component';
 import { GraphsComponent } from './graphs/graphs.component';
 import { OverviewComponent } from './overview/overview.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [{
   canActivate: [AuthGuard],
@@ -36,6 +37,13 @@ const routes: Routes = [{
   data: {
     description: 'see what friends do',
   },
+}, {
+    canActivate: [ AuthGuard ],
+    component: ProfileComponent,
+    path: 'profile',
+    data: {
+      description: 'your account information',
+    },
 }];
 
 @NgModule({

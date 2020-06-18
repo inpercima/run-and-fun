@@ -12,7 +12,6 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { AuthModule } from './auth/auth.module';
 import { FeaturesModule } from './features/features.module';
 import { NotFoundModule } from './not-found/not-found.module';
-import { ProfileModule } from './profile/profile.module';
 import { ErrorDialogComponent } from './shared/error-dialog/error-dialog.component';
 import { IndexDialogComponent } from './shared/index-dialog/index-dialog.component';
 import { MaterialModule } from './shared/material/material.module';
@@ -33,7 +32,6 @@ import { MaterialModule } from './shared/material/material.module';
     AuthModule,
     FeaturesModule,
     MaterialModule,
-    ProfileModule,
     // NotFoundModule contains the route configuration for path: '**' and this must be at the end
     NotFoundModule,
   ],
