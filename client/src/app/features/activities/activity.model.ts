@@ -6,5 +6,15 @@ export interface Activity {
 
   distance: number;
 
-  duration: string;
+  duration: number;
+
+  formattedDuration: string;
+
+  timePerKm: string;
+
+  timePer5Km: string;
+
+  timePer10Km: string;
+
+  functions: string;
 }

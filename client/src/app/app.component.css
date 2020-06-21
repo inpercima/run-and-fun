@@ -27,12 +27,13 @@ body {
 }
 
 /* mat-icon */
-.mat-icon-button {
+.mat-toolbar .mat-icon-button {
   height: 32px;
   line-height: 32px;
+  width: 32px;
 }
 
-.mat-icon-button .mat-icon {
+.mat-toolbar .mat-icon-button .mat-icon {
   position: relative;
   top: -2px;
 }

@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.Data;
+
+@Data
 public class RunkeeperActivities {
 
     private int size = 0;
@@ -22,37 +25,5 @@ public class RunkeeperActivities {
     public List<RunkeeperActivityItem> getRuns() {
         return getItemsAsList().stream().filter(item -> item.getType().equals(RunkeeperActivityItem.TYPE_RUNNING))
                 .collect(Collectors.toList());
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(final int size) {
-        this.size = size;
-    }
-
-    public RunkeeperActivityItem[] getItems() {
-        return items;
-    }
-
-    public void setItems(final RunkeeperActivityItem[] items) {
-        this.items = items;
-    }
-
-    public String getPrevious() {
-        return previous;
-    }
-
-    public void setPrevious(final String previous) {
-        this.previous = previous;
-    }
-
-    public String getNext() {
-        return next;
-    }
-
-    public void setNext(final String next) {
-        this.next = next;
     }
 }

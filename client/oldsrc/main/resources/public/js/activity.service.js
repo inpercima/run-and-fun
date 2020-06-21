@@ -44,9 +44,6 @@
       angular.forEach(content, (activity) => {
         const seconds = dateTimeUtils.formattedTimeToSeconds(activity.duration);
         activity.timePerKmInSeconds = calcTimePerKm(seconds, activity.distance);
-        activity.timePerKm = dateTimeUtils.formatTime(activity.timePerKmInSeconds);
-        activity.timePer5Km = dateTimeUtils.formatTime(calcTimePerKm(5 * seconds, activity.distance));
-        activity.timePer10Km = dateTimeUtils.formatTime(calcTimePerKm(10 * seconds, activity.distance));
 
         activity.additionalInfo = '';
         // prepend half marathon time if distance is in interval [17, 20]
@@ -93,10 +90,6 @@
     function addTimeForKm(activity, totalSeconds, distance) {
       const calculatedTimePerKm = calcTimePerKm(distance * totalSeconds, activity.distance);
       activity.additionalInfo += `${dateTimeUtils.formatTime(calculatedTimePerKm)}min/${distance}km`;
-    }
-
-    function calcTimePerKm(time, distance) {
-      return distance !== 0 ? time / distance : 0;
     }
 
     function getTotalDistance(activities) {

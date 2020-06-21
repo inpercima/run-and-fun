@@ -71,17 +71,4 @@ public class RunkeeperActivitiesTest {
     public void getDate() {
         assertThat(activities.getItems()[0].getDate().toString()).contains(START_TIME);
     }
-
-    @Test
-    public void convertSecondToHHMMSS() {
-        final String duration = RunkeeperActivityItem.convertSecondToHHMMSS(0);
-        assertThat(duration).isNotNull();
-        assertThat(duration).isEqualTo("00:00:00");
-        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(1)).isEqualTo("00:00:01");
-        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(11)).isEqualTo("00:00:11");
-        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(60)).isEqualTo("00:01:00");
-        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(3600)).isEqualTo("01:00:00");
-        assertThat(RunkeeperActivityItem.convertSecondToHHMMSS(3661)).isEqualTo("01:01:01");
-    }
-
 }

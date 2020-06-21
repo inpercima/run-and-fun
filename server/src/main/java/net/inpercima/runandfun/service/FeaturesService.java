@@ -33,6 +33,12 @@ public class FeaturesService {
     @Inject
     private RestApiService restApiService;
 
+    /**
+     * List friends live.
+     *
+     * @param accessToken
+     * @return list of friends
+     */
     public List<RunkeeperFriendItem> listFriends(String accessToken) {
         log.debug("list friends for token {}", accessToken);
 
@@ -44,6 +50,12 @@ public class FeaturesService {
                 accessToken, RunkeeperFriends.class).getBody().getItemsAsList();
     }
 
+    /**
+     * Get profile live.
+     *
+     * @param accessToken
+     * @return profile
+     */
     public RunkeeperProfile getProfile(final String accessToken) {
         log.debug("get profile for token {}", accessToken);
 

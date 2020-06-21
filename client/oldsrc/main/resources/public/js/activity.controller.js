@@ -68,9 +68,6 @@
     }
 
     function remove(activity) {
-      logger.debug('ActivityController.remove');
-      const index = vm.activities.content.indexOf(activity);
-      vm.activities.content.splice(index, 1);
       activityService.recalculateTotals(vm);
     }
 

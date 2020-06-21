@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -56,11 +55,5 @@ public class ActivitiesController {
     @GetMapping(value = "/activities/last")
     public AppActivity getLastActivity() {
         return activitiesService.getLastActivity();
-    }
-
-    @GetMapping(value = "/listActivitiesByType")
-    public Page<AppActivity> listActivitiesByType(@RequestParam(required = false) final String type) {
-        log.debug("listActivitiesByType '{}'", type);
-        return activitiesService.listAllActivitiesByType(type);
     }
 }

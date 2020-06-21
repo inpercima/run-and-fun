@@ -2,15 +2,13 @@ package net.inpercima.runandfun.service;
 
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_MEDIA;
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_PAGE_SIZE_ONE;
-import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_SPECIFIED;
+import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_SPECIFIED_PAGE_SIZE_NO_EARLIER_THAN;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,21 +19,16 @@ import com.google.common.base.Strings;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.inpercima.restapi.service.RestApiService;
-import net.inpercima.runandfun.app.constants.AppConstants;
 import net.inpercima.runandfun.app.model.AppActivity;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperActivities;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperActivityItem;
@@ -65,23 +58,6 @@ public class ActivitiesService {
     @Inject
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
-    private List<RunkeeperActivityItem> listActivities(final String accessToken, final LocalDate from) {
-        log.debug("list activities for token {} until {}", accessToken, from);
-
-        int pageSize = AppConstants.DEFAULT_PAGE_SIZE;
-        if (from.until(LocalDate.now(), ChronoUnit.DAYS) > pageSize) {
-            // get one item only to get full size
-            final HttpEntity<RunkeeperActivities> activitiesForSize = restApiService.getForObject(
-                    ACTIVITIES_URL_PAGE_SIZE_ONE, ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class);
-            pageSize = activitiesForSize.getBody().getSize();
-        }
-
-        // list new activities
-        return restApiService.getForObject(
-                String.format(ACTIVITIES_URL_SPECIFIED, pageSize, from.format(DateTimeFormatter.ISO_LOCAL_DATE)),
-                ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class).getBody().getItemsAsList();
-    }
-
     public int indexActivities(final String accessToken) {
         final Collection<AppActivity> activities = new ArrayList<>();
         final String username = authService.getAppState(accessToken).getUsername();
@@ -94,32 +70,65 @@ public class ActivitiesService {
         return activities.size();
     }
 
+    /**
+     * List activities live from runkeeper with an accessToken and a date. The full
+     * size will be determined every time but with the given date only the last
+     * items will be collected with a max. of the full size.
+     *
+     * @param accessToken
+     * @param from
+     * @return list of activity items
+     */
+    private List<RunkeeperActivityItem> listActivities(final String accessToken, final LocalDate from) {
+        log.debug("list activities for token {} until {}", accessToken, from);
+
+        // get one item only to get full size
+        int pageSize = restApiService
+                .getForObject(ACTIVITIES_URL_PAGE_SIZE_ONE, ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class)
+                .getBody().getSize();
+
+        // list new activities from given date with max. full size
+        return restApiService.getForObject(
+                String.format(ACTIVITIES_URL_SPECIFIED_PAGE_SIZE_NO_EARLIER_THAN, pageSize,
+                        from.format(DateTimeFormatter.ISO_LOCAL_DATE)),
+                ACTIVITIES_MEDIA, accessToken, RunkeeperActivities.class).getBody().getItemsAsList();
+    }
+
+    private LocalDate calculateFetchDate() {
+        final AppActivity activity = getLastActivity();
+        return activity == null ? INITIAL_RELEASE_OF_RUNKEEPER
+                : activity.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
     private void addActivity(final RunkeeperActivityItem item, final String username,
             final Collection<AppActivity> activities) {
         final AppActivity activity = new AppActivity(item.getId(), username, item.getType(), item.getDate(),
-                item.getDistance(), item.getFormattedDuration());
+                item.getDistance(), item.getDuration());
         log.debug("prepare {}", activity);
         activities.add(activity);
     }
 
-    private LocalDate calculateFetchDate() {
-        final Pageable pageable = PageRequest.of(0, 1, Direction.DESC, AppActivity.FIELD_DATE);
-        final Iterator<AppActivity> lastFetchedActivity = repository.findAll(pageable).getContent().iterator();
-        return lastFetchedActivity.hasNext()
-                ? lastFetchedActivity.next().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                : INITIAL_RELEASE_OF_RUNKEEPER;
-    }
-
-    public Page<AppActivity> listAllActivitiesByType(String type) {
-        final int count = type != null ? repository.countByType(type) : (int) repository.count();
-        final Pageable pageable = PageRequest.of(0, count);
-        return repository.findAllByTypeOrderByDateDesc(type, pageable);
-    }
-
+    /**
+     * Get last activity from app repository.
+     *
+     * @return last activity
+     */
     public AppActivity getLastActivity() {
         return repository.findTopByOrderByDateDesc();
     }
 
+    /**
+     * List activites from app repository.
+     *
+     * @param pageable
+     * @param types
+     * @param minDate
+     * @param maxDate
+     * @param minDistance
+     * @param maxDistance
+     * @param query
+     * @return
+     */
     public SearchHits<AppActivity> listActivities(final Pageable pageable, final String types, final LocalDate minDate,
             final LocalDate maxDate, final Float minDistance, final Float maxDistance, final String query) {
         final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();

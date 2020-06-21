@@ -5,6 +5,7 @@ import { Label } from 'ng2-charts';
 
 import { Activity } from '../activities/activity.model';
 import { ActivitiesService } from '../activities/activities.service';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'raf-graphs',
@@ -21,10 +22,14 @@ export class GraphsComponent implements OnInit {
     responsive: true,
   };
 
-  constructor(private activitiesService: ActivitiesService) { }
+  constructor(private activitiesService: ActivitiesService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.activitiesService.list().subscribe(response => {
+    const searchForm = this.formBuilder.group({
+      page: [0],
+      size: [10],
+    });
+    this.activitiesService.list(searchForm).subscribe(response => {
       const labels: Label[] = [];
       const activities = {};
       response.forEach((elem: Activity) => {

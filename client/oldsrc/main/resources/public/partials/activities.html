@@ -1,4 +1,3 @@
-<ng-include src="'partials/header.html'"></ng-include>
 <div>
   <p data-ng-cloak>Available indexed activities: {{vm.activities.totalElements}}</p>
 </div>
@@ -64,22 +63,10 @@
         <td/><td/><td/><td/><td/><td/>
       </tr>
       <tr data-ng-repeat="activity in vm.activities.content | orderBy:vm.predicate:vm.reverse">
-        <td><span data-ng-bind="::activity.date | date:'dd.MM.yyyy'"></span></td>
-        <td><span data-ng-bind="::activity.distance | number:2"></span></td>
-        <td><span data-ng-bind="::activity.duration"></span></td>
-        <td><span data-ng-bind="::activity.timePerKm"></span></td>
-        <td><span data-ng-bind="::activity.timePer5Km"></span></td>
-        <td><span data-ng-bind="::activity.timePer10Km"></span></td>
         <td>
           <span data-ng-show="activity.id">
-            <a class="glyphicon glyphicon-globe" data-ng-href="http://runkeeper.com/user/{{::activity.username}}/activity/{{::activity.id}}"
-              target="_blank" title="Open activity {{::activity.id}} on runkeeper.com">
-            </a>
             <a class="glyphicon glyphicon-list-alt" title="{{::activity.additionalInfo}}"></a>
             <a class="glyphicon glyphicon-stats" title="{{::activity.intervalStats}}"></a>
-            <a class="glyphicon glyphicon-remove" data-ng-click="vm.remove(activity)"
-              title="Remove activity {{::activity.id}} from view">
-            </a>
           </span>
         </td>
       </tr>

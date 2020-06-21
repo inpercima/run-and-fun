@@ -65,7 +65,8 @@ public interface RunkeeperConstants {
     // concatenated urls
     public final static String ACTIVITIES_URL_PAGE_SIZE_ONE = ACTIVITIES_URL + PAGE_SIZE_ONE;
 
-    public final static String ACTIVITIES_URL_SPECIFIED = ACTIVITIES_URL + SPECIFIED_PAGE_SIZE + NO_EARLIER_THAN;
+    public final static String ACTIVITIES_URL_SPECIFIED_PAGE_SIZE_NO_EARLIER_THAN = ACTIVITIES_URL + SPECIFIED_PAGE_SIZE
+            + NO_EARLIER_THAN;
 
     public final static String ACTIVITIES_URL_SPECIFIED_PAGE_SIZE = ACTIVITIES_URL + SPECIFIED_PAGE_SIZE;
 
