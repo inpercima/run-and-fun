@@ -11,7 +11,7 @@ This project was generated with [swaaplate](https://github.com/inpercima/swaapla
 
 ### Angular CLI
 
-* `angular-cli 10.0.4` or higher
+* `angular-cli 10.1.2` or higher
 
 ### Docker
 
@@ -39,6 +39,7 @@ Some libraries could not be updated b/c of peer dependencies or knowing issues.
 
 | library    | current version | wanted version | reason |
 | ---------- | --------------- | -------------- | ------ |
+| zone.js    | 0.10.3          | 0.11.1         |"@angular/core@10.1.2" has incorrect peer dependency "zone.js@~0.10.3" |
 
 ## Getting started
 
