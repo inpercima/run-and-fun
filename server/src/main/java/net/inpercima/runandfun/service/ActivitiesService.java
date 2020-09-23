@@ -134,7 +134,7 @@ public class ActivitiesService {
         final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         if (!Strings.isNullOrEmpty(types)) {
             final BoolQueryBuilder typesQuery = QueryBuilders.boolQuery();
-            for (final String type : Splitter.on(',').split(types.toLowerCase())) {
+            for (final String type : Splitter.on(',').split(types)) {
                 typesQuery.should(QueryBuilders.termQuery(AppActivity.FIELD_TYPE, type));
             }
             queryBuilder.must(typesQuery);
