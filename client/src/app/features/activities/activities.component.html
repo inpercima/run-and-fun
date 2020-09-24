@@ -22,14 +22,14 @@
           <input matInput type="number" placeholder="Maximal distance" (keydown.enter)="list()" formControlName="maxDistance">
         </mat-form-field>
         <mat-form-field fxFlex="10" fxFlexOffset="2">
-          <input matInput placeholder="Start date" formControlName="minDate" [matDatepicker]="datePickerStart" disabled>
+          <input matInput placeholder="Start date" formControlName="minDate" [matDatepicker]="datePickerStart">
           <mat-datepicker-toggle matSuffix [for]="datePickerStart"></mat-datepicker-toggle>
-          <mat-datepicker #datePickerStart disabled="false"></mat-datepicker>
+          <mat-datepicker #datePickerStart disabled="false" [calendarHeaderComponent]="datepickerHeader"></mat-datepicker>
         </mat-form-field>
         <mat-form-field fxFlex="10" fxFlexOffset="2">
-          <input matInput placeholder="End date" formControlName="maxDate" [matDatepicker]="datePickerEnd" disabled>
+          <input matInput placeholder="End date" formControlName="maxDate" [matDatepicker]="datePickerEnd">
           <mat-datepicker-toggle matSuffix [for]="datePickerEnd"></mat-datepicker-toggle>
-          <mat-datepicker #datePickerEnd disabled="false"></mat-datepicker>
+          <mat-datepicker #datePickerEnd disabled="false" [calendarHeaderComponent]="datepickerHeader"></mat-datepicker>
         </mat-form-field>
         <mat-form-field fxFlex="20" fxFlexOffset="2">
           <mat-select placeholder="Year" formControlName="year" (selectionChange)="list()">

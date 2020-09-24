@@ -24,12 +24,18 @@ export class GraphsComponent implements OnInit {
 
   constructor(private activitiesService: ActivitiesService, private formBuilder: FormBuilder) { }
 
-  ngOnInit() {
-    const searchForm = this.formBuilder.group({
-      page: [0],
-      size: [10],
-    });
-    this.activitiesService.list(searchForm).subscribe(response => {
+  ngOnInit(): void {
+    this.count();
+  }
+
+  count(): void {
+    this.activitiesService.totalCount().subscribe(count => this.list(count));
+  }
+
+  list(size: number): void {
+    const minDate = '2020-01-01';
+    const maxDate = '2020-12-31';
+    this.activitiesService.list({ size, minDate, maxDate }).subscribe(response => {
       const labels: Label[] = [];
       const activities = {};
       response.forEach((elem: Activity) => {
@@ -50,5 +56,4 @@ export class GraphsComponent implements OnInit {
       this.chartLabels = labels;
     });
   }
-
 }

@@ -8,6 +8,7 @@ import { ChartsModule } from 'ng2-charts';
 
 import { MaterialModule } from '../shared/material/material.module';
 import { ActivitiesComponent } from './activities/activities.component';
+import { DatepickerHeaderComponent } from '../shared/datepicker-header/datepicker-header.component';
 import { FeaturesRoutingModule } from './features-routing.module';
 import { FriendsComponent } from './friends/friends.component';
 import { GraphsComponent } from './graphs/graphs.component';
@@ -16,6 +17,7 @@ import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
+    DatepickerHeaderComponent,
     ActivitiesComponent,
     FriendsComponent,
     GraphsComponent,

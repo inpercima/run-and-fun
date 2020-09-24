@@ -1,6 +1,27 @@
 <div fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex="80">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>search</mat-icon>
+      </div>
+      <mat-card-title>Filter options</mat-card-title>
+      <mat-card-subtitle>...</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      ...
+    </mat-card-content>
+  </mat-card>
+</div>
+<div fxLayout="row" fxLayoutAlign="center">
   <div fxFlex="80">
     <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>pie_chart</mat-icon>
+        </div>
+        <mat-card-title>Activities by type</mat-card-title>
+        <mat-card-subtitle>...</mat-card-subtitle>
+      </mat-card-header>
       <mat-card-content>
         <canvas *ngIf="chartData; else loading" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions" legend="true" chartType="pie"></canvas>
         <ng-template #loading>

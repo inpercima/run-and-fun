@@ -10,6 +10,7 @@ import { startWith, switchMap, map, catchError } from 'rxjs/operators';
 
 import { ActivitiesService } from './activities.service';
 import { Activity } from './activity.model';
+import { DatepickerHeaderComponent } from '../../shared/datepicker-header/datepicker-header.component';
 
 @Component({
   selector: 'raf-activities',
@@ -36,7 +37,11 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private formBuilder: FormBuilder, private activitiesService: ActivitiesService) { }
+  datepickerHeader;
+
+  constructor(private formBuilder: FormBuilder, private activitiesService: ActivitiesService) {
+    this.datepickerHeader = DatepickerHeaderComponent;
+  }
 
   ngOnInit(): void {
     this.years.push('All years');
@@ -66,24 +71,6 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
   }
 
   list(): void {
-    const params = {};
-    const controls = this.searchForm.controls;
-    for (const control in controls) {
-      if (controls[control].value !== null) {
-        params[control] = controls[control].value;
-      }
-    }
-
-    if (this.searchForm.value.maxDate) {
-      params['minDate'] = this.datePipe.transform(params['minDate'], 'yyyy-MM-dd');
-      params['maxDate'] = this.datePipe.transform(params['maxDate'], 'yyyy-MM-dd');
-    }
-
-    if (this.searchForm.value.allTypes) {
-      const key = 'type';
-      params[key] = [];
-    }
-
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
@@ -94,7 +81,7 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
           if (this.sort.active && this.sort.direction) {
             this.searchForm.value.sort = `${this.sort.active},${this.sort.direction}`;
           }
-          return this.activitiesService.listAndEnrich(params);
+          return this.activitiesService.listAndEnrich(this.prepareParams());
         }),
         map(response => {
           // flag to show that loading has finished
@@ -107,6 +94,28 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
           return of([]);
         })
       ).subscribe(response => this.dataSource = new MatTableDataSource(response));
+  }
+
+  prepareParams(): any {
+    const params = {};
+    const controls = this.searchForm.controls;
+    for (const control in controls) {
+      if (controls[control].value !== null) {
+        params[control] = controls[control].value;
+      }
+    }
+
+    if (this.searchForm.value.minDate && this.searchForm.value.maxDate) {
+      params['minDate'] = this.datePipe.transform(params['minDate'], 'yyyy-MM-dd');
+      params['maxDate'] = this.datePipe.transform(params['maxDate'], 'yyyy-MM-dd');
+    }
+
+    if (this.searchForm.value.allTypes) {
+      const key = 'type';
+      params[key] = [];
+    }
+
+    return params;
   }
 
   remove(activity: Activity): void {
