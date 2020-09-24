@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 
+import { UtilService } from '../../core/util.service';
 import { Activity } from '../activities/activity.model';
 import { ActivitiesService } from '../activities/activities.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'raf-graphs',
@@ -22,20 +23,32 @@ export class GraphsComponent implements OnInit {
     responsive: true,
   };
 
-  constructor(private activitiesService: ActivitiesService, private formBuilder: FormBuilder) { }
+  years = [];
+
+  searchForm: FormGroup;
+
+  constructor(private activitiesService: ActivitiesService, private formBuilder: FormBuilder, private utilService: UtilService) { }
 
   ngOnInit(): void {
-    this.count();
+    this.years = this.utilService.prepareYears();
+
+    this.searchForm = this.formBuilder.group({
+      size: [],
+      minDate: [],
+      maxDate: [],
+      year: [this.years[0]],
+    });
+    this.activitiesService.totalCount().subscribe(size => {
+      this.searchForm.get('size').setValue(size);
+      this.list();
+    });
   }
 
-  count(): void {
-    this.activitiesService.totalCount().subscribe(count => this.list(count));
-  }
-
-  list(size: number): void {
-    const minDate = '2020-01-01';
-    const maxDate = '2020-12-31';
-    this.activitiesService.list({ size, minDate, maxDate }).subscribe(response => {
+  list(): void {
+    const year = this.searchForm.value.year;
+    this.searchForm.get('minDate').setValue(`${year}-01-01`);
+    this.searchForm.get('maxDate').setValue(`${year}-12-31`);
+    this.activitiesService.list(this.searchForm.value).subscribe(response => {
       const labels: Label[] = [];
       const activities = {};
       response.forEach((elem: Activity) => {

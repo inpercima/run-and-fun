@@ -8,9 +8,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { merge, of } from 'rxjs';
 import { startWith, switchMap, map, catchError } from 'rxjs/operators';
 
+import { UtilService } from '../../core/util.service';
+import { DatepickerHeaderComponent } from '../../shared/datepicker-header/datepicker-header.component';
 import { ActivitiesService } from './activities.service';
 import { Activity } from './activity.model';
-import { DatepickerHeaderComponent } from '../../shared/datepicker-header/datepicker-header.component';
 
 @Component({
   selector: 'raf-activities',
@@ -30,7 +31,7 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
 
   types: string[] = ['Running', 'Hiking', 'Cycling', 'Walking'];
 
-  years: string[] = [];
+  years = [];
 
   datePipe = new DatePipe('en-US');
 
@@ -39,16 +40,12 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
 
   datepickerHeader;
 
-  constructor(private formBuilder: FormBuilder, private activitiesService: ActivitiesService) {
+  constructor(private formBuilder: FormBuilder, private activitiesService: ActivitiesService, private utilService: UtilService) {
     this.datepickerHeader = DatepickerHeaderComponent;
   }
 
   ngOnInit(): void {
-    this.years.push('All years');
-    const currentYear = new Date().getFullYear();
-    for (let year = currentYear; year >= 2010; year--) {
-      this.years.push(year.toString());
-    }
+    this.years = this.utilService.prepareYears();
 
     this.searchForm = this.formBuilder.group({
       page: [0],

@@ -25,6 +25,10 @@ export class ActivitiesService {
     return this.http.get<number>(environment.api + 'activities/count').pipe(map(response => response));
   }
 
+  last(): Observable<Activity> {
+    return this.http.get<Activity>(environment.api + 'activities/last').pipe(map(response => response));
+  }
+
   listAndEnrich(params: any): Observable<Activity[]> {
     return this.list(params).pipe(map(response => {
       response.forEach((activity: Activity) => {
@@ -46,10 +50,6 @@ export class ActivitiesService {
       });
       return activities;
     }));
-  }
-
-  last(): Observable<Activity> {
-    return this.http.get<Activity>(environment.api + 'activities/last').pipe(map(response => response));
   }
 
   /**
