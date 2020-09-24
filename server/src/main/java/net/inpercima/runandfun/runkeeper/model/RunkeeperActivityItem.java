@@ -1,9 +1,7 @@
 package net.inpercima.runandfun.runkeeper.model;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -46,9 +44,8 @@ public class RunkeeperActivityItem {
         return getUri() != null ? StringUtils.substringAfter(getUri(), SEPARATOR_ID) : null;
     }
 
-    public Date getDate() {
-        LocalDateTime localDateTime = getStartTime() != null ? parseRfc1123DateTime(getStartTime() + GMT_POSTFIX) : null;
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    public LocalDateTime getDate() {
+        return getStartTime() != null ? parseRfc1123DateTime(getStartTime() + GMT_POSTFIX) : null;
     }
 
     public static LocalDateTime parseRfc1123DateTime(final String date) {

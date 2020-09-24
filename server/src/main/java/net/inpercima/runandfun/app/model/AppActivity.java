@@ -1,6 +1,6 @@
 package net.inpercima.runandfun.app.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -32,7 +32,7 @@ public class AppActivity {
     private final String type;
 
     @Field(type = FieldType.Date, format = DateFormat.basic_date_time_no_millis)
-    private final Date date;
+    private final LocalDateTime date;
 
     @Field(type = FieldType.Float)
     private final double distance;
@@ -40,7 +40,7 @@ public class AppActivity {
     @Field(type = FieldType.Float)
     private final double duration;
 
-    public AppActivity(final String id, final String username, final String type, final Date date,
+    public AppActivity(final String id, final String username, final String type, final LocalDateTime date,
             final double distance, final double duration) {
         this.id = id;
         this.username = username;

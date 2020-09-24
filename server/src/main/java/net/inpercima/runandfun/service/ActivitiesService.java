@@ -5,7 +5,7 @@ import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACT
 import static net.inpercima.runandfun.runkeeper.constants.RunkeeperConstants.ACTIVITIES_URL_SPECIFIED_PAGE_SIZE_NO_EARLIER_THAN;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -96,8 +96,7 @@ public class ActivitiesService {
 
     private LocalDate calculateFetchDate() {
         final AppActivity activity = getLastActivity();
-        return activity == null ? INITIAL_RELEASE_OF_RUNKEEPER
-                : activity.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return activity == null ? INITIAL_RELEASE_OF_RUNKEEPER : activity.getDate().toLocalDate();
     }
 
     private void addActivity(final RunkeeperActivityItem item, final String username,
@@ -164,11 +163,14 @@ public class ActivitiesService {
     private static void addDateQuery(final BoolQueryBuilder queryBuilder, final LocalDate minDate,
             final LocalDate maxDate) {
         final RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery(AppActivity.FIELD_DATE);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
         if (minDate != null) {
-            rangeQuery.gte(minDate);
+            LocalDateTime minDateTime = minDate.atStartOfDay();
+            rangeQuery.gte(minDateTime.format(formatter));
         }
         if (maxDate != null) {
-            rangeQuery.lte(maxDate);
+            LocalDateTime maxDateTime = maxDate.atStartOfDay();
+            rangeQuery.lte(maxDateTime.format(formatter));
         }
         queryBuilder.must(rangeQuery);
     }
