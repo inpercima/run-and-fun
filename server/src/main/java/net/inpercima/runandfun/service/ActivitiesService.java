@@ -117,6 +117,15 @@ public class ActivitiesService {
     }
 
     /**
+     * Count activities from app repository.
+     *
+     * @return count
+     */
+    public Long countActivities() {
+        return repository.count();
+    }
+
+    /**
      * List activites from app repository.
      *
      * @param pageable

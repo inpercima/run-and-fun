@@ -56,4 +56,9 @@ public class ActivitiesController {
     public AppActivity getLastActivity() {
         return activitiesService.getLastActivity();
     }
+
+    @GetMapping(value = "/activities/count")
+    public Long countActivities() {
+        return activitiesService.countActivities();
+    }
 }

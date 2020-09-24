@@ -21,6 +21,10 @@ export class ActivitiesService {
     return this.http.get<string>(environment.api + 'activities/index').pipe(map(response => response));
   }
 
+  totalCount(): Observable<number> {
+    return this.http.get<number>(environment.api + 'activities/count').pipe(map(response => response));
+  }
+
   listAndEnrich(params: any): Observable<Activity[]> {
     return this.list(params).pipe(map(response => {
       response.forEach((activity: Activity) => {
