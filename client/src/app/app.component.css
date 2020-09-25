@@ -18,8 +18,18 @@ body {
   padding: 16px 16px 0 16px;
 }
 
+.mat-card-avatar {
+  height: 38px !important;
+  margin-top: -2px;
+}
+
+.mat-card-avatar.header-image {
+  height: 30px !important;
+  width: 30px !important;
+}
+
 .mat-card-avatar .mat-icon {
-  font-size: 45px;
+  font-size: 30px;
 }
 
 .mat-card-content {

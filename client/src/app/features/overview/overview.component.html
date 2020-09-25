@@ -5,10 +5,10 @@
         <mat-icon>{{ activityType() }}</mat-icon>
       </div>
       <mat-card-title>Your last activity</mat-card-title>
-      <mat-card-subtitle>{{ activity.date | date: 'full' }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      Duration: {{ activity.duration }}
+      Duration: {{ activity.duration }}<br>
+      {{ activity.date | date: 'full' }}
     </mat-card-content>
   </mat-card>
 </div>
@@ -20,7 +20,6 @@
           <mat-icon>functions</mat-icon>
         </div>
         <mat-card-title>Total activities</mat-card-title>
-        <mat-card-subtitle>...</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         ...
@@ -32,7 +31,6 @@
           <mat-icon>help</mat-icon>
         </div>
         <mat-card-title>Title</mat-card-title>
-        <mat-card-subtitle>subtitle</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         content
@@ -44,7 +42,6 @@
           <mat-icon>help</mat-icon>
         </div>
         <mat-card-title>Title</mat-card-title>
-        <mat-card-subtitle>subtitle</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         content

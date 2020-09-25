@@ -2,8 +2,7 @@
   <mat-card fxFlex="60" *ngIf="profileForm">
     <mat-card-header>
       <div mat-card-avatar class="header-image" [style.background-image]="headerImage()"></div>
-      <mat-card-title>{{ profileForm.get('name').value }}</mat-card-title>
-      <mat-card-subtitle>{{ profileForm.get('username').value }}</mat-card-subtitle>
+      <mat-card-title>{{ profileForm.value.name }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="profileForm" novalidate>
