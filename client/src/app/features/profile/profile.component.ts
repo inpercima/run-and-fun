@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 import { ProfileService } from './profile.service';
 
@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  headerImage() {
+  headerImage(): SafeStyle {
     // DomSanitizer bypassSecurityTrustStyle must used to get picture from different url
     return this.domSanitizer.bypassSecurityTrustStyle(`url('${this.profileImage}')`);
   }

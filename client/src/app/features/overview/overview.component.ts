@@ -18,7 +18,7 @@ export class OverviewComponent implements OnInit {
     this.activitiesService.last().subscribe(response => this.activity = response);
   }
 
-  activityType() {
+  activityType(): string {
     switch (this.activity.type) {
       case 'Running': return 'directions_run';
       case 'Walking': case 'Hiking': return 'directions_walk';

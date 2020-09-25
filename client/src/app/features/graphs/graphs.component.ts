@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 import { ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 
 import { UtilService } from '../../core/util.service';
-import { Activity } from '../activities/activity.model';
 import { ActivitiesService } from '../activities/activities.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'raf-graphs',
@@ -16,53 +15,43 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class GraphsComponent implements OnInit {
 
   chartData: ChartDataSets[];
-
   chartLabels: Label[];
-
   chartOptions = {
     responsive: true,
   };
 
-  years = [];
+  years: string[] = [];
 
-  searchForm: FormGroup;
+  filterForm: FormGroup;
 
-  constructor(private activitiesService: ActivitiesService, private formBuilder: FormBuilder, private utilService: UtilService) { }
+  constructor(private activitiesService: ActivitiesService, private utilService: UtilService) { }
 
   ngOnInit(): void {
+    this.filterForm = this.utilService.defaultOptions(0);
     this.years = this.utilService.prepareYears();
-
-    this.searchForm = this.formBuilder.group({
-      size: [],
-      minDate: [],
-      maxDate: [],
-      year: [this.years[0]],
-    });
     this.activitiesService.totalCount().subscribe(size => {
-      this.searchForm.get('size').setValue(size);
+      this.filterForm = this.utilService.defaultOptions(size);
       this.list();
     });
   }
 
   list(): void {
-    const year = this.searchForm.value.year;
-    this.searchForm.get('minDate').setValue(`${year}-01-01`);
-    this.searchForm.get('maxDate').setValue(`${year}-12-31`);
-    this.activitiesService.list(this.searchForm.value).subscribe(response => {
-      const labels: Label[] = [];
+    this.activitiesService.list(this.utilService.prepareParams(this.filterForm)).subscribe(response => {
       const activities = {};
-      response.forEach((elem: Activity) => {
-        if (activities.hasOwnProperty(elem.type)) {
-          activities[elem.type] = activities[elem.type] + 1;
+      response.map(activity => {
+        if (activities.hasOwnProperty(activity.type)) {
+          activities[activity.type] = activities[activity.type] + 1;
         } else {
-          activities[elem.type] = 1;
+          activities[activity.type] = 1;
         }
       });
+
       const data: number[] = [];
-      for (const key in activities) {
-        if (activities.hasOwnProperty(key)) {
-          data.push(activities[key]);
-          labels.push(key);
+      const labels: Label[] = [];
+      for (const activityType in activities) {
+        if (activities.hasOwnProperty(activityType)) {
+          data.push(activities[activityType]);
+          labels.push(activityType);
         }
       }
       this.chartData = [{ data, label: 'Activities by Type' }];

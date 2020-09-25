@@ -12,7 +12,7 @@ export class FriendsComponent implements OnInit {
 
   constructor(private friendsService: FriendsService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.friendsService.list().subscribe(friends => this.friends = friends);
   }
 }

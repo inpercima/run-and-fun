@@ -45,8 +45,8 @@ export class ActivitiesService {
     const activities: Activity[] = [];
     return this.http.get<any>(environment.api + 'activities', { params }).pipe(map(response => {
       this.count = response.totalHits;
-      response.searchHits.forEach((element: any) => {
-        activities.push(element.content);
+      response.searchHits.map((activity: { content: Activity; }) => {
+        activities.push(activity.content);
       });
       return activities;
     }));

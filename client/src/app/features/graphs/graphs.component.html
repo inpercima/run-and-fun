@@ -7,7 +7,7 @@
       <mat-card-title>Filter options</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="searchForm" novalidate>
+      <form [formGroup]="filterForm" novalidate>
         <mat-form-field fxFlex="20">
           <mat-select placeholder="Year" formControlName="year" (selectionChange)="list()">
             <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
@@ -24,7 +24,7 @@
         <div mat-card-avatar>
           <mat-icon>pie_chart</mat-icon>
         </div>
-        <mat-card-title>Activities by type</mat-card-title>
+        <mat-card-title>Activities by type in {{ filterForm.value.year }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <canvas *ngIf="chartData; else loading" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions" legend="true" chartType="pie"></canvas>
