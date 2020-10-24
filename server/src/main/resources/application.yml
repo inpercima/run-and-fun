@@ -1,0 +1,24 @@
+#
+# APPLICATION CONFIG
+#
+
+app:
+  # this value is the OAuth 2.0 client ID for your application
+  clientId:
+  # this value is the OAuth 2.0 shared secret for your application
+  clientSecret:
+  # redirectUri must end with /verify
+  redirectUri: http://localhost:8080/verify
+
+# enable gz compression
+server:
+  compression:
+    enabled: true
+
+spring:
+  # support ElasticsearchRestHealthIndicator: https://stackoverflow.com/a/56113258
+  elasticsearch:
+    rest:
+      uris: localhost:9200
+  profiles:
+    active: dev

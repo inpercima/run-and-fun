@@ -1,0 +1,51 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex="60" *ngIf="activity">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>{{ activityType() }}</mat-icon>
+      </div>
+      <mat-card-title>Your last activity</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      Duration: {{ activity.duration }}<br>
+      Date: {{ activity.date | date: 'full' }}
+    </mat-card-content>
+  </mat-card>
+</div>
+<div fxLayout="row" fxLayoutAlign="center">
+  <div fxFlex="60">
+    <mat-card fxFlex>
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>functions</mat-icon>
+        </div>
+        <mat-card-title>Total activities</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        ...
+      </mat-card-content>
+    </mat-card>
+    <mat-card fxFlex fxFlexOffset="2">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>help</mat-icon>
+        </div>
+        <mat-card-title>Title</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        content
+      </mat-card-content>
+    </mat-card>
+    <mat-card fxFlex fxFlexOffset="2">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>help</mat-icon>
+        </div>
+        <mat-card-title>Title</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        content
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
