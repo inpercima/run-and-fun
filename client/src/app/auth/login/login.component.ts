@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   isAuthenticated$: Observable<boolean>;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subscription = interval(500).subscribe(() => {
       const redirectUrl = this.authService.redirectUrl;
       this.state = redirectUrl ? `&state=${redirectUrl.substr(1)}` : '';
@@ -30,11 +30,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isAuthenticated$ = this.authService.isAuthenticated;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
   }
 }

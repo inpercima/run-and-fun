@@ -1,6 +1,10 @@
 <div fxLayout="row" fxLayoutAlign="center">
   <div fxFlex="60">
-    <mat-card *ngIf="!(isAuthenticated$ | async) && appState">
+    <!--
+      !(isAuthenticated$ | async)
+      template-no-negated-async  Async pipes should not be negated. Use (observable | async) === (false | null | undefined) to check its value instead
+    -->
+    <mat-card *ngIf="(isAuthenticated$ | async) === false && appState">
       <mat-card-header>
         <div mat-card-avatar>
           <mat-icon>directions_run</mat-icon>

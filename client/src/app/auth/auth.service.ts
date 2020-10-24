@@ -21,7 +21,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private storageService: StorageService) { }
 
-  get isAuthenticated() {
+  get isAuthenticated(): Observable<boolean> {
     return this.authenticated.asObservable();
   }
 
@@ -34,7 +34,7 @@ export class AuthService {
    * @param code verify code from runkeeper
    * @param error a error message if login on runkeeper fails
    */
-  verify(code: string, error: string) {
+  verify(code: string, error: string): Observable<any> {
     return this.http.get<any>(environment.api + 'verify', {
       params: { code, error },
       // to get x-headers

@@ -7,7 +7,7 @@ export class StorageService {
 
   constructor() { }
 
-  save(accessToken: string) {
+  save(accessToken: string): void {
     localStorage.setItem('accessToken', accessToken);
   }
 

@@ -45,21 +45,21 @@ export class AppComponent implements OnInit {
     this.overlayContainer.getContainerElement().classList.add(`${environment.theme}-theme`);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.authService.verifyAuthentication().subscribe();
     this.isAuthenticated$ = this.authService.isAuthenticated;
     this.appState$ = this.authService.state();
   }
 
-  profile() {
+  profile(): void {
     this.router.navigate(['profile']);
   }
 
-  indexActivities() {
+  indexActivities(): void {
     this.indexDialogService.openDialog();
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
   }
 }

@@ -13,7 +13,7 @@ export class DatepickerHeaderComponent<D> implements OnDestroy {
   private destroyed = new Subject<void>();
 
   constructor(private calendar: MatCalendar<D>, private dateAdapter: DateAdapter<D>,
-              @Inject(MAT_DATE_FORMATS) private _dateFormats: MatDateFormats, cdr: ChangeDetectorRef) {
+              @Inject(MAT_DATE_FORMATS) private dateFormats: MatDateFormats, cdr: ChangeDetectorRef) {
     calendar.stateChanges.pipe(takeUntil(this.destroyed)).subscribe(() => cdr.markForCheck());
   }
 
@@ -24,7 +24,7 @@ export class DatepickerHeaderComponent<D> implements OnDestroy {
 
   get periodLabel(): string {
     return this.dateAdapter
-      .format(this.calendar.activeDate, this._dateFormats.display.monthYearLabel)
+      .format(this.calendar.activeDate, this.dateFormats.display.monthYearLabel)
       .toLocaleUpperCase();
   }
 
