@@ -14,7 +14,7 @@ export class VerifyComponent implements OnInit {
   ngOnInit(): void {
     const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
     const error = queryParamMap.get('error');
-    this.authService.verify(queryParamMap.get('code'), error ? error : '').subscribe(() => {
+    this.authService.verify(queryParamMap.get('code') ?? '', error ? error : '').subscribe(() => {
       const redirectUri = queryParamMap.get('state');
       this.router.navigate([redirectUri ? redirectUri : 'overview']);
     }, () => this.router.navigate(['login']));

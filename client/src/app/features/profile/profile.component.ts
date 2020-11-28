@@ -11,9 +11,9 @@ import { ProfileService } from './profile.service';
 })
 export class ProfileComponent implements OnInit {
 
-  profileForm: FormGroup;
+  profileForm!: FormGroup;
 
-  profileImage: string;
+  profileImage!: string;
 
   constructor(private formBuilder: FormBuilder, private domSanitizer: DomSanitizer, private profileService: ProfileService) { }
 

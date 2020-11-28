@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   // store the URL so we can redirect after logging in
-  redirectUrl: string;
+  redirectUrl!: string;
 
   // used for app.component
   private authenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -40,7 +40,7 @@ export class AuthService {
       // to get x-headers
       observe: 'response',
     }).pipe(map(response => {
-      const accessToken = response.headers.get('x-accessToken');
+      const accessToken = response.headers.get('x-accessToken') ?? '';
       this.storageService.save(accessToken);
     }));
   }

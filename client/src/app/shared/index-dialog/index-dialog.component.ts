@@ -9,9 +9,9 @@ import { ActivitiesService } from 'src/app/features/activities/activities.servic
 })
 export class IndexDialogComponent implements OnInit {
 
-  activities: string;
+  activities!: string;
 
-  loading: boolean;
+  loading = false;
 
   constructor(private activitiesService: ActivitiesService) { }
 

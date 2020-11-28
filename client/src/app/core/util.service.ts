@@ -26,14 +26,7 @@ export class UtilService {
   }
 
   prepareParams(form: FormGroup): any {
-    const params = {};
-    const controls = form.controls;
-    for (const control in controls) {
-      if (controls[control].value !== null) {
-        params[control] = controls[control].value;
-      }
-    }
-
+    const params = form.value.filter((element: any) => element.value !== null);
     const year = form.value.year;
     if (form.value.minDate) {
       params[this.MIN_DATE] = `${year}-${this.datePipe.transform(params[this.MIN_DATE], 'MM-dd')}`;

@@ -13,13 +13,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService) { }
 
-  appState: AppState;
+  appState!: AppState;
 
-  state: string;
+  state!: string;
 
-  subscription: Subscription;
+  subscription!: Subscription;
 
-  isAuthenticated$: Observable<boolean>;
+  isAuthenticated$!: Observable<boolean>;
 
   ngOnInit(): void {
     this.subscription = interval(500).subscribe(() => {

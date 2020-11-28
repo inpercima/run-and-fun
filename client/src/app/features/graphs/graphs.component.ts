@@ -14,20 +14,19 @@ import { ActivitiesService } from '../activities/activities.service';
 })
 export class GraphsComponent implements OnInit {
 
-  chartData: ChartDataSets[];
-  chartLabels: Label[];
+  chartData!: ChartDataSets[];
+  chartLabels!: Label[];
   chartOptions = {
     responsive: true,
   };
 
   years: string[] = [];
 
-  filterForm: FormGroup;
+  filterForm = this.utilService.defaultOptions(0);
 
   constructor(private activitiesService: ActivitiesService, private utilService: UtilService) { }
 
   ngOnInit(): void {
-    this.filterForm = this.utilService.defaultOptions(0);
     this.years = this.utilService.prepareYears();
     this.activitiesService.totalCount().subscribe(size => {
       this.filterForm = this.utilService.defaultOptions(size);
@@ -37,7 +36,7 @@ export class GraphsComponent implements OnInit {
 
   list(): void {
     this.activitiesService.list(this.utilService.prepareParams(this.filterForm)).subscribe(response => {
-      const activities = {};
+      const activities: { [k: string]: any } = {};
       response.map(activity => {
         if (activities.hasOwnProperty(activity.type)) {
           activities[activity.type] = activities[activity.type] + 1;

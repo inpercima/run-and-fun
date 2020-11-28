@@ -23,9 +23,9 @@ export class AppComponent implements OnInit {
 
   appname: string;
 
-  appState$: Observable<AppState>;
+  appState$!: Observable<AppState>;
 
-  isAuthenticated$: Observable<boolean>;
+  isAuthenticated$!: Observable<boolean>;
 
   /**
    * Adds the custom theme to the app root.
