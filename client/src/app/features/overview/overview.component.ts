@@ -10,7 +10,7 @@ import { Activity } from '../activities/activity.model';
 })
 export class OverviewComponent implements OnInit {
 
-  activity: Activity;
+  activity!: Activity;
 
   constructor(private activitiesService: ActivitiesService) { }
 

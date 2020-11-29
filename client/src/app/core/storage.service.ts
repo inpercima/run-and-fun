@@ -12,7 +12,7 @@ export class StorageService {
   }
 
   read(): string {
-    return localStorage.getItem('accessToken');
+    return localStorage.getItem('accessToken') ?? '';
   }
 
   remove(): void {

@@ -13,7 +13,7 @@ import { Activity } from './activity.model';
 })
 export class ActivitiesService {
 
-  count: number;
+  count = 0;
 
   constructor(private http: HttpClient) { }
 

@@ -20,19 +20,19 @@ import { Activity } from './activity.model';
 export class ActivitiesComponent implements AfterViewInit, OnInit {
 
   displayedColumns: string[] = ['functions', 'date', 'type', 'distance', 'duration', 'timePerKm', 'timePer5Km', 'timePer10Km'];
-  dataSource = new MatTableDataSource();
+  dataSource = new MatTableDataSource<Activity>();
   pageSizeOptions: number[] = [5, 10, 25, 50];
-  length: number;
+  length!: number;
   isLoading = true;
 
-  filterForm: FormGroup;
+  filterForm = this.utilService.defaultOptions(5);
 
   types: string[] = ['Running', 'Hiking', 'Cycling', 'Walking'];
 
   years: string[] = [];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   datepickerHeader: typeof DatepickerHeaderComponent;
 
@@ -42,7 +42,6 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.years = this.utilService.prepareYears();
-    this.filterForm = this.utilService.defaultOptions(5);
     this.filterForm = this.formBuilder.group({
       ...this.filterForm.controls,
       page: [0],
@@ -62,10 +61,10 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
         startWith({}),
         switchMap(() => {
           this.isLoading = true;
-          this.filterForm.get('page').setValue(this.paginator.pageIndex);
-          this.filterForm.get('size').setValue(this.paginator.pageSize);
+          this.filterForm.get('page')?.setValue(this.paginator.pageIndex);
+          this.filterForm.get('size')?.setValue(this.paginator.pageSize);
           if (this.sort.active && this.sort.direction) {
-            this.filterForm.get('sort').setValue(`${this.sort.active},${this.sort.direction}`);
+            this.filterForm.get('sort')?.setValue(`${this.sort.active},${this.sort.direction}`);
           }
           return this.activitiesService.listAndEnrich(this.utilService.prepareParams(this.filterForm));
         }),
