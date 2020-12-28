@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class RunkeeperActivitiesTest {
 
@@ -18,7 +18,7 @@ public class RunkeeperActivitiesTest {
 
     private RunkeeperActivities activities;
 
-    @Before
+    @BeforeEach
     public void setup() {
         activities = createActivities();
     }

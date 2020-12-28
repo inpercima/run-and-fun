@@ -6,12 +6,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 import javax.inject.Inject;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import net.inpercima.restapi.service.RestApiService;
 import net.inpercima.runandfun.runkeeper.model.RunkeeperToken;
@@ -21,7 +19,6 @@ import net.inpercima.runandfun.runkeeper.model.RunkeeperToken;
  * @author Sebastian Peters
  * @since 26.01.2015
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class AuthServiceTest {
 
