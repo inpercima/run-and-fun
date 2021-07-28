@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { NotFoundComponent } from './not-found.component';
 import { environment } from '../../environments/environment';
@@ -13,8 +13,12 @@ const routes: Routes = [environment.redirectNotFound ? {
 }];
 
 @NgModule({
-  imports: [ RouterModule.forChild(routes) ],
-  exports: [ RouterModule ]
+  imports: [
+    RouterModule.forChild(routes),
+  ],
+  exports: [
+    RouterModule,
+  ],
 })
 export class NotFoundRoutingModule {
 

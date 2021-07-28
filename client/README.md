@@ -1,7 +1,7 @@
 # run and fun - client
 
-[![dependencies Status](https://david-dm.org/inpercima/run-and-fun/status.svg?path=client)](https://david-dm.org/inpercima/run-and-fun?path=client)
-[![devDependencies Status](https://david-dm.org/inpercima/run-and-fun/dev-status.svg?path=client)](https://david-dm.org/inpercima/run-and-fun?path=client&type=dev)
+[![dependencies Status](https://status.david-dm.org/gh/inpercima/run-and-fun.svg?path=client)](https://david-dm.org/inpercima/run-and-fun?path=client)
+[![devDependencies Status](https://status.david-dm.org/gh/inpercima/run-and-fun.svg?path=client&type=dev)](https://david-dm.org/inpercima/run-and-fun?path=client&type=dev)
 
 ## Getting started
 
@@ -73,7 +73,6 @@ Change for prodMode the option `production` to `true`.
 * [appname](#appname)
 * [defaultRoute](#defaultRoute)
 * [production](#production)
-* [redirectNotFound](#redirectNotFound)
 * [theme](#theme)
 
 ### `api`
@@ -102,14 +101,6 @@ The default route and the route to be redirected after a login if no route is st
 Defines whether the app is in production or not.
 
 * default: `false`
-* type: `boolean`
-* values: `true`/`false`
-
-### `redirectNotFound`
-
-Defines whether the 404 route will redirect to the default route or not.
-
-* default: `true`
 * type: `boolean`
 * values: `true`/`false`
 
