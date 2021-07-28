@@ -38,6 +38,8 @@ import { MaterialModule } from './shared/material/material.module';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [
+    AppComponent,
+  ],
 })
 export class AppModule { }

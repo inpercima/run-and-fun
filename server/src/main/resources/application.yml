@@ -10,6 +10,10 @@ app:
   # redirectUri must end with /verify
   redirectUri: http://localhost:8080/verify
 
+logging:
+  file:
+     name: logs/application.log
+
 # enable gz compression
 server:
   compression:

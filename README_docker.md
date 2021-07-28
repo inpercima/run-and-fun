@@ -4,7 +4,7 @@
 
 Normally the docker version is used to build and run the productive version, so it is prepared as productive.
 
-Create environment file for `docker` and `docker-compose`.
+Create environment file for `docker` and `docker-compose` and check the [configuration](#configuration).
 
 ```bash
 cp default.env .env

@@ -4,6 +4,18 @@
     "ghUser": "inpercima",
     "installDependencies": true,
     "language": "en",
+    "modules": {
+      "enabled": true,
+      "features": {
+        "defaultRoute": "overview",
+        "name": "features"
+      },
+      "notFound": {
+        "enabled": true,
+        "name": "not-found"
+      },
+      "routing": true
+    },
     "packageJson": {
       "contributors": [{
         "name": "Marcel Jänicke",
@@ -16,25 +28,6 @@
       "repository": "https://github.com/inpercima/run-and-fun"
     },
     "prefix": "raf",
-    "routing": {
-      "enabled": true,
-      "features": {
-        "default": "overview",
-        "name": "features",
-        "show": true
-      },
-      "login": {
-        "activate": true,
-        "enabled": true,
-        "name": "login",
-        "show": false
-      },
-      "notFound": {
-        "enabled": true,
-        "name": "not-found",
-        "redirect": true
-      }
-    },
     "theme": "indigo-pink",
     "useGoogleFonts": true,
     "useYarn": true
@@ -42,17 +35,23 @@
   "general": {
     "author": "Marcel Jänicke",
     "description": "Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).",
+    "modRewriteIndex": false,
     "name": "run-and-fun",
     "title": "run and fun",
     "useDocker": true,
     "useMITLicense": true,
-    "useMock": false
+    "useMock": false,
+    "useSecurity": false
   },
   "server": {
     "backend": "java",
-    "htaccess": false,
-    "management": "maven",
-    "packagePath": "net.inpercima.runandfun",
-    "serverAsApi": false
+    "javaKt": {
+      "management": "maven",
+      "packagePath": "net.inpercima.runandfun"
+    },
+    "php": {
+      "modRewritePhpExtension": false,
+      "serverAsApi": false
+    }
   }
 }
