@@ -1,5 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, TemplateRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Routes, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
@@ -37,8 +38,9 @@ export class AppComponent implements OnInit {
    */
   @HostBinding('class') class = `${environment.theme}-theme`;
 
-  public constructor(private router: Router, private titleService: Title, public overlayContainer: OverlayContainer,
-                     private indexDialogService: IndexDialogService, private authService: AuthService) {
+  public constructor(private router: Router, private dialog: MatDialog, private titleService: Title,
+                     public overlayContainer: OverlayContainer, private indexDialogService: IndexDialogService,
+                     private authService: AuthService) {
     this.appname = environment.appname;
     this.routes = AppRoutingModule.ROUTES.concat(FeaturesRoutingModule.ROUTES);
     this.titleService.setTitle(this.appname);
@@ -61,5 +63,11 @@ export class AppComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  openDialog(ref: TemplateRef<any>): void {
+    this.dialog.open(ref, {
+      maxWidth: "800px",
+    });
   }
 }

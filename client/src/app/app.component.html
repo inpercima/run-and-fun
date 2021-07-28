@@ -1,5 +1,6 @@
-<mat-toolbar fxFlexLayout="row" fxLayoutAlign="space-between center" color="primary" class="mat-elevation-z4">
-  <span>{{ appname }}</span>
+<mat-toolbar fxLayoutAlign="space-between center" color="primary" class="mat-elevation-z4">
+  {{ appname }}
+  <button *ngIf="!(isAuthenticated$ | async)" mat-button (click)="openDialog(dialog)">APP INFO</button>
   <span *ngIf="isAuthenticated$ | async">
     <span *ngIf="appState$ | async as appState">
       Hey {{ appState.fullName }} ({{ appState.username }})
@@ -15,6 +16,10 @@
       <button mat-menu-item (click)="indexActivities()">
         <mat-icon>sync</mat-icon>
         <span>Index activities...</span>
+      </button>
+      <button mat-menu-item routerLink="" (click)="openDialog(dialog)">
+        <mat-icon>info</mat-icon>
+        <span>App info...</span>
       </button>
       <button mat-menu-item routerLink="" (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
@@ -32,4 +37,19 @@
     {{ routeLink.path }}
   </a>
 </nav>
+<ng-template #dialog>
+  <mat-dialog-content>
+    <p>
+      This app provide searching, statistics and visualization for activities from <a href="runkeeper.com">runkeeper.com</a>.
+    </p>
+    <p>
+      To run this app on your own server you need an api-key from runkeeper.
+      <br>
+      After this friends or everybody can login in this app to get statistics.
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close cdkFocusInitial>Close</button>
+  </mat-dialog-actions>
+</ng-template>
 <router-outlet></router-outlet>
