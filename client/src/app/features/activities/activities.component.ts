@@ -15,7 +15,6 @@ import { Activity } from './activity.model';
 @Component({
   selector: 'raf-activities',
   templateUrl: './activities.component.html',
-  styleUrls: ['./activities.component.css']
 })
 export class ActivitiesComponent implements AfterViewInit, OnInit {
 
