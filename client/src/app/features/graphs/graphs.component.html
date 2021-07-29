@@ -27,7 +27,15 @@
         <mat-card-title>Activities by type in {{ filterForm.value.year }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <canvas *ngIf="chartData; else loading" baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions" [legend]="true" chartType="pie"></canvas>
+        <canvas
+          *ngIf="chartData; else loading"
+          baseChart
+          [datasets]="chartData"
+          [labels]="chartLabels"
+          [options]="chartOptions"
+          [legend]="true"
+          chartType="pie"
+        ></canvas>
         <ng-template #loading>
           Loading...
         </ng-template>
