@@ -40,7 +40,7 @@ Some libraries could not be updated b/c of peer dependencies or knowing issues.
 | library    | current version | last version | reason |
 | ---------- | --------------- | ------------ | ------ |
 | rxjs       | 6.6.0           | 7.2.0        | "@angular/common@12.1.3" has incorrect peer dependency "rxjs@^6.5.3" |
-| chart.js   | 2.9.3           | 3.5.0        | "ng2-charts@2.4.3" has incorrect peer dependency "chart.js@^2.9.3" |
+| chart.js   | 2.9.4           | 3.5.0        | "ng2-charts@2.4.3" has incorrect peer dependency "chart.js@^2.9.4" |
 
 ## Getting started
 
