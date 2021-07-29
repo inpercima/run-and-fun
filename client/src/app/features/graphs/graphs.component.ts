@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 
 import { ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
@@ -10,7 +9,6 @@ import { ActivitiesService } from '../activities/activities.service';
 @Component({
   selector: 'raf-graphs',
   templateUrl: './graphs.component.html',
-  styleUrls: ['./graphs.component.css']
 })
 export class GraphsComponent implements OnInit {
 
