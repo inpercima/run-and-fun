@@ -26,22 +26,34 @@ export class UtilService {
   }
 
   prepareParams(form: FormGroup): any {
-    const year = form.value.year;
-    if (form.value.minDate) {
-      form.get(this.MIN_DATE)?.setValue(`${year}-${this.datePipe.transform(form.value.minDate, 'MM-dd')}`);
-    } else {
-      form.get(this.MIN_DATE)?.setValue(`${year}-01-01`);
-    }
-    if (form.value.maxDate) {
-      form.get(this.MAX_DATE)?.setValue(`${year}-${this.datePipe.transform(form.value.minDate, 'MM-dd')}`);
-    } else {
-      form.get(this.MAX_DATE)?.setValue(`${year}-12-31`);
+    const params: { [k: string]: any } = {};
+    Object.keys(form.controls).forEach(key => {
+      const value = form.get(key)?.value;
+      if (key && value) {
+        // do not add year if all years
+        if (key !== 'year' || (key === 'year' && value !== this.ALL_YEARS)) {
+          params[key] = value;
+        }
+      }
+    });
+
+    if (params.year) {
+      if (params.minDate) {
+        params.minDate = `${params.year}-${this.datePipe.transform(params.minDate, 'MM-dd')}`;
+      } else {
+        params.minDate = `${params.year}-01-01`;
+      }
+      if (params.maxDate) {
+        params.maxDate = `${params.year}-${this.datePipe.transform(params.minDate, 'MM-dd')}`;
+      } else {
+        params.maxDate = `${params.year}-12-31`;
+      }
     }
 
-    if (form.value.allTypes) {
-      form.get(this.TYPE)?.setValue([]);
+    if (params.allTypes) {
+      params.allTypes = [];
     }
-    return form;
+    return params;
   }
 
   defaultOptions(size: number): FormGroup {

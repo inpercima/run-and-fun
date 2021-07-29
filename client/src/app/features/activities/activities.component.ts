@@ -44,7 +44,7 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
     this.filterForm = this.formBuilder.group({
       ...this.filterForm.controls,
       page: [0],
-      type: [this.types],
+      type: [{ value: this.types, disabled: this.filterForm.value.allTypes }],
     });
   }
 
@@ -84,5 +84,10 @@ export class ActivitiesComponent implements AfterViewInit, OnInit {
     const index = this.dataSource.data.indexOf(activity);
     this.dataSource.data.splice(index, 1);
     this.dataSource._updateChangeSubscription();
+  }
+
+  checkTypes(): void {
+    const form = this.filterForm;
+    form.value.allTypes ? form.get('type')?.disable() : form.get('type')?.enable();
   }
 }

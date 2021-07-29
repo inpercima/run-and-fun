@@ -8,9 +8,9 @@
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="filterForm" novalidate>
-        <mat-checkbox fxFlex="10" formControlName="allTypes" (change)="list()">All Types</mat-checkbox>
+        <mat-checkbox fxFlex="10" formControlName="allTypes" (change)="list(); checkTypes();">All Types</mat-checkbox>
         <mat-form-field fxFlex="20">
-          <mat-select placeholder="Types" formControlName="type" [disabled]="this.filterForm.value.allTypes" (selectionChange)="list()" multiple>
+          <mat-select placeholder="Types" formControlName="type" (selectionChange)="list()" multiple>
             <mat-option *ngFor="let type of types" [value]="type">{{ type }}</mat-option>
           </mat-select>
         </mat-form-field>
