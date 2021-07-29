@@ -26,24 +26,22 @@ export class UtilService {
   }
 
   prepareParams(form: FormGroup): any {
-    const params = form.value.filter((element: any) => element.value !== null);
     const year = form.value.year;
     if (form.value.minDate) {
-      params[this.MIN_DATE] = `${year}-${this.datePipe.transform(params[this.MIN_DATE], 'MM-dd')}`;
+      form.get(this.MIN_DATE)?.setValue(`${year}-${this.datePipe.transform(form.value.minDate, 'MM-dd')}`);
     } else {
-      params[this.MIN_DATE] = `${year}-01-01`;
+      form.get(this.MIN_DATE)?.setValue(`${year}-01-01`);
     }
     if (form.value.maxDate) {
-      params[this.MAX_DATE] = `${year}-${this.datePipe.transform(params[this.MAX_DATE], 'MM-dd')}`;
+      form.get(this.MAX_DATE)?.setValue(`${year}-${this.datePipe.transform(form.value.minDate, 'MM-dd')}`);
     } else {
-      params[this.MAX_DATE] = `${year}-12-31`;
+      form.get(this.MAX_DATE)?.setValue(`${year}-12-31`);
     }
 
     if (form.value.allTypes) {
-      params[this.TYPE] = [];
+      form.get(this.TYPE)?.setValue([]);
     }
-
-    return params;
+    return form;
   }
 
   defaultOptions(size: number): FormGroup {
