@@ -37,21 +37,21 @@ export class UtilService {
       }
     });
 
-    if (params.year) {
-      if (params.minDate) {
-        params.minDate = `${params.year}-${this.datePipe.transform(params.minDate, 'MM-dd')}`;
+    if (params['year']) {
+      if (params['minDate']) {
+        params['minDate'] = `${params['year']}-${this.datePipe.transform(params['minDate'], 'MM-dd')}`;
       } else {
-        params.minDate = `${params.year}-01-01`;
+        params['minDate'] = `${params['year']}-01-01`;
       }
-      if (params.maxDate) {
-        params.maxDate = `${params.year}-${this.datePipe.transform(params.minDate, 'MM-dd')}`;
+      if (params['maxDate']) {
+        params['maxDate'] = `${params['year']}-${this.datePipe.transform(params['minDate'], 'MM-dd')}`;
       } else {
-        params.maxDate = `${params.year}-12-31`;
+        params['maxDate'] = `${params['year']}-12-31`;
       }
     }
 
-    if (params.allTypes) {
-      params.allTypes = [];
+    if (params['allTypes']) {
+      params['allTypes'] = [];
     }
     return params;
   }
