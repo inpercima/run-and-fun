@@ -11,16 +11,16 @@ This project was generated with [swaaplate](https://github.com/inpercima/swaapla
 
 ### Angular CLI
 
-* `angular-cli 13.0.1` or higher
+* `angular-cli 13.1.2` or higher
 
 ### Docker
 
-* `docker 19.03.12` or higher
-* `docker-compose 1.26.0` or higher
+* `docker 20.10.11` or higher
+* `docker-compose 1.27.0` or higher
 
 ### Java
 
-* `jdk 16` or higher
+* `jdk 17` or higher
 
 ### Node, npm or yarn
 
@@ -32,15 +32,6 @@ This project was generated with [swaaplate](https://github.com/inpercima/swaapla
 
 A runkeeper app is needed.
 Use existing or register new app at [runkeeper.com](http://runkeeper.com/partner/applications).
-
-## Dependency check
-
-Some libraries could not be updated b/c of peer dependencies or knowing issues.
-
-| library    | current version | last version | reason |
-| ---------- | --------------- | ------------ | ------ |
-| rxjs       | 6.5.3           | 7.4.0        | "ng2-charts@2.4.3" has incorrect peer dependency "rxjs@^6.3.3" and @"angular/core@13.0.0" has incorrect peer dependency "rxjs@^6.5.3 \|\| ^7.4.0" |
-| chart.js   | 2.9.4           | 3.6.0        | "ng2-charts@2.4.3" has incorrect peer dependency "chart.js@^2.9.3" |
 
 ## Getting started
 
