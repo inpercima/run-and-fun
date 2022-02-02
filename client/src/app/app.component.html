@@ -1,6 +1,6 @@
 <mat-toolbar fxLayoutAlign="space-between center" color="primary" class="mat-elevation-z4">
   {{ appname }}
-  <button *ngIf="!(isAuthenticated$ | async)" mat-button (click)="openDialog(dialog)">APP INFO</button>
+  <button *ngIf="(isAuthenticated$ | async) === false" mat-button (click)="openDialog(dialog)">APP INFO</button>
   <span *ngIf="isAuthenticated$ | async">
     <span *ngIf="appState$ | async as appState">
       Hey {{ appState.fullName }} ({{ appState.username }})
