@@ -1,8 +1,5 @@
 # run and fun - client
 
-[![dependencies Status](https://status.david-dm.org/gh/inpercima/run-and-fun.svg?path=client)](https://david-dm.org/inpercima/run-and-fun?path=client)
-[![devDependencies Status](https://status.david-dm.org/gh/inpercima/run-and-fun.svg?path=client&type=dev)](https://david-dm.org/inpercima/run-and-fun?path=client&type=dev)
-
 ## Getting started
 
 ```bash
