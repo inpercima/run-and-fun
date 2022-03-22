@@ -11,7 +11,7 @@ This project was generated with [swaaplate](https://github.com/inpercima/swaapla
 
 ### Angular CLI
 
-* `angular-cli 13.2.5` or higher
+* `angular-cli 13.3.0` or higher
 
 ### Docker
 
