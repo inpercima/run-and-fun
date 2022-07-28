@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { AppRoutingPipe } from './app-routing.pipe';
 
@@ -36,7 +36,7 @@ describe('AppComponent', () => {
   it('should render toolbar', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('mat-toolbar').textContent).toContain('run and fun');
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('mat-toolbar')?.textContent).toContain('run and fun');
   });
 });

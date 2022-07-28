@@ -5,18 +5,18 @@
 
 Provide searching, statistics and visualization for activities from [runkeeper.com](http://runkeeper.com).
 
-This project was generated with [swaaplate](https://github.com/inpercima/swaaplate) version 2.3.1.
+This project was generated with [swaaplate](https://github.com/inpercima/swaaplate) version 2.3.7s.
 
 ## Prerequisites
 
 ### Angular CLI
 
-* `angular-cli 14.0.0` or higher
+* `angular-cli 14.1.0` or higher
 
 ### Docker
 
-* `docker 20.10.11` or higher
-* `docker-compose 1.27.0` or higher
+* `docker 20.10.14` or higher
+* `docker-compose 2.3.3` or higher
 
 ### Java
 
@@ -24,9 +24,9 @@ This project was generated with [swaaplate](https://github.com/inpercima/swaapla
 
 ### Node, npm or yarn
 
-* `node 16.13.0` or higher in combination with
-  * `npm 8.12.1` or higher or
-  * `yarn 1.22.17` or higher, used in this repository
+* `node 16.16.0` or higher in combination with
+  * `npm 8.12.2` or higher or
+  * `yarn 1.22.19` or higher, used in this repository
 
 ### Runkeeper app registration
 

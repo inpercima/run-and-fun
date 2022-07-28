@@ -12,6 +12,10 @@ cp default.env .env
 
 **Note**: This file will not be under version control but listed in .gitignore.
 
+Check for the existence of `environment.prod.ts` as described in [run and fun - client](./client).
+
+Check for the existence of `application-prod.yml` as described in [run and fun - server](./server).
+
 ## Usage
 
 ```bash
